@@ -39,8 +39,16 @@ namespace Terroir
 
 #endif //TERROIR_LOG_H
 
-// Terroir engine macros
-#define TERR_ENGINE_INFO(msg) SPDLOG_LOGGER_INFO(Terroir::Log::GetEngineLogger(), msg)
-#define TERR_ENGINE_WARN(msg) SPDLOG_LOGGER_WARN(Terroir::Log::GetEngineLogger(), msg)
-#define TERR_ENGINE_ERROR(msg) SPDLOG_LOGGER_ERROR(Terroir::Log::GetEngineLogger(), msg)
-#define TERR_ENGINE_CRIT(msg) SPDLOG_LOGGER_CRITICAL(Terroir::Log::GetEngineLogger(), msg)
+/// ---- Terroir engine macros ---- ///
+
+// Engine Logging
+#define TERR_ENGINE_INFO(...) SPDLOG_LOGGER_INFO(Terroir::Log::GetEngineLogger(), __VA_ARGS__)
+#define TERR_ENGINE_WARN(...) SPDLOG_LOGGER_WARN(Terroir::Log::GetEngineLogger(), __VA_ARGS__)
+#define TERR_ENGINE_ERROR(...) SPDLOG_LOGGER_ERROR(Terroir::Log::GetEngineLogger(), __VA_ARGS__)
+#define TERR_ENGINE_CRIT(...) SPDLOG_LOGGER_CRITICAL(Terroir::Log::GetEngineLogger(), __VA_ARGS__)
+
+// Client Logging
+#define TERR_APP_INFO(...) SPDLOG_LOGGER_INFO(Terroir::Log::GetClientLogger(), __VA_ARGS__)
+#define TERR_APP_WARN(...) SPDLOG_LOGGER_WARN(Terroir::Log::GetClientLogger(), __VA_ARGS__)
+#define TERR_APP_ERROR(...) SPDLOG_LOGGER_ERROR(Terroir::Log::GetClientLogger(), __VA_ARGS__)
+#define TERR_APP_CRIT(...) SPDLOG_LOGGER_CRITICAL(Terroir::Log::GetClientLogger(), __VA_ARGS__)
