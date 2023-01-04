@@ -1,3 +1,9 @@
+# Build files
 /cmake-build-debug
+/_Terroir-Debug
 
+# Package management
+/vcpkg
+
+# IDE
 .idea/

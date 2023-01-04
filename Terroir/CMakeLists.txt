@@ -1,4 +1,5 @@
 set(LIBRARY_OUTPUT_PATH ${CMAKE_BINARY_DIR}/lib)
 include(GenerateExportHeader)
-add_library(Terroir SHARED src/Test.cpp src/Test.h)
+add_library(Terroir SHARED src/Terroir/Core.h src/Terroir/Application.cpp src/Terroir/Application.h src/Terroir.h src/Terroir/AppEntry.h)
 generate_export_header(Terroir)
+target_include_directories(Terroir PUBLIC ${PROJECT_BINARY_DIR} ${PROJECT_SOURCE_DIR})

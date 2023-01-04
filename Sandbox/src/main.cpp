@@ -1,10 +1,19 @@
 //
 // Created by cjp on 1/3/23.
 //
-#include <Terroir/src/Test.h>
+#include <Terroir/src/Terroir.h>
 
-int main()
+class SandboxGame : public Terroir::Application
 {
-	Terroir::Print();
-	return 0;
+
+
+public:
+	SandboxGame()
+	{
+	}
+};
+
+Terroir::Application* Terroir::CreateApplication()
+{
+	return new SandboxGame();
 }
