@@ -2,14 +2,15 @@
 // Created by cjp on 1/4/23.
 //
 
-#include <iostream>
 #include "Application.h"
+#include "log/Log.h"
 
 namespace Terroir
 {
 	void Application::Init()
 	{
-		std::cout << "Initialized Terroir Engine!" << std::endl;
+
+		TERR_ENGINE_INFO("Terroir Application Initialized");
 		while (true);
 	}
 

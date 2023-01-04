@@ -5,7 +5,8 @@
 #ifndef TERROIR_APPLICATION_H
 #define TERROIR_APPLICATION_H
 
-#include <Terroir/terroir_export.h>
+
+#include "Terroir/terroir_export.h"
 
 namespace Terroir
 {

@@ -56,7 +56,4 @@ not just make fun games, but also take a deep dive and see how games are made.
 
 ## License
 
-Terroir is free and open-source and contributions are always welcome.
-
-- MIT License ([MIT]())
-- Apache License, Version 2.0 ([APACHE]())
+TBD

@@ -5,11 +5,15 @@
 #ifndef TERROIR_TERROIR_H
 #define TERROIR_TERROIR_H
 
+/// ---- INTERFACE FOR CLIENT APPLICATIONS ---- ///
+
 // To be used in applications with Terroir Engine
-#include "Terroir/Core.h"
-#include "Terroir/Application.h"
+#include "src/Application.h"
 
 // Client entry-point
-#include "Terroir/AppEntry.h"
+#include "src/AppEntry.h"
+
+// Client logging
+#include "src/log/Log.h"
 
 #endif //TERROIR_TERROIR_H

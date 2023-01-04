@@ -1,0 +1,6 @@
+{
+  "name": "terroir",
+  "dependencies": [
+    "spdlog"
+  ]
+}
