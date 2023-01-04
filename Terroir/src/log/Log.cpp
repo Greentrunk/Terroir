@@ -4,7 +4,6 @@
 
 #include "Log.h"
 
-
 namespace Terroir
 {
 	// Declare statics

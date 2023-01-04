@@ -8,7 +8,7 @@ find_package(spdlog REQUIRED)
 include(GenerateExportHeader)
 
 # SO building
-add_library(Terroir SHARED src/Application.cpp src/Application.h Terroir.h src/AppEntry.h src/log/Log.cpp src/log/Log.h)
+add_library(Terroir SHARED src/Application.cpp src/Application.h Terroir.h src/AppEntry.h src/log/Log.cpp src/log/Log.h src/utils/types.h)
 
 # Macros
 generate_export_header(Terroir)
