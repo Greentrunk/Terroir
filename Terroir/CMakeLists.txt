@@ -8,7 +8,7 @@ find_package(spdlog REQUIRED)
 include(GenerateExportHeader)
 
 # SO building
-add_library(Terroir SHARED src/Application.cpp src/Application.h Terroir.h src/AppEntry.h src/log/Log.cpp src/log/Log.h src/utils/types.h)
+add_library(Terroir SHARED src/core/application/Application.cpp src/core/application/Application.h Terroir.h src/core/AppEntry.h src/log/Log.cpp src/log/Log.h src/core/Types.h src/Core.h src/core/event/Event.h src/core/event/EventType.h src/core/event/KeyEvent.h src/core/event/MouseEvent.h src/core/event/WindowEvent.h src/core/event/ApplicationEvent.h src/core/event/AllEvents.h)
 
 # Macros
 generate_export_header(Terroir)

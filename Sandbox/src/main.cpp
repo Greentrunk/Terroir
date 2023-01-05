@@ -16,6 +16,6 @@ public:
 
 Terroir::Application* Terroir::CreateApplication()
 {
-	TERR_APP_INFO("Game Initalized!");
+	TERR_APP_INFO("Game Initialized!");
 	return new SandboxGame();
 }

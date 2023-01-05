@@ -9,16 +9,20 @@
 /// ---- INTERFACE FOR CLIENT APPLICATIONS ---- ///
 
 // To be used in applications with Terroir Engine
-#include "src/Application.h"
+#include "Terroir/src/core/application/Application.h"
 
 // Client entry-point
-#include "src/AppEntry.h"
+#include "Terroir/src/core/AppEntry.h"
+
+// Types
+#include "Terroir/src/core/Types.h"
 
 // Logging logging
 #include "src/log/Log.h"
 
-// Types TEMP
-#include "src/utils/types.h"
+// Events
+#include "src/core/event/Event.h"
+
 
 #endif //TERROIR_TERROIR_H
 

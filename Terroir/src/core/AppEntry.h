@@ -5,7 +5,9 @@
 #ifndef TERROIR_APPENTRY_H
 #define TERROIR_APPENTRY_H
 
-#include "log/Log.h"
+#include "Terroir/src/log/Log.h"
+#include "Terroir/src/Core.h"
+
 
 int main(int argc, char** argv)
 {
@@ -18,6 +20,9 @@ int main(int argc, char** argv)
 	auto app = Terroir::CreateApplication();
 	app->Init();
 	delete app;
+
+	// Cleanup Subsystems
+	// Terroir::Log::Exit();
 }
 
 #endif //TERROIR_APPENTRY_H
