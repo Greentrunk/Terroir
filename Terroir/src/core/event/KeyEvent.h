@@ -5,7 +5,6 @@
 #ifndef TERROIR_KEYEVENT_H
 #define TERROIR_KEYEVENT_H
 
-#include <sstream>
 #include <Terroir/terroir_export.h>
 #include "Terroir/src/core/Types.h"
 #include "Event.h"

@@ -6,7 +6,6 @@
 #define TERROIR_APPLICATIONEVENT_H
 
 #include <Terroir/terroir_export.h>
-#include <sstream>
 #include "Event.h"
 
 namespace Terroir

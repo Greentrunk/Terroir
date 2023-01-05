@@ -3,8 +3,8 @@
 //
 
 #include "Application.h"
-#include "Terroir/src/log/Log.h"
-#include "Terroir/src/core/event/AllEvents.h"
+#include "log/Log.h"
+#include "core/event/AllEvents.h"
 
 namespace Terroir
 {
@@ -26,7 +26,6 @@ namespace Terroir
 		TERR_ENGINE_INFO(ru.ToString());
 		TERR_ENGINE_INFO(w.ToString());
 		TERR_ENGINE_INFO(ms.ToString());
-
 
 		while (true);
 	}

@@ -5,12 +5,8 @@
 #ifndef TERROIR_EVENT_H
 #define TERROIR_EVENT_H
 
-#include <string>
-#include <type_traits>
 #include <Terroir/terroir_export.h>
 #include "EventType.h"
-#include "Terroir/src/log/Log.h"
-#include "Terroir/src/core/Types.h"
 
 namespace Terroir
 {
