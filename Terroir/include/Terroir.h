@@ -19,6 +19,9 @@
 
 // Logging logging
 #include "Terroir/src/log/Log.h"
+
+// Asserts
+#include "Terroir/src/core/Assert.h"
 // Events
 #include "Terroir/src/core/event/Event.h"
 
@@ -26,6 +29,6 @@
 #endif //TERROIR_TERROIR_H
 
 // TODO - Platform/App Layer
-// event sys
+// Path for vendors (vcpkg)
 // asserts?
 // memory

@@ -5,9 +5,9 @@
 #ifndef TERROIR_WINDOWEVENT_H
 #define TERROIR_WINDOWEVENT_H
 
+#include "Tpch.h"
 #include "Event.h"
 #include <Terroir/terroir_export.h>
-#include "Terroir/src/core/Types.h"
 
 namespace Terroir
 {

@@ -5,9 +5,9 @@
 #ifndef TERROIR_MOUSEEVENT_H
 #define TERROIR_MOUSEEVENT_H
 
+#include "Tpch.h"
 #include <Terroir/terroir_export.h>
 #include "Event.h"
-#include <Terroir/src/core/Types.h>
 
 namespace Terroir
 {

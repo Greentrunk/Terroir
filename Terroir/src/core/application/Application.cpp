@@ -4,8 +4,8 @@
 
 #include "Tpch.h"
 #include "Application.h"
-#include "log/Log.h"
 #include "core/event/AllEvents.h"
+#include <GLFW/glfw3.h>
 
 namespace Terroir
 {
@@ -28,11 +28,22 @@ namespace Terroir
 		TERR_ENGINE_INFO(w.ToString());
 		TERR_ENGINE_INFO(ms.ToString());
 
-		while (true);
+		while (m_Running)
+		{
+			glClearColor(0, 2, 0, 1);
+			glClear(GL_COLOR_BUFFER_BIT);
+			m_Window->OnUpdate();
+		}
 	}
 
 	Application::Application()
 	{
+		m_Window = WindowBaseI::Create({ "Terroir Engine", 100, 100 });
+	}
+
+	Application::Application(const std::string& name, u32 width, u32 height)
+	{
+		m_Window = WindowBaseI::Create({ name, width, height });
 
 	}
 

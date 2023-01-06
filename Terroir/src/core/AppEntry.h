@@ -5,8 +5,8 @@
 #ifndef TERROIR_APPENTRY_H
 #define TERROIR_APPENTRY_H
 
-#include "Terroir/src/log/Log.h"
-#include "Terroir/src/Core.h"
+#include "application/Application.h"
+#include "Terroir/pch/Tpch.h"
 
 
 int main(int argc, char** argv)

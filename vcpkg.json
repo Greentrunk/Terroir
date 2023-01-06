@@ -1,6 +1,7 @@
 {
   "name": "terroir",
   "dependencies": [
-    "spdlog"
+    "spdlog",
+    "glfw3"
   ]
 }

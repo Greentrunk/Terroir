@@ -21,4 +21,10 @@
 #include <string>
 #include <string_view>
 
+// Logging
+#include "Terroir/src/log/Log.h"
+
+// Types
+#include "Terroir/src/core/Types.h"
+
 #endif //TERROIR_TPCH_H
