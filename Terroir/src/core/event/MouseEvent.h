@@ -14,14 +14,8 @@ namespace Terroir
 	class TERROIR_EXPORT MouseMovedEvent : public EventBaseI
 	{
 	public:
-		MouseMovedEvent(f32 x, f32 y) : m_MouseX(x), m_MouseY(x), m_MouseEventType(EventType::Mouse::Moved)
+		MouseMovedEvent(f32 x, f32 y) : m_MouseX(x), m_MouseY(x)
 		{
-			m_EventTypeCategory = EventType::Category::Mouse;
-		}
-
-		inline EventType::Mouse GetMouseEventType() const
-		{
-			return m_MouseEventType;
 		}
 
 		inline f32 GetMouseY() const
@@ -34,7 +28,10 @@ namespace Terroir
 			return m_MouseX;
 		}
 
-		EVENT_GET_NAME(EventType::Mouse::Moved);
+		EVENT_CLASS_TYPE(MouseMoved);
+
+		EVENT_CLASS_CATEGORY(EventCategoryMouse)
+
 
 		std::string ToString() const override
 		{
@@ -45,21 +42,13 @@ namespace Terroir
 
 	private:
 		f32 m_MouseX, m_MouseY;
-		EventType::Mouse m_MouseEventType;
-
 	};
 
 	class TERROIR_EXPORT MouseScrolledEvent : public EventBaseI
 	{
 	public:
-		MouseScrolledEvent(f32 x, f32 y) : m_XOffset(x), m_YOffset(x), m_MouseEventType(EventType::Mouse::Scrolled)
+		MouseScrolledEvent(f32 x, f32 y) : m_XOffset(x), m_YOffset(x)
 		{
-			m_EventTypeCategory = EventType::Category::Mouse;
-		}
-
-		inline EventType::Mouse GetMouseEventType() const
-		{
-			return m_MouseEventType;
 		}
 
 		inline f32 GetXOffset() const
@@ -72,7 +61,10 @@ namespace Terroir
 			return m_XOffset;
 		}
 
-		EVENT_GET_NAME(EventType::Mouse::Scrolled);
+		EVENT_CLASS_TYPE(MouseScrolled);
+
+		EVENT_CLASS_CATEGORY(EventCategoryMouse)
+
 
 		std::string ToString() const override
 		{
@@ -83,8 +75,6 @@ namespace Terroir
 
 	private:
 		f32 m_XOffset, m_YOffset;
-		EventType::Mouse m_MouseEventType;
-
 	};
 
 	class TERROIR_EXPORT MouseButtonEvent : public EventBaseI
@@ -98,44 +88,43 @@ namespace Terroir
 		std::string ToString() const override
 		{
 			std::stringstream ss;
-			ss << GetName() << ": " << m_Button;
+			ss << "MouseButtonEvent" << ": " << m_Button;
 			return ss.str();
 		}
 
-		inline EventType::Mouse GetMouseEventType() const
-		{
-			return m_MouseEventType;
-		}
 
 	protected:
-		MouseButtonEvent(i32 button, EventType::Mouse mouseEventType) : m_Button(button),
-																		m_MouseEventType(mouseEventType)
+		MouseButtonEvent(i32 button) : m_Button(button)
 		{
-			m_EventTypeCategory = EventType::Category::Mouse;
 		}
 
 		i32 m_Button;
-		EventType::Mouse m_MouseEventType;
 	};
 
 	class TERROIR_EXPORT MouseButtonPressedEvent : public MouseButtonEvent
 	{
 	public:
-		MouseButtonPressedEvent(i32 button) : MouseButtonEvent(button, EventType::Mouse::Pressed)
+		MouseButtonPressedEvent(i32 button) : MouseButtonEvent(button)
 		{
 		}
 
-		EVENT_GET_NAME(EventType::Mouse::Pressed);
+		EVENT_CLASS_TYPE(MouseButtonPressed);
+
+		EVENT_CLASS_CATEGORY(EventCategoryMouseButton)
+
 	};
 
 	class TERROIR_EXPORT MouseButtonReleasedEvent : public MouseButtonEvent
 	{
 	public:
-		MouseButtonReleasedEvent(i32 button) : MouseButtonEvent(button, EventType::Mouse::Released)
+		MouseButtonReleasedEvent(i32 button) : MouseButtonEvent(button)
 		{
 		}
 
-		EVENT_GET_NAME(EventType::Mouse::Released);
+		EVENT_CLASS_TYPE(MouseButtonReleased);
+
+		EVENT_CLASS_CATEGORY(EventCategoryMouseButton)
+
 	};
 }
 

@@ -4,11 +4,18 @@
 
 #include "Tpch.h"
 #include "Application.h"
-#include "core/event/AllEvents.h"
+#include "core/event/WindowEvent.h"
+#include "core/event/ApplicationEvent.h"
+#include "core/event/KeyEvent.h"
+#include "core/event/MouseEvent.h"
 #include <GLFW/glfw3.h>
 
 namespace Terroir
 {
+#define BIND_EVENT_FN(x) std::bind(&x, this, std::placeholders::_1)
+#define SET_EVENT_CB_LAMBDA(x) SetEventCallback([this](auto&& PH1) { x(std::forward<decltype(PH1)>(PH1)); })
+//#define EVENT_LAMBDA(x) [this](auto && PH1) { x(std::forward<decltype(PH1)>(PH1)); }
+
 	void Application::Init()
 	{
 
@@ -39,16 +46,31 @@ namespace Terroir
 	Application::Application()
 	{
 		m_Window = WindowBaseI::Create({ "Terroir Engine", 100, 100 });
+		m_Window->SET_EVENT_CB_LAMBDA(OnEvent);
 	}
 
 	Application::Application(const std::string& name, u32 width, u32 height)
 	{
 		m_Window = WindowBaseI::Create({ name, width, height });
+		m_Window->SET_EVENT_CB_LAMBDA(OnEvent);
 
 	}
 
 	Application::~Application()
 	{
 
+	}
+
+	void Application::OnEvent(EventBaseI& e)
+	{
+		EventDispatch dispatcher(e);
+		dispatcher.Dispatch<WindowCloseEvent>(BIND_EVENT_FN(Application::OnWindowClose));
+		TERR_ENGINE_INFO(e.ToString());
+	}
+
+	bool Application::OnWindowClose(WindowCloseEvent&)
+	{
+		m_Running = false;
+		return true;
 	}
 }

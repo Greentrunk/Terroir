@@ -1,7 +1,6 @@
 //
 // Created by cjp on 1/4/23.
 //
-#include "Tpch.h"
 #include "Log.h"
 
 namespace Terroir
@@ -17,7 +16,6 @@ namespace Terroir
 		auto clientSink = std::make_shared<spdlog::sinks::stdout_color_sink_mt>();
 		auto pattern = "%^[%c] [%n] [%l]: %v%$";
 		engineSink->set_pattern(pattern);
-
 		engineSink->set_level(spdlog::level::trace);
 		clientSink->set_pattern(pattern);
 		clientSink->set_level(spdlog::level::trace);

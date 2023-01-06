@@ -57,7 +57,5 @@ namespace Terroir
 		};
 
 	};
-
-
 }
 #endif //TERROIR_EVENTTYPE_H

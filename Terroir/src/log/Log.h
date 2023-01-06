@@ -6,6 +6,9 @@
 #define TERROIR_LOG_H
 
 #include <Terroir/terroir_export.h>
+
+#define SPDLOG_ACTIVE_LEVEL SPDLOG_LEVEL_TRACE
+
 #include <spdlog/spdlog.h>
 #include <spdlog/sinks/stdout_color_sinks.h>
 
@@ -45,6 +48,7 @@ namespace Terroir
 #define TERR_ENGINE_WARN(...) SPDLOG_LOGGER_WARN(Terroir::Log::GetEngineLogger(), __VA_ARGS__)
 #define TERR_ENGINE_ERROR(...) SPDLOG_LOGGER_ERROR(Terroir::Log::GetEngineLogger(), __VA_ARGS__)
 #define TERR_ENGINE_CRIT(...) SPDLOG_LOGGER_CRITICAL(Terroir::Log::GetEngineLogger(), __VA_ARGS__)
+//#define TERR_ENGINE_TRACE(...) SPDLOG_LOGGER_TRACE(Terroir::Log::GetEngineLogger(), __VA_ARGS__)
 
 // Client Logging
 #define TERR_APP_INFO(...) SPDLOG_LOGGER_INFO(Terroir::Log::GetClientLogger(), __VA_ARGS__)

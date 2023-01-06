@@ -5,7 +5,7 @@
 #ifndef TERROIR_WINDOWEVENT_H
 #define TERROIR_WINDOWEVENT_H
 
-#include "Tpch.h"
+#include "Terroir/pch/Tpch.h"
 #include "Event.h"
 #include <Terroir/terroir_export.h>
 
@@ -14,15 +14,8 @@ namespace Terroir
 	class TERROIR_EXPORT WindowResizeEvent : public EventBaseI
 	{
 	public:
-		WindowResizeEvent(u32 width, u32 height) : m_Width(width), m_Height(height),
-												   m_WindowEventType(EventType::Window::Resize)
+		WindowResizeEvent(u32 width, u32 height) : m_Width(width), m_Height(height)
 		{
-			m_EventTypeCategory = EventType::Category::Window;
-		}
-
-		inline EventType::Window GetWindowEventType() const
-		{
-			return m_WindowEventType;
 		}
 
 		u32 GetMWidth() const
@@ -35,35 +28,31 @@ namespace Terroir
 			return m_Height;
 		}
 
-		EVENT_GET_NAME(EventType::Window::Resize);
+		EVENT_CLASS_TYPE(WindowResize);
+
+		EVENT_CLASS_CATEGORY(EventCategoryWindow)
+
 
 		std::string ToString() const override
 		{
 			std::stringstream ss;
-			ss << GetName() << ": " << m_Width << ", " << m_Height;
+			ss << "WindowResizeEvent" << ": " << m_Width << ", " << m_Height;
 			return ss.str();
 		}
 
 	private:
 		u32 m_Width, m_Height;
-		EventType::Window m_WindowEventType;
-
 	};
 
 	class TERROIR_EXPORT WindowCloseEvent : public EventBaseI
 	{
 	public:
-		WindowCloseEvent() : m_WindowEventType(EventType::Window::Close)
-		{
-			m_EventTypeCategory = EventType::Category::Window;
-		}
+		WindowCloseEvent() = default;
 
-		inline EventType::Window GetWindowEventType() const
-		{
-			return m_WindowEventType;
-		}
 
-		EVENT_GET_NAME(EventType::Window::Close);
+		EVENT_CLASS_TYPE(WindowClose);
+
+		EVENT_CLASS_CATEGORY(EventCategoryWindow)
 
 		std::string ToString() const override
 		{
@@ -71,9 +60,6 @@ namespace Terroir
 			ss << GetName();
 			return ss.str();
 		}
-
-	private:
-		EventType::Window m_WindowEventType;
 	};
 }
 #endif //TERROIR_WINDOWEVENT_H

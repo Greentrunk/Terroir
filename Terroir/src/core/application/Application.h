@@ -7,7 +7,9 @@
 
 #include "Terroir/pch/Tpch.h"
 #include <Terroir/terroir_export.h>
-#include "Terroir/src/platform/Window.h"
+#include "../../platform/Window.h"
+#include "../event/Event.h"
+#include "../event/WindowEvent.h"
 
 namespace Terroir
 {
@@ -22,7 +24,11 @@ namespace Terroir
 
 		void Init();
 
+		void OnEvent(EventBaseI&);
+
 	private:
+		bool OnWindowClose(WindowCloseEvent&);
+
 		std::unique_ptr<WindowBaseI> m_Window;
 		bool m_Running = true;
 	};

@@ -21,26 +21,17 @@ namespace Terroir
 
 
 	protected:
-		KeyEventBase(i32 keyCode, EventType::Keyboard keyBoardEventType) : m_KeyCode(keyCode),
-																		   m_KeyBoardEventType(keyBoardEventType)
+		KeyEventBase(i32 keyCode) : m_KeyCode(keyCode)
 		{
-			m_EventTypeCategory = EventType::Category::Keyboard;
 		}
-
-		inline EventType::Keyboard GetKeyBoardEventType() const
-		{
-			return m_KeyBoardEventType;
-		}
-
 
 		i32 m_KeyCode;
-		EventType::Keyboard m_KeyBoardEventType;
 	};
 
 	class TERROIR_EXPORT KeyPressedEvent : public KeyEventBase
 	{
 	public:
-		KeyPressedEvent(i32 keyCode, i32 repeatCount) : KeyEventBase(keyCode, EventType::Keyboard::Pressed),
+		KeyPressedEvent(i32 keyCode, i32 repeatCount) : KeyEventBase(keyCode),
 														m_RepeatCount(repeatCount)
 		{
 		}
@@ -50,7 +41,10 @@ namespace Terroir
 			return m_RepeatCount;
 		}
 
-		EVENT_GET_NAME(EventType::Keyboard::Pressed);
+		EVENT_CLASS_TYPE(KeyPressed);
+
+		EVENT_CLASS_CATEGORY(EventCategoryKeyboard)
+
 
 		std::string ToString() const override
 		{
@@ -66,11 +60,14 @@ namespace Terroir
 	class TERROIR_EXPORT KeyReleasedEvent : public KeyEventBase
 	{
 	public:
-		KeyReleasedEvent(i32 keyCode) : KeyEventBase(keyCode, EventType::Keyboard::Released)
+		KeyReleasedEvent(i32 keyCode) : KeyEventBase(keyCode)
 		{
 		}
 
-		EVENT_GET_NAME(EventType::Keyboard::Released);
+		EVENT_CLASS_TYPE(KeyReleased);
+
+		EVENT_CLASS_CATEGORY(EventCategoryKeyboard)
+
 
 		std::string ToString() const override
 		{

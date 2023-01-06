@@ -13,56 +13,38 @@ namespace Terroir
 	class TERROIR_EXPORT ApplicationEventBase : public EventBaseI
 	{
 	public:
-		ApplicationEventBase(EventType::Application applicationEventType) : m_ApplicationEventType(applicationEventType)
-		{
-			m_EventTypeCategory = EventType::Category::Application;
-		}
-
-		inline EventType::Application GetApplicationEventType() const
-		{
-			return m_ApplicationEventType;
-		}
-
-
-		std::string ToString() const override
-		{
-			std::stringstream ss;
-			ss << GetName();
-			return ss.str();
-		}
-
-	protected:
-		EventType::Application m_ApplicationEventType;
+		ApplicationEventBase() = default;
 	};
 
 	class TERROIR_EXPORT ApplicationTickEvent : public ApplicationEventBase
 	{
 	public:
-		ApplicationTickEvent() : ApplicationEventBase(EventType::Application::Tick)
-		{
-		}
+		ApplicationTickEvent() = default;
 
-		EVENT_GET_NAME(EventType::Application::Tick);
+		EVENT_CLASS_TYPE(AppTick);
+
+		EVENT_CLASS_CATEGORY(EventCategoryApplication)
+
 	};
 
 	class TERROIR_EXPORT ApplicationUpdateEvent : public ApplicationEventBase
 	{
 	public:
-		ApplicationUpdateEvent() : ApplicationEventBase(EventType::Application::Update)
-		{
-		}
+		ApplicationUpdateEvent() = default;
 
-		EVENT_GET_NAME(EventType::Application::Update);
+		EVENT_CLASS_TYPE(AppUpdate);
+
+		EVENT_CLASS_CATEGORY(EventCategoryApplication)
 	};
 
 	class TERROIR_EXPORT ApplicationRenderEvent : public ApplicationEventBase
 	{
 	public:
-		ApplicationRenderEvent() : ApplicationEventBase(EventType::Application::Render)
-		{
-		}
+		ApplicationRenderEvent() = default;
 
-		EVENT_GET_NAME(EventType::Application::Render);
+		EVENT_CLASS_TYPE(AppRender);
+
+		EVENT_CLASS_CATEGORY(EventCategoryApplication)
 	};
 
 }
