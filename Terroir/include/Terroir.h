@@ -18,10 +18,9 @@
 #include "Terroir/src/core/Types.h"
 
 // Logging logging
-#include "src/log/Log.h"
-
+#include "Terroir/src/log/Log.h"
 // Events
-#include "src/core/event/Event.h"
+#include "Terroir/src/core/event/Event.h"
 
 
 #endif //TERROIR_TERROIR_H

@@ -2,6 +2,7 @@
 // Created by cjp on 1/4/23.
 //
 
+#include "Tpch.h"
 #include "Application.h"
 #include "log/Log.h"
 #include "core/event/AllEvents.h"

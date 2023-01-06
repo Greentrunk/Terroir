@@ -1,7 +1,7 @@
 //
 // Created by cjp on 1/4/23.
 //
-
+#include "Tpch.h"
 #include "Log.h"
 
 namespace Terroir

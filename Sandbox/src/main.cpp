@@ -2,7 +2,8 @@
 // Created by cjp on 1/3/23.
 //
 
-#include <Terroir/Terroir.h>
+
+#include <Terroir.h>
 
 class SandboxGame : public Terroir::Application
 {
