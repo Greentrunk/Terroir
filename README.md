@@ -1,7 +1,7 @@
 # Terroir - 2D Game Engine
 
-[//]: # (![Terroir]&#40;/resources/TerroirLogo.PNG?raw=true "Terroir"&#41;)
-<img src="/resources/TerroirLogo.PNG" alt="Terroir-Logo" height="200" width="200"/>
+<img src="/resources/TerroirLogo.PNG" alt="Terroir-Logo" height="300" width="300"/>
+
 ----
 
 *The word Terroir derives as a French term used to describe environmental factors that affect a crop's phenotype. These
@@ -27,9 +27,13 @@ while providing an API that allows the developer to expand the engine's function
 This plugin based API will allow the developer multiple choices how deep down the abstraction level they wish to go to
 not just make fun games, but also take a deep dive and see how games are made.
 
+## Getting Started
+
+-- Coming Soon --
+
 ## Examples
 
--- TODO --
+-- Coming Soon --
 
 ## Planned Features
 
@@ -58,4 +62,4 @@ not just make fun games, but also take a deep dive and see how games are made.
 
 ## License
 
-TBD
+-- Coming Soon --
