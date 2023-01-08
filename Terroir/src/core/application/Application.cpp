@@ -39,6 +39,12 @@ namespace Terroir
 		{
 			glClearColor(0, 2, 0, 1);
 			glClear(GL_COLOR_BUFFER_BIT);
+
+			for (auto& layer: m_LayerStack)
+			{
+				(*layer)->OnUpdate();
+			}
+
 			m_Window->OnUpdate();
 		}
 	}
@@ -58,7 +64,7 @@ namespace Terroir
 
 	Application::~Application()
 	{
-
+		TERR_ENGINE_INFO("Exiting Application");
 	}
 
 	void Application::OnEvent(EventBaseI& e)
@@ -66,11 +72,29 @@ namespace Terroir
 		EventDispatch dispatcher(e);
 		dispatcher.Dispatch<WindowCloseEvent>(BIND_EVENT_FN(Application::OnWindowClose));
 		TERR_ENGINE_INFO(e.ToString());
+
+		// Iterate through layerstack
+		for (auto it = m_LayerStack.end(); it != m_LayerStack.begin();)
+		{
+			(**--it)->OnUpdate();
+			if (e.m_Handled) break;
+
+		}
 	}
 
 	bool Application::OnWindowClose(WindowCloseEvent&)
 	{
 		m_Running = false;
 		return true;
+	}
+
+	void Application::PushLayer(LayerStack::LayerPtr layer)
+	{
+		m_LayerStack.PushLayer(std::move(layer));
+	}
+
+	void Application::PushOverlay(LayerStack::LayerPtr overlay)
+	{
+		m_LayerStack.PushOverlay(std::move(overlay));
 	}
 }

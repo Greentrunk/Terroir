@@ -14,17 +14,17 @@
 // Client entry-point
 #include "Terroir/src/core/AppEntry.h"
 
-// Types
-#include "Terroir/src/core/Types.h"
-
 // Logging logging
 #include "Terroir/src/log/Log.h"
 
 // Asserts
 #include "Terroir/src/core/Assert.h"
+
 // Events
 #include "Terroir/src/core/event/Event.h"
 
+// Layers
+#include "Terroir/src/core/layer/Layer.h"
 
 #endif //TERROIR_TERROIR_H
 

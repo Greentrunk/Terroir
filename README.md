@@ -5,7 +5,7 @@
 ----
 
 *The word Terroir derives as a French term used to describe environmental factors that affect a crop's phenotype. These
-such crops consist of many of the finer things in life, including wine, tobacco, and even chocolate. All of the
+such crops consist of many of the finer things in life, including wine, tobacco, and even chocolate. All the
 characteristics that make up a terroir give the crop a distinctive character. Terroir even references this character.*
 
 
