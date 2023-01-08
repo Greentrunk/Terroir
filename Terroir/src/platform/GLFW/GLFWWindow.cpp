@@ -68,6 +68,10 @@ namespace Terroir
 			s_GLFWInit = true;
 		}
 
+#ifdef TILING_WM
+		// If use with Tiling window manager, set resizeable to FALSE!
+		glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
+#endif
 		m_Window = glfwCreateWindow(static_cast<i32>(m_GlfwData.m_WindowWidth),
 				static_cast<i32>(m_GlfwData.m_WindowHeight),
 				m_GlfwData.m_WindowTitle.c_str(),

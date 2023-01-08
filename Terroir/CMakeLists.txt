@@ -13,6 +13,7 @@ include_directories(${PROJECT_SOURCE_DIR}/Terroir/src)
 
 # Defines
 add_compile_definitions(TERR_ENABLE_ASSERTS)
+add_compile_definitions(TILING_WM)
 
 # SO building
 add_library(Terroir SHARED src/core/application/Application.cpp src/core/application/Application.h include/Terroir.h src/core/AppEntry.h src/log/Log.cpp src/log/Log.h src/core/Types.h src/core/event/Event.h src/core/event/EventType.h src/core/event/KeyEvent.h src/core/event/MouseEvent.h src/core/event/WindowEvent.h src/core/event/ApplicationEvent.h src/core/event/AllEvents.h pch/Tpch.h src/platform/Window.h src/platform/GLFW/GLFWWindow.cpp src/platform/GLFW/GLFWWindow.h src/core/Assert.h)

@@ -45,7 +45,7 @@ namespace Terroir
 
 	Application::Application()
 	{
-		m_Window = WindowBaseI::Create({ "Terroir Engine", 100, 100 });
+		m_Window = WindowBaseI::Create({ "Terroir Engine", 1200, 900 });
 		m_Window->SET_EVENT_CB_LAMBDA(OnEvent);
 	}
 

@@ -1,5 +1,7 @@
 # Terroir - 2D Game Engine
 
+![Terroir](/resources/TerroirLogo.PNG?raw=true "Terroir")
+
 ----
 
 *The word Terroir derives as a French term used to describe environmental factors that affect a crop's phenotype. These
