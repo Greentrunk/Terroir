@@ -8,6 +8,7 @@
 #include "core/event/WindowEvent.h"
 #include "core/event/KeyEvent.h"
 #include "core/event/MouseEvent.h"
+#include <glad/glad.h>
 
 namespace Terroir
 {
@@ -15,7 +16,7 @@ namespace Terroir
 
 	static auto GLFWErrorCallback = [](i32 err, const char* desc)
 	{
-		TERR_ENGINE_ERROR("[GLFW Error]: ({}): {}", err, desc);
+		TERR_ENGINE_ERROR("[glfw Error]: ({}): {}", err, desc);
 	};
 
 	std::unique_ptr<WindowBaseI> WindowBaseI::Create(const WindowProperties& props)
@@ -26,7 +27,7 @@ namespace Terroir
 
 	GLFWWindow::~GLFWWindow()
 	{
-		Shutdown();
+		GLFWWindow::Shutdown();
 	}
 
 	void GLFWWindow::OnUpdate()
@@ -56,14 +57,14 @@ namespace Terroir
 
 	void GLFWWindow::Init()
 	{
-		TERR_ENGINE_INFO("Initializing GLFW Window {} of size: ({}, {})", m_GlfwData.m_WindowTitle,
+		TERR_ENGINE_INFO("Initializing glfw Window {} of size: ({}, {})", m_GlfwData.m_WindowTitle,
 				m_GlfwData.m_WindowWidth,
 				m_GlfwData.m_WindowHeight);
 
 		if (!s_GLFWInit)
 		{
 			[[maybe_unused]] auto success = glfwInit();
-			TERR_ENGINE_ASSERT(success, "GLFW couldn't be initialized");
+			TERR_ENGINE_ASSERT(success, "glfw couldn't be initialized");
 			glfwSetErrorCallback(GLFWErrorCallback);
 			s_GLFWInit = true;
 		}
@@ -77,11 +78,12 @@ namespace Terroir
 				m_GlfwData.m_WindowTitle.c_str(),
 				nullptr, nullptr);
 		glfwMakeContextCurrent(m_Window);
-
+		auto status = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
+		TERR_ENGINE_ASSERT(status, "Failed to init Glad!");
 		glfwSetWindowUserPointer(m_Window, &m_GlfwData);
 		SetVSync(true);
 
-		// GLFW Cbs and lambdas
+		// glfw Cbs and lambdas
 #define GET_WINDOW_USER_POINTER() auto& data = *(GlfwData*)glfwGetWindowUserPointer(window);
 
 		auto WindowSizeCallback = [](GLFWwindow* window, i32 width, i32 height)

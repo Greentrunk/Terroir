@@ -8,7 +8,7 @@
 #include "Tpch.h"
 #include <Terroir/terroir_export.h>
 #include "platform/Window.h"
-#include "GLFW/glfw3.h"
+#include <GLFW/glfw3.h>
 
 namespace Terroir
 {
