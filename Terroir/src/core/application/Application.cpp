@@ -8,7 +8,8 @@
 #include "core/event/ApplicationEvent.h"
 #include "core/event/KeyEvent.h"
 #include "core/event/MouseEvent.h"
-#include <GLFW/glfw3.h>
+#include <glad/glad.h>
+#include "core/Assert.h"
 
 namespace Terroir
 {
@@ -16,33 +17,22 @@ namespace Terroir
 #define SET_EVENT_CB_LAMBDA(x) SetEventCallback([this](auto&& PH1) { x(std::forward<decltype(PH1)>(PH1)); })
 //#define EVENT_LAMBDA(x) [this](auto && PH1) { x(std::forward<decltype(PH1)>(PH1)); }
 
+	Application* Application::s_Instance{ nullptr };
+
 	void Application::Init()
 	{
 
 		TERR_ENGINE_INFO("Terroir Application Initialized");
 
-		// TESTS
-		KeyPressedEvent e(42, 4);
-		WindowCloseEvent w;
-		ApplicationRenderEvent ru;
-		MouseButtonPressedEvent mbp(4);
-		MouseScrolledEvent ms(2.0f, 3.0f);
-
-		TERR_ENGINE_INFO(e.ToString());
-		TERR_ENGINE_INFO(w.ToString());
-		TERR_ENGINE_INFO(mbp.ToString());
-		TERR_ENGINE_INFO(ru.ToString());
-		TERR_ENGINE_INFO(w.ToString());
-		TERR_ENGINE_INFO(ms.ToString());
-
 		while (m_Running)
 		{
-			glClearColor(0, 2, 0, 1);
+			glClearColor(.2, .5, .4, 1);
 			glClear(GL_COLOR_BUFFER_BIT);
 
 			for (auto& layer: m_LayerStack)
 			{
-				(*layer)->OnUpdate();
+				layer->OnUpdate();
+				spdlog::debug("hi");
 			}
 
 			m_Window->OnUpdate();
@@ -51,13 +41,21 @@ namespace Terroir
 
 	Application::Application()
 	{
-		m_Window = WindowBaseI::Create({ "Terroir Engine", 1200, 900 });
+		TERR_ENGINE_ASSERT(!s_Instance, "Application already exists!");
+		s_Instance = this;
+
+		auto window = Window::Create({ "Terroir Engine", 2000, 2000 });
+		m_Window = std::unique_ptr<Window>(window);
 		m_Window->SET_EVENT_CB_LAMBDA(OnEvent);
 	}
 
 	Application::Application(const std::string& name, u32 width, u32 height)
 	{
-		m_Window = WindowBaseI::Create({ name, width, height });
+		TERR_ENGINE_ASSERT(!s_Instance, "Application already exists!");
+		s_Instance = this;
+
+		auto window = Window::Create({ name, width, height });
+		m_Window = std::unique_ptr<Window>(window);
 		m_Window->SET_EVENT_CB_LAMBDA(OnEvent);
 
 	}
@@ -67,7 +65,7 @@ namespace Terroir
 		TERR_ENGINE_INFO("Exiting Application");
 	}
 
-	void Application::OnEvent(EventBaseI& e)
+	void Application::OnEvent(Event& e)
 	{
 		EventDispatch dispatcher(e);
 		dispatcher.Dispatch<WindowCloseEvent>(BIND_EVENT_FN(Application::OnWindowClose));
@@ -76,7 +74,7 @@ namespace Terroir
 		// Iterate through layerstack
 		for (auto it = m_LayerStack.end(); it != m_LayerStack.begin();)
 		{
-			(**--it)->OnUpdate();
+			(*--it)->OnUpdate();
 			if (e.m_Handled) break;
 
 		}
@@ -90,11 +88,13 @@ namespace Terroir
 
 	void Application::PushLayer(LayerStack::LayerPtr layer)
 	{
+		layer->OnAttach();
 		m_LayerStack.PushLayer(std::move(layer));
 	}
 
 	void Application::PushOverlay(LayerStack::LayerPtr overlay)
 	{
+		overlay->OnAttach();
 		m_LayerStack.PushOverlay(std::move(overlay));
 	}
 }

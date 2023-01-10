@@ -15,17 +15,17 @@ public:
 
 	~TestLayer() override
 	{
-		TERR_APP_INFO("DELETING LAYER");
+		TERR_APP_DEBUG("DELETING LAYER");
 	}
 
 	void OnUpdate() override
 	{
-		TERR_APP_INFO("{}::Update", m_DebugName);
+		TERR_APP_TRACE("{}::Update", m_DebugName);
 	}
 
-	void OnEvent(Terroir::EventBaseI& event) override
+	void OnEvent(Terroir::Event& event) override
 	{
-		TERR_APP_INFO(event.ToString());
+		TERR_APP_TRACE(event.ToString());
 	}
 };
 
@@ -34,14 +34,12 @@ class SandboxGame : public Terroir::Application
 public:
 	SandboxGame()
 	{
-		PushLayer(std::make_unique<Terroir::Layer*>(new TestLayer("1")));
-		PushLayer(std::make_unique<Terroir::Layer*>(new TestLayer("2")));
-		PushLayer(std::make_unique<Terroir::Layer*>(new TestLayer("3")));
+		PushLayer(std::make_unique<Terroir::DearImGuiLayer>());
 	}
 };
 
-Terroir::Application* Terroir::CreateApplication()
+std::unique_ptr<Terroir::Application> Terroir::CreateApplication()
 {
 	TERR_APP_INFO("Game Initialized!");
-	return new SandboxGame();
+	return std::make_unique<SandboxGame>();
 }

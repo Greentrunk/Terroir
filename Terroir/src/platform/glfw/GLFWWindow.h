@@ -5,31 +5,34 @@
 #ifndef TERROIR_GLFWWINDOW_H
 #define TERROIR_GLFWWINDOW_H
 
-#include "Tpch.h"
+#include "Terroir/pch/Tpch.h"
 #include <Terroir/terroir_export.h>
-#include "platform/Window.h"
+#include "../Window.h"
+#include "Terroir/src/core/event/Event.h"
 #include <GLFW/glfw3.h>
 
 namespace Terroir
 {
-	class TERROIR_EXPORT GLFWWindow : public WindowBaseI
+	class TERROIR_EXPORT GLFWWindow : public Window
 	{
+
 	public:
-		GLFWWindow(const WindowProperties& props) : m_GlfwData({ props.m_Title, props.m_Width, props.m_Height })
+		explicit GLFWWindow(const WindowProperties& props) : m_GlfwData(
+				{ props.m_Title, props.m_Width, props.m_Height })
 		{
 			GLFWWindow::Init();
 		}
 
-		virtual ~GLFWWindow();
+		~GLFWWindow() override;
 
 		void OnUpdate() override;
 
-		inline u32 GetWindowWidth() const override
+		inline u32 GetWindowWidth() const
 		{
 			return m_GlfwData.m_WindowWidth;
 		}
 
-		inline u32 GetWindowHeight() const override
+		inline u32 GetWindowHeight() const
 		{
 			return m_GlfwData.m_WindowHeight;
 		}
@@ -43,10 +46,16 @@ namespace Terroir
 
 		bool IsVSync() const override;
 
-	private:
-		virtual void Init();
+		inline void* GetNativeWindow() const override
+		{
+			return m_Window;
+		}
 
-		virtual void Shutdown();
+
+	private:
+		void Init();
+
+		void Shutdown();
 
 		GLFWwindow* m_Window = nullptr;
 

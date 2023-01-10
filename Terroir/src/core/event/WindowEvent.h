@@ -11,7 +11,7 @@
 
 namespace Terroir
 {
-	class TERROIR_EXPORT WindowResizeEvent : public EventBaseI
+	class TERROIR_EXPORT WindowResizeEvent : public Event
 	{
 	public:
 		WindowResizeEvent(u32 width, u32 height) : m_Width(width), m_Height(height)
@@ -44,7 +44,7 @@ namespace Terroir
 		u32 m_Width, m_Height;
 	};
 
-	class TERROIR_EXPORT WindowCloseEvent : public EventBaseI
+	class TERROIR_EXPORT WindowCloseEvent : public Event
 	{
 	public:
 		WindowCloseEvent() = default;

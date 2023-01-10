@@ -11,7 +11,7 @@
 
 namespace Terroir
 {
-	class TERROIR_EXPORT KeyEventBase : public EventBaseI
+	class TERROIR_EXPORT KeyEventBase : public Event
 	{
 	public:
 		inline i32 GetKeyCode() const

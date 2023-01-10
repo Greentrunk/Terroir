@@ -7,7 +7,7 @@
 
 #include "Terroir/pch/Tpch.h"
 #include <Terroir/terroir_export.h>
-#include "../../platform/Window.h"
+#include "../../platform/glfw/GLFWWindow.h"
 #include "../event/Event.h"
 #include "../event/WindowEvent.h"
 #include "../layer/LayerStack.h"
@@ -21,26 +21,42 @@ namespace Terroir
 
 		Application(const std::string& name, u32 width, u32 height);
 
+		inline static Application& Get()
+		{
+			return *s_Instance;
+		}
+
 		virtual ~Application();
 
 		void Init();
 
-		void OnEvent(EventBaseI&);
+		void OnEvent(Event&);
 
 		void PushLayer(LayerStack::LayerPtr);
 
 		void PushOverlay(LayerStack::LayerPtr);
 
+		inline Window& GetWindow()
+		{
+			return *m_Window;
+		}
+
+		enum class WindowBackendType
+		{
+			GLFW
+		};
+
 	private:
 		bool OnWindowClose(WindowCloseEvent&);
 
-		std::unique_ptr<WindowBaseI> m_Window;
+		static Application* s_Instance;
+		std::unique_ptr<Window> m_Window;
 		bool m_Running = true;
 		LayerStack m_LayerStack;
 	};
 
 	// Client defined
-	Application* CreateApplication();
+	std::unique_ptr<Application> CreateApplication();
 }
 
 

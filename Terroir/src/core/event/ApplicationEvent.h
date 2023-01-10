@@ -10,7 +10,7 @@
 
 namespace Terroir
 {
-	class TERROIR_EXPORT ApplicationEventBase : public EventBaseI
+	class TERROIR_EXPORT ApplicationEventBase : public Event
 	{
 	public:
 		ApplicationEventBase() = default;

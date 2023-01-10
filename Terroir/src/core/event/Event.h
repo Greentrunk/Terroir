@@ -31,12 +31,12 @@ namespace Terroir
 	};
 
 	// Base interface class for all events
-	class TERROIR_EXPORT EventBaseI
+	class TERROIR_EXPORT Event
 	{
 		friend class EventDispatch;
 
 	public:
-		virtual ~EventBaseI() = default;
+		virtual ~Event() = default;
 
 		bool m_Handled = false;
 
@@ -60,7 +60,7 @@ namespace Terroir
 	class EventDispatch
 	{
 	public:
-		explicit EventDispatch(EventBaseI& event) : m_Event(event)
+		explicit EventDispatch(Event& event) : m_Event(event)
 		{
 		}
 
@@ -76,10 +76,10 @@ namespace Terroir
 		}
 
 	private:
-		EventBaseI& m_Event;
+		Event& m_Event;
 	};
 
-	inline std::ostream& operator<<(std::ostream& os, const EventBaseI& e)
+	inline std::ostream& operator<<(std::ostream& os, const Event& e)
 	{
 		return os << e.ToString();
 	}

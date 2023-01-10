@@ -11,7 +11,7 @@
 
 namespace Terroir
 {
-	class TERROIR_EXPORT MouseMovedEvent : public EventBaseI
+	class TERROIR_EXPORT MouseMovedEvent : public Event
 	{
 	public:
 		MouseMovedEvent(f32 x, f32 y) : m_MouseX(x), m_MouseY(x)
@@ -44,7 +44,7 @@ namespace Terroir
 		f32 m_MouseX, m_MouseY;
 	};
 
-	class TERROIR_EXPORT MouseScrolledEvent : public EventBaseI
+	class TERROIR_EXPORT MouseScrolledEvent : public Event
 	{
 	public:
 		MouseScrolledEvent(f32 x, f32 y) : m_XOffset(x), m_YOffset(x)
@@ -77,7 +77,7 @@ namespace Terroir
 		f32 m_XOffset, m_YOffset;
 	};
 
-	class TERROIR_EXPORT MouseButtonEvent : public EventBaseI
+	class TERROIR_EXPORT MouseButtonEvent : public Event
 	{
 	public:
 		inline i32 GetMouseButton() const

@@ -26,6 +26,9 @@
 // Layers
 #include "Terroir/src/core/layer/Layer.h"
 
+// Dear IMGUi layer
+#include "Terroir/src/dear-imgui/DearImGuiLayer.h"
+
 #endif //TERROIR_TERROIR_H
 
 // TODO - Platform/App Layer

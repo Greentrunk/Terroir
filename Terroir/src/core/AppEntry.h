@@ -12,6 +12,8 @@
 int main(int argc, char** argv)
 {
 	Terroir::Log::Init();
+	TERR_ENGINE_TRACE("Test Trace");
+	TERR_ENGINE_DEBUG("Test Debug");
 	TERR_ENGINE_INFO("Test Info");
 	TERR_ENGINE_WARN("Test Warn");
 	TERR_ENGINE_ERROR("Test Error");
@@ -19,7 +21,7 @@ int main(int argc, char** argv)
 
 	auto app = Terroir::CreateApplication();
 	app->Init();
-	delete app;
+	// delete app
 
 	// Cleanup Subsystems
 	// Terroir::Log::Exit();

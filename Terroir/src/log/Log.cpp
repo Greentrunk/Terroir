@@ -15,12 +15,15 @@ namespace Terroir
 		auto engineSink = std::make_shared<spdlog::sinks::stdout_color_sink_mt>();
 		auto clientSink = std::make_shared<spdlog::sinks::stdout_color_sink_mt>();
 		auto pattern = "%^[%c] [%n] [%l]: %v%$";
-		engineSink->set_pattern(pattern);
-		engineSink->set_level(spdlog::level::trace);
-		clientSink->set_pattern(pattern);
-		clientSink->set_level(spdlog::level::trace);
 
 		sp_EngineLogger = std::make_shared<spdlog::logger>("TERROIR", engineSink);
 		sp_ClientLogger = std::make_shared<spdlog::logger>("APP", clientSink);
+
+		sp_EngineLogger->set_level(spdlog::level::trace);
+		sp_ClientLogger->set_level(spdlog::level::trace);
+
+		sp_EngineLogger->set_pattern(pattern);
+		sp_ClientLogger->set_pattern(pattern);
+
 	}
 } // Terroir

@@ -19,11 +19,6 @@ namespace Terroir
 		TERR_ENGINE_ERROR("[glfw Error]: ({}): {}", err, desc);
 	};
 
-	std::unique_ptr<WindowBaseI> WindowBaseI::Create(const WindowProperties& props)
-	{
-		return std::make_unique<GLFWWindow>(props);
-	}
-
 
 	GLFWWindow::~GLFWWindow()
 	{
@@ -129,6 +124,8 @@ namespace Terroir
 				data.m_WindowCb(event);
 				break;
 			}
+			default:
+				break;
 			}
 		};
 
@@ -150,6 +147,8 @@ namespace Terroir
 				data.m_WindowCb(event);
 				break;
 			}
+			default:
+				break;
 			}
 		};
 
@@ -180,7 +179,7 @@ namespace Terroir
 	void GLFWWindow::Shutdown()
 	{
 		glfwDestroyWindow(m_Window);
-
+		glfwTerminate();
 	}
 }
 

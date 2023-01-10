@@ -17,11 +17,14 @@ namespace Terroir
 	class TERROIR_EXPORT Layer
 	{
 	public:
-		Layer(std::string name) : m_DebugName(std::move(name))
+		explicit Layer(std::string name) : m_DebugName(std::move(name))
 		{
 		}
 
-		virtual ~Layer();
+		virtual ~Layer()
+		{
+			TERR_APP_DEBUG("DELETING LAYER");
+		}
 
 		virtual void OnAttach()
 		{
@@ -35,7 +38,7 @@ namespace Terroir
 		{
 		}
 
-		virtual void OnEvent(EventBaseI& event)
+		virtual void OnEvent(Event& event)
 		{
 		}
 
@@ -46,8 +49,6 @@ namespace Terroir
 
 	protected:
 		std::string m_DebugName;
-
-
 	};
 
 } // Terroir

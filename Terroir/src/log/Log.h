@@ -7,8 +7,6 @@
 
 #include <Terroir/terroir_export.h>
 
-#define SPDLOG_ACTIVE_LEVEL SPDLOG_LEVEL_TRACE
-
 #include <spdlog/spdlog.h>
 #include <spdlog/sinks/stdout_color_sinks.h>
 
@@ -18,14 +16,15 @@ namespace Terroir
 	class TERROIR_EXPORT Log
 	{
 	public:
-
 		inline static std::shared_ptr<spdlog::logger>& GetEngineLogger()
 		{
+
 			return sp_EngineLogger;
 		}
 
 		inline static std::shared_ptr<spdlog::logger>& GetClientLogger()
 		{
+
 			return sp_ClientLogger;
 		}
 
@@ -44,14 +43,17 @@ namespace Terroir
 /// ---- Terroir engine macros ---- ///
 
 // Engine Logging
-#define TERR_ENGINE_INFO(...) SPDLOG_LOGGER_INFO(Terroir::Log::GetEngineLogger(), __VA_ARGS__)
-#define TERR_ENGINE_WARN(...) SPDLOG_LOGGER_WARN(Terroir::Log::GetEngineLogger(), __VA_ARGS__)
-#define TERR_ENGINE_ERROR(...) SPDLOG_LOGGER_ERROR(Terroir::Log::GetEngineLogger(), __VA_ARGS__)
-#define TERR_ENGINE_CRIT(...) SPDLOG_LOGGER_CRITICAL(Terroir::Log::GetEngineLogger(), __VA_ARGS__)
-//#define TERR_ENGINE_TRACE(...) SPDLOG_LOGGER_TRACE(Terroir::Log::GetEngineLogger(), __VA_ARGS__)
+#define TERR_ENGINE_TRACE(...) Terroir::Log::GetEngineLogger()->trace(__VA_ARGS__)
+#define TERR_ENGINE_DEBUG(...) Terroir::Log::GetEngineLogger()->debug(__VA_ARGS__)
+#define TERR_ENGINE_INFO(...) Terroir::Log::GetEngineLogger()->info(__VA_ARGS__)
+#define TERR_ENGINE_WARN(...) Terroir::Log::GetEngineLogger()->warn(__VA_ARGS__)
+#define TERR_ENGINE_ERROR(...) Terroir::Log::GetEngineLogger()->error(__VA_ARGS__)
+#define TERR_ENGINE_CRIT(...) Terroir::Log::GetEngineLogger()->critical(__VA_ARGS__)
 
 // Client Logging
-#define TERR_APP_INFO(...) SPDLOG_LOGGER_INFO(Terroir::Log::GetClientLogger(), __VA_ARGS__)
-#define TERR_APP_WARN(...) SPDLOG_LOGGER_WARN(Terroir::Log::GetClientLogger(), __VA_ARGS__)
-#define TERR_APP_ERROR(...) SPDLOG_LOGGER_ERROR(Terroir::Log::GetClientLogger(), __VA_ARGS__)
-#define TERR_APP_CRIT(...) SPDLOG_LOGGER_CRITICAL(Terroir::Log::GetClientLogger(), __VA_ARGS__)
+#define TERR_APP_TRACE(...) Terroir::Log::GetClientLogger()->trace(__VA_ARGS__)
+#define TERR_APP_DEBUG(...) Terroir::Log::GetClientLogger()->debug(__VA_ARGS__)
+#define TERR_APP_INFO(...) Terroir::Log::GetClientLogger()->info(__VA_ARGS__)
+#define TERR_APP_WARN(...) Terroir::Log::GetClientLogger()->warn(__VA_ARGS__)
+#define TERR_APP_ERROR(...) Terroir::Log::GetClientLogger()->error(__VA_ARGS__)
+#define TERR_APP_CRIT(...) Terroir::Log::GetClientLogger()->critical(__VA_ARGS__)

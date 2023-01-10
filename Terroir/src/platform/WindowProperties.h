@@ -1,8 +1,0 @@
-//
-// Created by cjp on 1/9/23.
-//
-
-#ifndef TERROIR_WINDOWPROPERTIES_H
-#define TERROIR_WINDOWPROPERTIES_H
-
-#endif //TERROIR_WINDOWPROPERTIES_H
