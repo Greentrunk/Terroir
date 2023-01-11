@@ -5,7 +5,7 @@
 #ifndef TERROIR_ASSERT_H
 #define TERROIR_ASSERT_H
 
-#include "Terroir/pch/Tpch.h"
+#include "Terroir/src/log/Log.h"
 
 #ifdef TERR_ENABLE_ASSERTS
 #define TERR_ENGINE_ASSERT(x, ...) {if(!(x)) {TERR_ENGINE_ERROR("Assertion Failed: {}", __VA_ARGS__); }}

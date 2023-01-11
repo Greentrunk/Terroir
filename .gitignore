@@ -1,9 +1,17 @@
 # Build files
 /cmake-build-debug
 /_Terroir-Debug
+/build
+
+# libs and bins
+/bin
+/lib
 
 # Package management
 /vendor/vcpkg
 
 # IDE
 .idea/
+
+# random
+.cache

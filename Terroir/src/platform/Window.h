@@ -5,60 +5,51 @@
 #ifndef TERROIR_WINDOW_H
 #define TERROIR_WINDOW_H
 
-#include <Terroir/terroir_export.h>
 #include "Terroir/pch/Tpch.h"
 #include "Terroir/src/core/event/Event.h"
+#include "Terroir/terroir_export.h"
 
 namespace Terroir
 {
 
-	class WindowProperties
-	{
-	public:
-		WindowProperties(std::string windowTitle, u32 width, u32 height) : m_Title(std::move(windowTitle)),
-																		   m_Width(width),
-																		   m_Height(height)
-		{
-		}
+class WindowProperties
+{
+  public:
+    WindowProperties(std::string windowTitle, u32 width, u32 height)
+        : m_Title(std::move(windowTitle)), m_Width(width), m_Height(height)
+    {
+    }
 
-		std::string m_Title;
-		u32 m_Width;
-		u32 m_Height;
-	};
+    std::string m_Title;
+    u32 m_Width;
+    u32 m_Height;
+};
 
-	class TERROIR_EXPORT Window
-	{
-	public:
+class TERROIR_EXPORT Window
+{
+  public:
+    using EventCallbackFn = std::function<void(Event &)>;
 
-		template<typename T>
-		using Scope = std::unique_ptr<T>;
+    Window() = default;
 
-		template<typename T, typename ... Args>
-		constexpr Scope<T> CreateScope(Args&& ... args)
-		{
-			return std::make_unique<T>(std::forward<Args>(args)...);
-		}
+    virtual ~Window() = default;
 
-		using EventCallbackFn = std::function<void(Event&)>;
+    virtual void SetVSync(bool) = 0;
 
-		Window() = default;
+    virtual bool IsVSync() const = 0;
 
-		virtual ~Window() = default;
+    virtual void *GetNativeWindow() const = 0;
 
-		virtual void SetVSync(bool) = 0;
+    virtual void OnUpdate() = 0;
 
-		virtual bool IsVSync() const = 0;
+    virtual inline void SetEventCallback(const EventCallbackFn &cb) = 0;
 
-		virtual void* GetNativeWindow() const = 0;
+    virtual u32 GetWindowWidth() const = 0;
+    virtual u32 GetWindowHeight() const = 0;
 
-		virtual void OnUpdate() = 0;
+    // For other windowing systems
+    static Window *Create(const WindowProperties &);
+};
+} // namespace Terroir
 
-		virtual inline void SetEventCallback(const EventCallbackFn& cb) = 0;
-
-		// For other windowing systems
-		static Window* Create(const WindowProperties&);
-	};
-}
-
-
-#endif //TERROIR_WINDOW_H
+#endif // TERROIR_WINDOW_H

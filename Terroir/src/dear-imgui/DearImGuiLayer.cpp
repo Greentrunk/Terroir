@@ -4,60 +4,94 @@
 
 #include "DearImGuiLayer.h"
 #include "Tpch.h"
-#include "platform/opengl/DearImGuiOpenGLRenderer.h"
-#include "platform/glfw/DearImGuiGLFW.h"
+#include "core/Assert.h"
 #include "core/application/Application.h"
+#include "platform/glfw/DearImGuiGLFW.h"
 #include "platform/glfw/GLFWWindow.h"
+#include "platform/opengl/DearImGuiOpenGLRenderer.h"
+#include <GLFW/glfw3.h>
+#include <imgui.h>
 
 namespace Terroir
 {
-	DearImGuiLayer::DearImGuiLayer() : Layer("DearImGui Layer")
-	{
-	}
+DearImGuiLayer::DearImGuiLayer() : Layer("DearImGui Layer")
+{
+}
 
-	DearImGuiLayer::~DearImGuiLayer()
-	{
+DearImGuiLayer::~DearImGuiLayer()
+{
+}
 
-	}
+void DearImGuiLayer::OnEvent(Event &event)
+{
+}
 
-	void DearImGuiLayer::OnUpdate()
-	{
-		ImGui_ImplOpenGL3_NewFrame();
-		ImGui_ImplGlfw_NewFrame();
-		ImGui::NewFrame();
-
-		// maybe delta time?
-
+void DearImGuiLayer::OnDearImGuiRender()
+{
 #ifdef SHOW_TEST_GUI
-		bool show = true;
-		ImGui::ShowDemoWindow(&show);
+    auto show{true};
+    ImGui::ShowDemoWindow(&show);
 #endif
+}
 
-		ImGui::Render();
-		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-	}
+void DearImGuiLayer::OnAttach()
+{
+    IMGUI_CHECKVERSION();
+    ImGui::CreateContext();
 
-	void DearImGuiLayer::OnEvent(Event& event)
-	{
-	}
+    auto &io{ImGui::GetIO()};
+    io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
+    io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
+    io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
 
-	void DearImGuiLayer::OnAttach()
-	{
-		IMGUI_CHECKVERSION();
-		ImGui::CreateContext();
-		ImGui::StyleColorsDark();
+    ImGui::StyleColorsDark();
 
-		auto& glfwAddress = Application::Get().GetWindow();
-		ImGui_ImplGlfw_InitForOpenGL(static_cast<GLFWwindow*>(glfwAddress.GetNativeWindow()), true);
+    if (auto &style{ImGui::GetStyle()}; io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
+    {
+        style.WindowRounding = 0.0f;
+        style.Colors[ImGuiCol_WindowBg].w = 1.0f;
+    }
 
-		// to change
-		ImGui_ImplOpenGL3_Init("#version 410");
-	}
+    auto glfwAddress{Application::Get().GetWindow().GetNativeWindow()};
+    ImGui_ImplGlfw_InitForOpenGL(static_cast<GLFWwindow *>(glfwAddress), true);
 
-	void DearImGuiLayer::OnDetach()
-	{
-		ImGui_ImplOpenGL3_Shutdown();
-		ImGui_ImplGlfw_Shutdown();
-		ImGui::DestroyContext();
-	}
-} // Terroir
+    // to change
+    ImGui_ImplOpenGL3_Init("#version 410");
+}
+
+void DearImGuiLayer::OnDetach()
+{
+    ImGui_ImplOpenGL3_Shutdown();
+    ImGui_ImplGlfw_Shutdown();
+    ImGui::DestroyContext();
+}
+
+void DearImGuiLayer::Begin()
+{
+    ImGui_ImplOpenGL3_NewFrame();
+    ImGui_ImplGlfw_NewFrame();
+    ImGui::NewFrame();
+}
+
+void DearImGuiLayer::End()
+{
+    auto &io{ImGui::GetIO()};
+    auto &app{Application::Get()};
+    io.DisplaySize =
+        ImVec2(static_cast<f32>(app.GetWindow().GetWindowWidth()), static_cast<f32>(app.GetWindow().GetWindowHeight()));
+
+    ImGui::Render();
+    ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+
+    if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
+    {
+        auto *backupCurrentContext{glfwGetCurrentContext()};
+        ImGui::UpdatePlatformWindows();
+        ImGui::RenderPlatformWindowsDefault();
+        glfwMakeContextCurrent(backupCurrentContext);
+    }
+}
+
+} // namespace Terroir
+
+// hi

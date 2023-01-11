@@ -4,6 +4,12 @@
     "spdlog",
     "glfw3",
     "glad",
-    "imgui"
+    {
+      "name": "imgui",
+      "features": [
+        "docking-experimental"
+      ]
+    },
+    "glm"
   ]
 }

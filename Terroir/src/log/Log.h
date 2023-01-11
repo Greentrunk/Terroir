@@ -6,54 +6,100 @@
 #define TERROIR_LOG_H
 
 #include <Terroir/terroir_export.h>
-
-#include <spdlog/spdlog.h>
 #include <spdlog/sinks/stdout_color_sinks.h>
+#include <spdlog/spdlog.h>
 
 namespace Terroir
 {
+class TERROIR_EXPORT Log
+{
+  public:
+    inline static std::shared_ptr<spdlog::logger> &GetEngineLogger()
+    {
 
-	class TERROIR_EXPORT Log
-	{
-	public:
-		inline static std::shared_ptr<spdlog::logger>& GetEngineLogger()
-		{
+        return sp_EngineLogger;
+    }
 
-			return sp_EngineLogger;
-		}
+    inline static std::shared_ptr<spdlog::logger> &GetClientLogger()
+    {
 
-		inline static std::shared_ptr<spdlog::logger>& GetClientLogger()
-		{
+        return sp_ClientLogger;
+    }
 
-			return sp_ClientLogger;
-		}
+    static void Init();
 
-		static void Init();
+  private:
+    static std::shared_ptr<spdlog::logger> sp_EngineLogger;
 
-	private:
-		static std::shared_ptr<spdlog::logger> sp_EngineLogger;
+    static std::shared_ptr<spdlog::logger> sp_ClientLogger;
+};
 
-		static std::shared_ptr<spdlog::logger> sp_ClientLogger;
-	};
-
-} // Terroir
-
-#endif //TERROIR_LOG_H
+} // namespace Terroir
 
 /// ---- Terroir engine macros ---- ///
 
 // Engine Logging
-#define TERR_ENGINE_TRACE(...) Terroir::Log::GetEngineLogger()->trace(__VA_ARGS__)
-#define TERR_ENGINE_DEBUG(...) Terroir::Log::GetEngineLogger()->debug(__VA_ARGS__)
-#define TERR_ENGINE_INFO(...) Terroir::Log::GetEngineLogger()->info(__VA_ARGS__)
-#define TERR_ENGINE_WARN(...) Terroir::Log::GetEngineLogger()->warn(__VA_ARGS__)
-#define TERR_ENGINE_ERROR(...) Terroir::Log::GetEngineLogger()->error(__VA_ARGS__)
-#define TERR_ENGINE_CRIT(...) Terroir::Log::GetEngineLogger()->critical(__VA_ARGS__)
+template <typename... Args> constexpr void TERR_ENGINE_TRACE(Args... args)
+{
+    Terroir::Log::GetEngineLogger()->trace(args...);
+}
+
+template <typename... Args> constexpr void TERR_ENGINE_DEBUG(Args... args)
+{
+    Terroir::Log::GetEngineLogger()->debug(args...);
+}
+
+template <typename... Args> constexpr void TERR_ENGINE_INFO(Args... args)
+{
+
+    Terroir::Log::GetEngineLogger()->info(args...);
+}
+template <typename... Args> constexpr void TERR_ENGINE_WARN(Args... args)
+{
+
+    Terroir::Log::GetEngineLogger()->warn(args...);
+}
+template <typename... Args> constexpr void TERR_ENGINE_ERROR(Args... args)
+{
+
+    Terroir::Log::GetEngineLogger()->error(args...);
+}
+template <typename... Args> constexpr void TERR_ENGINE_CRIT(Args... args)
+{
+
+    Terroir::Log::GetEngineLogger()->critical(args...);
+}
 
 // Client Logging
-#define TERR_APP_TRACE(...) Terroir::Log::GetClientLogger()->trace(__VA_ARGS__)
-#define TERR_APP_DEBUG(...) Terroir::Log::GetClientLogger()->debug(__VA_ARGS__)
-#define TERR_APP_INFO(...) Terroir::Log::GetClientLogger()->info(__VA_ARGS__)
-#define TERR_APP_WARN(...) Terroir::Log::GetClientLogger()->warn(__VA_ARGS__)
-#define TERR_APP_ERROR(...) Terroir::Log::GetClientLogger()->error(__VA_ARGS__)
-#define TERR_APP_CRIT(...) Terroir::Log::GetClientLogger()->critical(__VA_ARGS__)
+
+template <typename... Args> constexpr void TERR_APP_TRACE(Args... args)
+{
+    Terroir::Log::GetClientLogger()->trace(args...);
+}
+
+template <typename... Args> constexpr void TERR_APP_DEBUG(Args... args)
+{
+    Terroir::Log::GetClientLogger()->debug(args...);
+}
+
+template <typename... Args> constexpr void TERR_APP_INFO(Args... args)
+{
+    Terroir::Log::GetClientLogger()->info(args...);
+}
+
+template <typename... Args> constexpr void TERR_APP_WARN(Args... args)
+{
+    Terroir::Log::GetClientLogger()->warn(args...);
+}
+
+template <typename... Args> constexpr void TERR_APP_ERROR(Args... args)
+{
+    Terroir::Log::GetClientLogger()->error(args...);
+}
+
+template <typename... Args> constexpr void TERR_APP_CRIT(Args... args)
+{
+    Terroir::Log::GetClientLogger()->critical(args...);
+}
+
+#endif // TERROIR_LOG_H

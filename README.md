@@ -2,21 +2,20 @@
 
 <img src="/resources/TerroirLogo.PNG" alt="Terroir-Logo" height="300" width="300"/>
 
-----
+---
 
-*The word Terroir derives as a French term used to describe environmental factors that affect a crop's phenotype. These
+_The word Terroir derives as a French term used to describe environmental factors that affect a crop's phenotype. These
 such crops consist of many of the finer things in life, including wine, tobacco, and even chocolate. All the
-characteristics that make up a terroir give the crop a distinctive character. Terroir even references this character.*
+characteristics that make up a terroir give the crop a distinctive character. Terroir even references this character._
 
-
-----
+---
 
 # CAUTION
 
 Terroir is currently in the planning stage and not recommended now or the considerable future for the use in serious
 commercial projects. The API will undergo considerable changes over this period.
 
-----
+---
 
 Terroir is planned to be a simple but powerful tool to create interactive 2D video games and experiences without
 worrying about cross-platform compatibility featuring first-class support for both Windows and Linux.

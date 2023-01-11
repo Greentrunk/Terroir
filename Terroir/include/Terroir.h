@@ -5,7 +5,6 @@
 #ifndef TERROIR_TERROIR_H
 #define TERROIR_TERROIR_H
 
-
 /// ---- INTERFACE FOR CLIENT APPLICATIONS ---- ///
 
 // To be used in applications with Terroir Engine
@@ -23,13 +22,18 @@
 // Events
 #include "Terroir/src/core/event/Event.h"
 
+// Input
+#include "Terroir/src/core/KeyCodes.h"
+#include "Terroir/src/core/MouseButtonCodes.h"
+#include "Terroir/src/platform/Input.h"
+
 // Layers
 #include "Terroir/src/core/layer/Layer.h"
 
 // Dear IMGUi layer
 #include "Terroir/src/dear-imgui/DearImGuiLayer.h"
 
-#endif //TERROIR_TERROIR_H
+#endif // TERROIR_TERROIR_H
 
 // TODO - Platform/App Layer
 // Path for vendors (vcpkg)
