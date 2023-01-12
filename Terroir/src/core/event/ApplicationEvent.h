@@ -5,18 +5,17 @@
 #ifndef TERROIR_APPLICATIONEVENT_H
 #define TERROIR_APPLICATIONEVENT_H
 
-#include <Terroir/terroir_export.h>
 #include "Event.h"
 
 namespace Terroir
 {
-	class TERROIR_EXPORT ApplicationEventBase : public Event
+	class  ApplicationEventBase : public Event
 	{
 	public:
 		ApplicationEventBase() = default;
 	};
 
-	class TERROIR_EXPORT ApplicationTickEvent : public ApplicationEventBase
+	class  ApplicationTickEvent : public ApplicationEventBase
 	{
 	public:
 		ApplicationTickEvent() = default;
@@ -27,7 +26,7 @@ namespace Terroir
 
 	};
 
-	class TERROIR_EXPORT ApplicationUpdateEvent : public ApplicationEventBase
+	class  ApplicationUpdateEvent : public ApplicationEventBase
 	{
 	public:
 		ApplicationUpdateEvent() = default;
@@ -37,7 +36,7 @@ namespace Terroir
 		EVENT_CLASS_CATEGORY(EventCategoryApplication)
 	};
 
-	class TERROIR_EXPORT ApplicationRenderEvent : public ApplicationEventBase
+	class  ApplicationRenderEvent : public ApplicationEventBase
 	{
 	public:
 		ApplicationRenderEvent() = default;

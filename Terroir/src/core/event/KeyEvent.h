@@ -6,12 +6,11 @@
 #define TERROIR_KEYEVENT_H
 
 #include "Tpch.h"
-#include <Terroir/terroir_export.h>
 #include "Event.h"
 
 namespace Terroir
 {
-	class TERROIR_EXPORT KeyEventBase : public Event
+	class  KeyEventBase : public Event
 	{
 	public:
 		inline i32 GetKeyCode() const
@@ -28,7 +27,7 @@ namespace Terroir
 		i32 m_KeyCode;
 	};
 
-	class TERROIR_EXPORT KeyPressedEvent : public KeyEventBase
+	class  KeyPressedEvent : public KeyEventBase
 	{
 	public:
 		KeyPressedEvent(i32 keyCode, i32 repeatCount) : KeyEventBase(keyCode),
@@ -57,7 +56,7 @@ namespace Terroir
 		i32 m_RepeatCount;
 	};
 
-	class TERROIR_EXPORT KeyReleasedEvent : public KeyEventBase
+	class  KeyReleasedEvent : public KeyEventBase
 	{
 	public:
 		KeyReleasedEvent(i32 keyCode) : KeyEventBase(keyCode)

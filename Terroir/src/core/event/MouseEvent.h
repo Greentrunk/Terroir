@@ -6,12 +6,11 @@
 #define TERROIR_MOUSEEVENT_H
 
 #include "Tpch.h"
-#include <Terroir/terroir_export.h>
 #include "Event.h"
 
 namespace Terroir
 {
-	class TERROIR_EXPORT MouseMovedEvent : public Event
+	class  MouseMovedEvent : public Event
 	{
 	public:
 		MouseMovedEvent(f32 x, f32 y) : m_MouseX(x), m_MouseY(x)
@@ -44,7 +43,7 @@ namespace Terroir
 		f32 m_MouseX, m_MouseY;
 	};
 
-	class TERROIR_EXPORT MouseScrolledEvent : public Event
+	class  MouseScrolledEvent : public Event
 	{
 	public:
 		MouseScrolledEvent(f32 x, f32 y) : m_XOffset(x), m_YOffset(x)
@@ -77,7 +76,7 @@ namespace Terroir
 		f32 m_XOffset, m_YOffset;
 	};
 
-	class TERROIR_EXPORT MouseButtonEvent : public Event
+	class  MouseButtonEvent : public Event
 	{
 	public:
 		inline i32 GetMouseButton() const
@@ -101,7 +100,7 @@ namespace Terroir
 		i32 m_Button;
 	};
 
-	class TERROIR_EXPORT MouseButtonPressedEvent : public MouseButtonEvent
+	class  MouseButtonPressedEvent : public MouseButtonEvent
 	{
 	public:
 		MouseButtonPressedEvent(i32 button) : MouseButtonEvent(button)
@@ -114,7 +113,7 @@ namespace Terroir
 
 	};
 
-	class TERROIR_EXPORT MouseButtonReleasedEvent : public MouseButtonEvent
+	class  MouseButtonReleasedEvent : public MouseButtonEvent
 	{
 	public:
 		MouseButtonReleasedEvent(i32 button) : MouseButtonEvent(button)

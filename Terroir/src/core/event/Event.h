@@ -44,7 +44,7 @@ enum EventCategory
 };
 
 // Base interface class for all events
-class TERROIR_EXPORT Event
+class  Event
 {
     friend class EventDispatch;
 

@@ -7,12 +7,11 @@
 
 #include "Layer.h"
 #include "Terroir/pch/Tpch.h"
-#include <Terroir/terroir_export.h>
 
 namespace Terroir
 {
 // This stack controls engine's layer functionality
-class TERROIR_EXPORT LayerStack
+class  LayerStack
 {
   public:
     // Takes pointer to layer for polymorphism

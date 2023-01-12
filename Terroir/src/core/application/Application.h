@@ -10,11 +10,10 @@
 #include "../event/Event.h"
 #include "../event/WindowEvent.h"
 #include "../layer/LayerStack.h"
-#include <Terroir/terroir_export.h>
 
 namespace Terroir
 {
-class TERROIR_EXPORT Application
+class  Application
 {
   public:
     Application();

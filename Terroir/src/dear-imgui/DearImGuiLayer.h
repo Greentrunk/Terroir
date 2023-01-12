@@ -7,12 +7,11 @@
 
 #include "Terroir/src/core/event/Event.h"
 #include "Terroir/src/core/layer/Layer.h"
-#include <Terroir/terroir_export.h>
 
 namespace Terroir
 {
 
-class TERROIR_EXPORT DearImGuiLayer : public Layer
+class DearImGuiLayer : public Layer
 {
   public:
     DearImGuiLayer();

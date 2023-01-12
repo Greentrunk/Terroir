@@ -8,12 +8,12 @@
 #include "Terroir/pch/Tpch.h"
 #include "Terroir/src/core/event/Event.h"
 #include "Terroir/src/platform/Window.h"
+#include "Terroir/src/renderer/GraphicsContext.h"
 #include <GLFW/glfw3.h>
-#include <Terroir/terroir_export.h>
 
 namespace Terroir
 {
-class TERROIR_EXPORT GLFWWindow : public Window
+class GLFWWindow : public Window
 {
 
   public:
@@ -26,12 +26,12 @@ class TERROIR_EXPORT GLFWWindow : public Window
 
     void OnUpdate() override;
 
-    inline u32 GetWindowWidth() const override
+    [[nodiscard]] inline u32 GetWindowWidth() const override
     {
         return m_GlfwData.m_WindowWidth;
     }
 
-    inline u32 GetWindowHeight() const override
+    [[nodiscard]] inline u32 GetWindowHeight() const override
     {
         return m_GlfwData.m_WindowHeight;
     }
@@ -43,11 +43,16 @@ class TERROIR_EXPORT GLFWWindow : public Window
 
     void SetVSync(bool) override;
 
-    bool IsVSync() const override;
+    [[nodiscard]] bool IsVSync() const override;
 
-    inline void *GetNativeWindow() const override
+    [[nodiscard]] inline void *GetNativeWindow() const override
     {
         return m_Window;
+    }
+
+    [[nodiscard]] inline void *GetContext() const override
+    {
+        return m_Context.get();
     }
 
   private:
@@ -56,6 +61,7 @@ class TERROIR_EXPORT GLFWWindow : public Window
     void Shutdown();
 
     GLFWwindow *m_Window = nullptr;
+    std::unique_ptr<GraphicsContext> m_Context;
 
     using GlfwData = struct GlfwData
     {

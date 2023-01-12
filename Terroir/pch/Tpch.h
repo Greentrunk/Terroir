@@ -1,7 +1,3 @@
-//
-// Created by cjp on 1/5/23.
-//
-
 #ifndef TERROIR_TPCH_H
 #define TERROIR_TPCH_H
 

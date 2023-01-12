@@ -25,7 +25,7 @@ file(GLOB_RECURSE sources "*.c" "*.cpp" "*.h" "*.hpp")
 # SO building
 # add_library(Terroir SHARED src/core/application/Application.cpp src/core/application/Application.h include/Terroir.h src/core/AppEntry.h src/log/Log.cpp src/log/Log.h src/core/Types.h src/core/event/Event.h src/core/event/KeyEvent.h src/core/event/MouseEvent.h src/core/event/WindowEvent.h src/core/event/ApplicationEvent.h src/core/event/AllEvents.h pch/Tpch.h src/platform/glfw/GLFWWindow.cpp src/platform/glfw/GLFWWindow.h src/core/Assert.h src/core/layer/Layer.h src/core/layer/LayerStack.cpp src/core/layer/LayerStack.h src/dear-imgui/DearImGuiLayer.cpp src/dear-imgui/DearImGuiLayer.h src/platform/opengl/DearImGuiOpenGLRenderer.h src/platform/opengl/DearImGuiOpenGLRenderer.cpp src/platform/glfw/DearImGuiGLFW.h src/platform/glfw/DearImGuiGLFW.cpp src/platform/Window.h src/platform/Window.cpp src/platform/Input.h src/platform/glfw/GLFWInput.cpp src/platform/glfw/GLFWInput.h src/core/KeyCodes.h src/core/MouseButtonCodes.h)
 
-add_library(Terroir SHARED ${sources})
+add_library(Terroir STATIC ${sources})
 
 # Macros
 generate_export_header(Terroir)

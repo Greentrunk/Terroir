@@ -8,8 +8,6 @@
 #include "Terroir/pch/Tpch.h"
 #include "Terroir/src/core/event/Event.h"
 
-#include "Terroir/terroir_export.h"
-
 namespace Terroir
 {
 

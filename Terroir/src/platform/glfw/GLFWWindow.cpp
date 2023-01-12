@@ -8,15 +8,17 @@
 #include "core/event/KeyEvent.h"
 #include "core/event/MouseEvent.h"
 #include "core/event/WindowEvent.h"
+#include "renderer/GraphicsContext.h"
+#include "renderer/opengl/OpenGLContext.h"
 #include <glad/glad.h>
+#include <memory>
 
 namespace Terroir
 {
-static bool s_GLFWInit = false;
+static auto s_GLFWInit{false};
 
-static auto GLFWErrorCallback = [](i32 err, const char *desc) {
-    TERR_ENGINE_ERROR("[glfw Error]: ({}): {}", err, desc);
-};
+static const auto GLFWErrorCallback{
+    [](i32 err, const char *desc) { TERR_ENGINE_ERROR("[glfw Error]: ({}): {}", err, desc); }};
 
 GLFWWindow::~GLFWWindow()
 {
@@ -25,9 +27,8 @@ GLFWWindow::~GLFWWindow()
 
 void GLFWWindow::OnUpdate()
 {
-
     glfwPollEvents();
-    glfwSwapBuffers(m_Window);
+    m_Context->SwapBuffers();
 }
 
 void GLFWWindow::SetVSync(bool enabled)
@@ -55,7 +56,7 @@ void GLFWWindow::Init()
 
     if (!s_GLFWInit)
     {
-        [[maybe_unused]] auto success = glfwInit();
+        [[maybe_unused]] auto success{glfwInit()};
         TERR_ENGINE_ASSERT(success, "glfw couldn't be initialized");
         glfwSetErrorCallback(GLFWErrorCallback);
         s_GLFWInit = true;
@@ -67,16 +68,17 @@ void GLFWWindow::Init()
 #endif
     m_Window = glfwCreateWindow(static_cast<i32>(m_GlfwData.m_WindowWidth), static_cast<i32>(m_GlfwData.m_WindowHeight),
                                 m_GlfwData.m_WindowTitle.c_str(), nullptr, nullptr);
-    glfwMakeContextCurrent(m_Window);
-    auto status = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
-    TERR_ENGINE_ASSERT(status, "Failed to init Glad!");
+
+    m_Context = std::unique_ptr<GraphicsContext>(new OpenGLContext(m_Window));
+    m_Context->Init();
+
     glfwSetWindowUserPointer(m_Window, &m_GlfwData);
     SetVSync(true);
 
     // glfw Cbs and lambdas
-#define GET_WINDOW_USER_POINTER() auto &data = *(GlfwData *)glfwGetWindowUserPointer(window);
+#define GET_WINDOW_USER_POINTER() auto &data{*static_cast<GlfwData *>(glfwGetWindowUserPointer(window))};
 
-    auto WindowSizeCallback = [](GLFWwindow *window, i32 width, i32 height) {
+    auto WindowSizeCallback{[](GLFWwindow *window, i32 width, i32 height) {
         GET_WINDOW_USER_POINTER();
 
         data.m_WindowWidth = width;
@@ -84,16 +86,16 @@ void GLFWWindow::Init()
 
         WindowResizeEvent event(width, height);
         data.m_WindowCb(event);
-    };
+    }};
 
-    auto WindowCloseCallback = [](GLFWwindow *window) {
+    auto WindowCloseCallback{[](GLFWwindow *window) {
         GET_WINDOW_USER_POINTER();
 
         WindowCloseEvent event;
         data.m_WindowCb(event);
-    };
+    }};
 
-    auto KeyCallback = [](GLFWwindow *window, i32 key, i32 scancode, i32 action, i32 mods) {
+    auto KeyCallback{[](GLFWwindow *window, i32 key, i32 scancode, i32 action, i32 mods) {
         GET_WINDOW_USER_POINTER();
 
         switch (action)
@@ -116,9 +118,9 @@ void GLFWWindow::Init()
         default:
             break;
         }
-    };
+    }};
 
-    auto MouseButtonCallback = [](GLFWwindow *window, i32 button, i32 action, i32 mods) {
+    auto MouseButtonCallback{[](GLFWwindow *window, i32 button, i32 action, i32 mods) {
         GET_WINDOW_USER_POINTER();
 
         switch (action)
@@ -136,21 +138,21 @@ void GLFWWindow::Init()
         default:
             break;
         }
-    };
+    }};
 
-    auto MouseScrollCallback = [](GLFWwindow *window, f64 xOffset, f64 yOffset) {
+    auto MouseScrollCallback{[](GLFWwindow *window, f64 xOffset, f64 yOffset) {
         GET_WINDOW_USER_POINTER();
 
         MouseScrolledEvent event(static_cast<f32>(xOffset), static_cast<f32>(yOffset));
         data.m_WindowCb(event);
-    };
+    }};
 
-    auto MouseCursorCallback = [](GLFWwindow *window, f64 xPos, f64 yPos) {
+    auto MouseCursorCallback{[](GLFWwindow *window, f64 xPos, f64 yPos) {
         GET_WINDOW_USER_POINTER();
 
         MouseMovedEvent event(static_cast<f32>(xPos), static_cast<f32>(yPos));
         data.m_WindowCb(event);
-    };
+    }};
 
     glfwSetWindowSizeCallback(m_Window, WindowSizeCallback);
     glfwSetWindowCloseCallback(m_Window, WindowCloseCallback);

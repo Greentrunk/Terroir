@@ -7,7 +7,7 @@
 
 #include "Terroir/pch/Tpch.h"
 #include "Terroir/src/core/event/Event.h"
-#include "Terroir/terroir_export.h"
+#include "Terroir/src/renderer/GraphicsContext.h"
 
 namespace Terroir
 {
@@ -25,7 +25,7 @@ class WindowProperties
     u32 m_Height;
 };
 
-class TERROIR_EXPORT Window
+class Window
 {
   public:
     using EventCallbackFn = std::function<void(Event &)>;
@@ -36,16 +36,18 @@ class TERROIR_EXPORT Window
 
     virtual void SetVSync(bool) = 0;
 
-    virtual bool IsVSync() const = 0;
+    [[nodiscard]] virtual bool IsVSync() const = 0;
 
-    virtual void *GetNativeWindow() const = 0;
+    [[nodiscard]] virtual void *GetNativeWindow() const = 0;
+
+    [[nodiscard]] virtual void* GetContext() const = 0;
 
     virtual void OnUpdate() = 0;
 
     virtual inline void SetEventCallback(const EventCallbackFn &cb) = 0;
 
-    virtual u32 GetWindowWidth() const = 0;
-    virtual u32 GetWindowHeight() const = 0;
+    [[nodiscard]] virtual u32 GetWindowWidth() const = 0;
+    [[nodiscard]] virtual u32 GetWindowHeight() const = 0;
 
     // For other windowing systems
     static Window *Create(const WindowProperties &);

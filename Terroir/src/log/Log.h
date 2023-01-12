@@ -5,13 +5,12 @@
 #ifndef TERROIR_LOG_H
 #define TERROIR_LOG_H
 
-#include <Terroir/terroir_export.h>
 #include <spdlog/sinks/stdout_color_sinks.h>
 #include <spdlog/spdlog.h>
 
 namespace Terroir
 {
-class TERROIR_EXPORT Log
+class Log
 {
   public:
     inline static std::shared_ptr<spdlog::logger> &GetEngineLogger()

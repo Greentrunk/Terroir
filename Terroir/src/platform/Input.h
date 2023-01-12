@@ -12,6 +12,7 @@ namespace Terroir
 	class Input
 	{
 	public:
+virtual ~Input() = default;
 		inline static bool IsKeyPressed(i32 keycode)
 		{
 			return s_Instance->IsKeyPressedImpl(keycode);
