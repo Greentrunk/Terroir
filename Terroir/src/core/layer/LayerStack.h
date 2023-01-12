@@ -16,7 +16,7 @@ class TERROIR_EXPORT LayerStack
 {
   public:
     // Takes pointer to layer for polymorphism
-    using LayerPtr = std::shared_ptr<Layer>;
+    using LayerPtr = std::unique_ptr<Layer>;
     using LayerStackVec = std::vector<LayerPtr>;
     using LayerStackVecIterator = LayerStackVec::iterator;
 

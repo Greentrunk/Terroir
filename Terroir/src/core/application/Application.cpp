@@ -59,8 +59,9 @@ Application::Application()
     m_Window = std::unique_ptr<Window>(window);
     m_Window->SET_EVENT_CB_LAMBDA(OnEvent);
 
-    m_DearImGuiLayer = std::make_shared<DearImGuiLayer>();
-    PushOverlay(std::move(m_DearImGuiLayer));
+    auto dearImGuiLayer{std::make_unique<DearImGuiLayer>()};
+    m_DearImGuiLayer = dearImGuiLayer.get();
+    PushOverlay(std::move(dearImGuiLayer));
 }
 
 Application::Application(const std::string &name, u32 width, u32 height)
@@ -72,8 +73,9 @@ Application::Application(const std::string &name, u32 width, u32 height)
     m_Window = std::unique_ptr<Window>(window);
     m_Window->SET_EVENT_CB_LAMBDA(OnEvent);
 
-    m_DearImGuiLayer = std::make_shared<DearImGuiLayer>();
-    PushOverlay(std::move(m_DearImGuiLayer));
+    auto dearImGuiLayer{std::make_unique<DearImGuiLayer>()};
+    m_DearImGuiLayer = dearImGuiLayer.get();
+    PushOverlay(std::move(dearImGuiLayer));
 }
 
 Application::~Application()
@@ -105,12 +107,12 @@ bool Application::OnWindowClose(WindowCloseEvent &)
 void Application::PushLayer(LayerStack::LayerPtr layer)
 {
     layer->OnAttach();
-    m_LayerStack.PushLayer(layer);
+    m_LayerStack.PushLayer(std::move(layer));
 }
 
 void Application::PushOverlay(LayerStack::LayerPtr overlay)
 {
     overlay->OnAttach();
-    m_LayerStack.PushOverlay(overlay);
+    m_LayerStack.PushOverlay(std::move(overlay));
 }
 } // namespace Terroir

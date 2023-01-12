@@ -39,9 +39,9 @@ class TERROIR_EXPORT Log
 /// ---- Terroir engine macros ---- ///
 
 // Engine Logging
-template <typename... Args> constexpr void TERR_ENGINE_TRACE(Args... args)
+template <typename... Args> constexpr void TERR_ENGINE_TRACE(fmt::format_string<Args...> args)
 {
-    Terroir::Log::GetEngineLogger()->trace(args...);
+    Terroir::Log::GetEngineLogger()->trace(args);
 }
 
 template <typename... Args> constexpr void TERR_ENGINE_DEBUG(Args... args)

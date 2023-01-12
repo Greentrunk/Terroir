@@ -45,7 +45,7 @@ class SandboxGame : public Terroir::Application
   public:
     SandboxGame()
     {
-        PushLayer(std::make_shared<TestLayer>("TEST"));
+        PushLayer(std::make_unique<TestLayer>("TEST"));
     }
 };
 

@@ -51,7 +51,7 @@ class TERROIR_EXPORT Application
 
     static Application *s_Instance;
     std::unique_ptr<Window> m_Window;
-    std::shared_ptr<DearImGuiLayer> m_DearImGuiLayer;
+    DearImGuiLayer* m_DearImGuiLayer;
     bool m_Running{true};
     LayerStack m_LayerStack;
 };
