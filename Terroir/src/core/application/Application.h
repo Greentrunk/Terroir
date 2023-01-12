@@ -13,7 +13,7 @@
 
 namespace Terroir
 {
-class  Application
+class Application
 {
   public:
     Application();
@@ -50,9 +50,10 @@ class  Application
 
     static Application *s_Instance;
     std::unique_ptr<Window> m_Window;
-    DearImGuiLayer* m_DearImGuiLayer;
+    DearImGuiLayer *m_DearImGuiLayer;
     bool m_Running{true};
     LayerStack m_LayerStack;
+    u32 VBO, VAO, EBO;
 };
 
 // Client defined

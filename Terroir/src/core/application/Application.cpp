@@ -34,6 +34,9 @@ void Application::Run()
         glClearColor(.2, .5, .4, 1);
         glClear(GL_COLOR_BUFFER_BIT);
 
+        glBindVertexArray(VAO);
+        glDrawArrays(GL_TRIANGLES, 0, 3);
+
         for (auto &layer : m_LayerStack)
         {
             layer->OnUpdate();
@@ -62,6 +65,22 @@ Application::Application()
     auto dearImGuiLayer{std::make_unique<DearImGuiLayer>()};
     m_DearImGuiLayer = dearImGuiLayer.get();
     PushOverlay(std::move(dearImGuiLayer));
+
+    glGenVertexArrays(1, &VAO);
+    glGenBuffers(1, &VBO);
+    // glGenBuffers(1, &EBO);
+
+    // bind the Vertex Array Object first, then bind and set vertex buffer(s), and then configure vertex attributes(s).
+    glBindVertexArray(VAO);
+
+    std::array<f32, 9> vertices{-0.5f, -0.5f, 0.0f, 0.5f, -0.5f, 0.0f, 0.0f, 0.5f, 0.0f};
+
+    glBindBuffer(GL_ARRAY_BUFFER, VBO);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), &vertices, GL_STATIC_DRAW);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(f32), nullptr);
+    glEnableVertexAttribArray(0);
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    glBindVertexArray(0);
 }
 
 Application::Application(const std::string &name, u32 width, u32 height)
