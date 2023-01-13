@@ -7,12 +7,6 @@
 int main(int argc, char **argv)
 {
     Terroir::Log::Init();
-    TERR_ENGINE_TRACE("Test Trace");
-    TERR_ENGINE_DEBUG("Test Debug");
-    TERR_ENGINE_INFO("Test Info");
-    TERR_ENGINE_WARN("Test Warn");
-    TERR_ENGINE_ERROR("Test Error");
-    TERR_ENGINE_CRIT("Test Crit");
 
     auto app{Terroir::CreateApplication()};
     app->Run();

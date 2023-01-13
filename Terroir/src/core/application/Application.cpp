@@ -14,7 +14,6 @@
 #include "platform/Input.h"
 #include <algorithm>
 #include <glad/glad.h>
-#include <memory>
 
 namespace Terroir
 {
@@ -33,6 +32,8 @@ void Application::Run()
     {
         glClearColor(.2, .5, .4, 1);
         glClear(GL_COLOR_BUFFER_BIT);
+
+        m_Shader->Bind();
 
         glBindVertexArray(VAO);
         glDrawArrays(GL_TRIANGLES, 0, 3);
@@ -73,14 +74,50 @@ Application::Application()
     // bind the Vertex Array Object first, then bind and set vertex buffer(s), and then configure vertex attributes(s).
     glBindVertexArray(VAO);
 
-    std::array<f32, 9> vertices{-0.5f, -0.5f, 0.0f, 0.5f, -0.5f, 0.0f, 0.0f, 0.5f, 0.0f};
+    std::array<f32, 6 * 3> vertices{-0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 0.0f, 0.5f, -0.5f, 0.0f,
+                                    0.0f,  1.0f,  0.0f, 0.0f, 0.5f, 0.0f, 0.0f, 0.0f,  1.0f};
 
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), &vertices, GL_STATIC_DRAW);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(f32), nullptr);
+    // pos
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(f32), nullptr);
     glEnableVertexAttribArray(0);
+
+    // color
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(f32), (void *)(3 * sizeof(f32)));
+    glEnableVertexAttribArray(1);
+
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindVertexArray(0);
+
+    std::string vertexSrc{R"(
+    #version 330 core
+
+    layout(location = 0) in vec3 a_Pos;
+    layout(location = 1) in vec3 a_Color;
+
+    out vec3 ourColor;
+
+    void main()
+    {
+      gl_Position = vec4(a_Pos, 1.0);
+      ourColor = a_Color;
+    }
+  )"};
+
+    std::string fragSrc{R"(
+    #version 330 core
+
+    out vec4 FragColor;
+    in vec3 ourColor;
+
+    void main()
+    {
+      FragColor = vec4(ourColor, 1.0);
+    }
+  )"};
+
+    m_Shader = std::make_unique<Shader>(vertexSrc, fragSrc);
 }
 
 Application::Application(const std::string &name, u32 width, u32 height)

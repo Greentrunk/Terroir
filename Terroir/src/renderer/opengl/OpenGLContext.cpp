@@ -2,7 +2,6 @@
 #include "Tpch.h"
 #include "core/Assert.h"
 #include "log/Log.h"
-#include <GLFW/glfw3.h>
 #include <glad/glad.h>
 
 namespace Terroir
@@ -22,6 +21,12 @@ void OpenGLContext::Init()
     glfwMakeContextCurrent(m_WindowHandle);
     auto status = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
     TERR_ENGINE_ASSERT(status, "Failed to init Glad!");
+
+    TERR_ENGINE_INFO("OpenGL Renderer initiated");
+    TERR_ENGINE_INFO("OpenGL Info:");
+    TERR_ENGINE_INFO("Vendor: {}", reinterpret_cast<const char *>(glGetString(GL_VENDOR)));
+    TERR_ENGINE_INFO("Renderer: {}", reinterpret_cast<const char *>(glGetString(GL_RENDERER)));
+    TERR_ENGINE_INFO("Version: {}", reinterpret_cast<const char *>(glGetString(GL_VERSION)));
 }
 
 void OpenGLContext::SwapBuffers()

@@ -10,6 +10,7 @@
 #include "../event/Event.h"
 #include "../event/WindowEvent.h"
 #include "../layer/LayerStack.h"
+#include "../../renderer/Shader.h"
 
 namespace Terroir
 {
@@ -53,7 +54,11 @@ class Application
     DearImGuiLayer *m_DearImGuiLayer;
     bool m_Running{true};
     LayerStack m_LayerStack;
+
+    // TEMP
     u32 VBO, VAO, EBO;
+    std::unique_ptr<Shader> m_Shader;
+
 };
 
 // Client defined
