@@ -1,3 +1,3 @@
-push build-scripts
+pushd build-scripts
 python setup.py
-pop
+popd
