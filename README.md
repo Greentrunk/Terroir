@@ -39,9 +39,12 @@ Terroir is a statically linked library that is linked at compile time with your 
 Start by cloning the repo.
 
 Cd into the directory and to build simply run:
--- Coming Soon --
--- somebashscript.sh
--- somebatchfile.bat
+
+Unix:
+setup.sh
+
+or for Windows:
+setup.bat
 
 ## Examples
 

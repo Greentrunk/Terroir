@@ -8,6 +8,7 @@
 #include "../../dear-imgui/DearImGuiLayer.h"
 #include "../../platform/glfw/GLFWWindow.h"
 #include "../../renderer/Shader.h"
+#include "../../renderer/VertexArray.h"
 #include "../../renderer/buffer/IndexBuffer.h"
 #include "../../renderer/buffer/VertexBuffer.h"
 #include "../event/Event.h"
@@ -53,15 +54,14 @@ class Application
 
     static Application *s_Instance;
     std::unique_ptr<Window> m_Window;
+
     std::shared_ptr<VertexBuffer> m_VertexBuffer;
     std::shared_ptr<IndexBuffer> m_IndexBuffer;
+    std::shared_ptr<VertexArray> m_VertexArray;
+    std::shared_ptr<Shader> m_Shader;
     DearImGuiLayer *m_DearImGuiLayer;
     bool m_Running{true};
     LayerStack m_LayerStack;
-
-    // TEMP
-    u32 VBO, VAO, EBO;
-    std::unique_ptr<Shader> m_Shader;
 };
 
 // Client defined
