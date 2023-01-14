@@ -7,10 +7,12 @@
 
 #include "../../dear-imgui/DearImGuiLayer.h"
 #include "../../platform/glfw/GLFWWindow.h"
+#include "../../renderer/Shader.h"
+#include "../../renderer/buffer/IndexBuffer.h"
+#include "../../renderer/buffer/VertexBuffer.h"
 #include "../event/Event.h"
 #include "../event/WindowEvent.h"
 #include "../layer/LayerStack.h"
-#include "../../renderer/Shader.h"
 
 namespace Terroir
 {
@@ -51,6 +53,8 @@ class Application
 
     static Application *s_Instance;
     std::unique_ptr<Window> m_Window;
+    std::shared_ptr<VertexBuffer> m_VertexBuffer;
+    std::shared_ptr<IndexBuffer> m_IndexBuffer;
     DearImGuiLayer *m_DearImGuiLayer;
     bool m_Running{true};
     LayerStack m_LayerStack;
@@ -58,7 +62,6 @@ class Application
     // TEMP
     u32 VBO, VAO, EBO;
     std::unique_ptr<Shader> m_Shader;
-
 };
 
 // Client defined

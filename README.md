@@ -30,11 +30,11 @@ Terroir will also have an Entity Component System (ECS) plugin based API will al
 
 Building Requirements:
 
-- Any C++17 capable compiler
+- Any C++20 capable compiler
 - CMake (min version 3.0)
 - Python 3
 
-Terroir is a statically linked library that is linked at compile time with your chosen executable.  Packages are handled through Microsoft's [vcpkg](https://vcpkg.io/en/index.html); it has been added as a git submodule under .gitsubmodules. All other dependencies are listen in vcpkg.json.
+Terroir is a statically linked library that is linked at compile time with your chosen executable. Packages are handled through Microsoft's [vcpkg](https://vcpkg.io/en/index.html); it has been added as a git submodule under .gitsubmodules. All other dependencies are listen in vcpkg.json.
 
 Start by cloning the repo.
 

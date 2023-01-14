@@ -12,7 +12,7 @@
 #include "dear-imgui/DearImGuiLayer.h"
 #include "log/Log.h"
 #include "platform/Input.h"
-#include <algorithm>
+#include "renderer/buffer/BufferLayout.h"
 #include <glad/glad.h>
 
 namespace Terroir
@@ -22,6 +22,38 @@ namespace Terroir
 // #define EVENT_LAMBDA(x) [this](auto && PH1) { x(std::forward<decltype(PH1)>(PH1)); }
 
 Application *Application::s_Instance{nullptr};
+
+static constexpr GLenum ShaderDataTypeToOpenGLBaseType(ShaderDataType type)
+{
+    using enum ShaderDataType;
+    switch (type)
+    {
+    case Vec:
+        return GL_FLOAT;
+    case Vec2:
+        return GL_FLOAT;
+    case Vec3:
+        return GL_FLOAT;
+    case Vec4:
+        return GL_FLOAT;
+    case Mat3:
+        return GL_FLOAT;
+    case Mat4:
+        return GL_FLOAT;
+    case I:
+        return GL_INT;
+    case I2:
+        return GL_INT;
+    case I3:
+        return GL_INT;
+    case I4:
+        return GL_INT;
+    case Bool:
+        return GL_BOOL;
+    default:
+        return 0;
+    }
+}
 
 void Application::Run()
 {
@@ -36,7 +68,7 @@ void Application::Run()
         m_Shader->Bind();
 
         glBindVertexArray(VAO);
-        glDrawArrays(GL_TRIANGLES, 0, 3);
+        glDrawElements(GL_TRIANGLES, m_IndexBuffer->GetIndexCount(), GL_UNSIGNED_INT, nullptr);
 
         for (auto &layer : m_LayerStack)
         {
@@ -67,36 +99,38 @@ Application::Application()
     m_DearImGuiLayer = dearImGuiLayer.get();
     PushOverlay(std::move(dearImGuiLayer));
 
-    glGenVertexArrays(1, &VAO);
-    glGenBuffers(1, &VBO);
-    // glGenBuffers(1, &EBO);
+    std::array<f32, 3 * 7> vertices{-0.5f, -0.5f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0.5f, -0.5f, 0.0f, 0.0f,
+                                    1.0f,  0.0f,  1.0f, 0.0f, 0.5f, 0.0f, 0.0f, 1.0f, 0.0f,  1.0f};
+    std::array<u32, 3> indices{0, 1, 2};
 
-    // bind the Vertex Array Object first, then bind and set vertex buffer(s), and then configure vertex attributes(s).
-    glBindVertexArray(VAO);
+    m_VertexBuffer = std::shared_ptr<VertexBuffer>(VertexBuffer::Create(&vertices[0], sizeof(vertices)));
+    {
+        BufferLayout layout{{"a_Pos", ShaderDataType::Vec3}, {"a_Color", ShaderDataType::Vec4}};
 
-    std::array<f32, 6 * 3> vertices{-0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 0.0f, 0.5f, -0.5f, 0.0f,
-                                    0.0f,  1.0f,  0.0f, 0.0f, 0.5f, 0.0f, 0.0f, 0.0f,  1.0f};
+        m_VertexBuffer->SetLayout(layout);
+    }
 
-    glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), &vertices, GL_STATIC_DRAW);
-    // pos
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(f32), nullptr);
-    glEnableVertexAttribArray(0);
+    u32 index{0};
+    for (const auto &element : m_VertexBuffer->GetLayout())
+    {
+        glVertexAttribPointer(index, static_cast<GLint>(element.GetComponentCount()),
+                              ShaderDataTypeToOpenGLBaseType(element.GetShaderDataType()),
+                              element.IsNormalized() ? GL_TRUE : GL_FALSE,
+                              static_cast<GLint>(m_VertexBuffer->GetLayout().GetStride()),
+                              reinterpret_cast<const void *>(element.GetOffset()));
+        glEnableVertexAttribArray(index);
+        ++index;
+    }
 
-    // color
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(f32), (void *)(3 * sizeof(f32)));
-    glEnableVertexAttribArray(1);
-
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
-    glBindVertexArray(0);
+    m_IndexBuffer = std::shared_ptr<IndexBuffer>(IndexBuffer::Create(&indices[0], indices.size()));
 
     std::string vertexSrc{R"(
     #version 330 core
 
     layout(location = 0) in vec3 a_Pos;
-    layout(location = 1) in vec3 a_Color;
+    layout(location = 1) in vec4 a_Color;
 
-    out vec3 ourColor;
+    out vec4 ourColor;
 
     void main()
     {
@@ -109,11 +143,11 @@ Application::Application()
     #version 330 core
 
     out vec4 FragColor;
-    in vec3 ourColor;
+    in vec4 ourColor;
 
     void main()
     {
-      FragColor = vec4(ourColor, 1.0);
+    FragColor = ourColor;
     }
   )"};
 
