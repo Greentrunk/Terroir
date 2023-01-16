@@ -14,7 +14,9 @@
 #include "platform/Input.h"
 #include "renderer/VertexArray.h"
 #include "renderer/buffer/BufferLayout.h"
+#include "renderer/buffer/IndexBuffer.h"
 #include <glad/glad.h>
+#include <memory>
 
 namespace Terroir
 {
@@ -34,10 +36,13 @@ void Application::Run()
         glClearColor(.2, .5, .4, 1);
         glClear(GL_COLOR_BUFFER_BIT);
 
+        m_Shader2->Bind();
+        m_SquareVertexArray->Bind();
+        glDrawElements(GL_TRIANGLES, m_SquareVertexArray->GetIndexBuffer()->GetIndexCount(), GL_UNSIGNED_INT, nullptr);
         m_Shader->Bind();
         m_VertexArray->Bind();
 
-        glDrawElements(GL_TRIANGLES, m_IndexBuffer->GetIndexCount(), GL_UNSIGNED_INT, nullptr);
+        glDrawElements(GL_TRIANGLES, m_VertexArray->GetIndexBuffer()->GetIndexCount(), GL_UNSIGNED_INT, nullptr);
 
         for (auto &layer : m_LayerStack)
         {
@@ -73,16 +78,16 @@ Application::Application()
     std::array<u32, 3> indices{0, 1, 2};
 
     m_VertexArray = std::shared_ptr<VertexArray>(VertexArray::Create());
-    m_VertexBuffer = std::shared_ptr<VertexBuffer>(VertexBuffer::Create(&vertices[0], sizeof(vertices)));
+    auto vertexBuffer = std::shared_ptr<VertexBuffer>(VertexBuffer::Create(&vertices[0], sizeof(vertices)));
 
     BufferLayout layout{{"a_Pos", ShaderDataType::Vec3}, {"a_Color", ShaderDataType::Vec4}};
-    m_VertexBuffer->SetLayout(layout);
-    m_VertexArray->AddVertexBuffer(m_VertexBuffer);
+    vertexBuffer->SetLayout(layout);
+    m_VertexArray->AddVertexBuffer(vertexBuffer);
 
-    m_IndexBuffer = std::shared_ptr<IndexBuffer>(IndexBuffer::Create(&indices[0], indices.size()));
-    m_VertexArray->SetIndexBuffer(m_IndexBuffer);
+    auto indexBuffer = std::shared_ptr<IndexBuffer>(IndexBuffer::Create(&indices[0], indices.size()));
+    m_VertexArray->SetIndexBuffer(indexBuffer);
 
-    m_VertexBuffer->Unbind();
+    vertexBuffer->Unbind();
     m_VertexArray->Unbind();
 
     std::string vertexSrc{R"(
@@ -111,8 +116,46 @@ Application::Application()
     FragColor = ourColor;
     }
   )"};
+    m_SquareVertexArray = std::shared_ptr<VertexArray>(VertexArray::Create());
 
     m_Shader = std::make_shared<Shader>(vertexSrc, fragSrc);
+    std::array<f32, 3 * 4> vertices2{-0.5f, -0.5f, 0.0f, 0.5f, -0.5f, 0.0f, 0.5f, 0.5f, 0.0f, -0.5f, 0.5f, 0.0f};
+    std::shared_ptr<VertexBuffer> squareBufferArray{
+        std::shared_ptr<VertexBuffer>(VertexBuffer::Create(&vertices2[0], sizeof(vertices2)))};
+    squareBufferArray->SetLayout({{"a_Pos", ShaderDataType::Vec3}});
+    m_SquareVertexArray->AddVertexBuffer(squareBufferArray);
+
+    std::array<u32, 6> indices2{0, 1, 2, 2, 3, 0};
+    std::shared_ptr<IndexBuffer> ib2{std::shared_ptr<IndexBuffer>(IndexBuffer::Create(&indices2[0], indices2.size()))};
+    m_SquareVertexArray->SetIndexBuffer(ib2);
+
+    std::string vertexSrc2{R"(
+    #version 330 core
+
+    layout(location = 0) in vec3 a_Pos;
+
+    out vec4 ourPos;
+
+    void main()
+    {
+      gl_Position = vec4(a_Pos, 1.0);
+      ourPos = a_Pos;
+    }
+  )"};
+
+    std::string fragSrc2{R"(
+    #version 330 core
+
+    out vec4 FragColor;
+    in vec4 ourPos;
+
+    void main()
+    {
+    FragColor = ourPos;
+    }
+  )"};
+
+    m_Shader2 = std::make_shared<Shader>(vertexSrc2, fragSrc2);
 }
 
 Application::Application(const std::string &name, u32 width, u32 height)
