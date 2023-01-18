@@ -43,7 +43,7 @@ class Layer
     {
     }
 
-    inline const std::string &GetName() const
+    [[nodiscard]] constexpr const std::string &GetName() const
     {
         return m_DebugName;
     }

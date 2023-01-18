@@ -26,17 +26,17 @@ class GLFWWindow : public Window
 
     void OnUpdate() override;
 
-    [[nodiscard]] inline u32 GetWindowWidth() const override
+    [[nodiscard]] constexpr u32 GetWindowWidth() const override
     {
         return m_GlfwData.m_WindowWidth;
     }
 
-    [[nodiscard]] inline u32 GetWindowHeight() const override
+    [[nodiscard]] constexpr u32 GetWindowHeight() const override
     {
         return m_GlfwData.m_WindowHeight;
     }
 
-    inline void SetEventCallback(const EventCallbackFn &cb) override
+    void SetEventCallback(const EventCallbackFn &cb) override
     {
         m_GlfwData.m_WindowCb = cb;
     }
@@ -45,12 +45,12 @@ class GLFWWindow : public Window
 
     [[nodiscard]] bool IsVSync() const override;
 
-    [[nodiscard]] inline void *GetNativeWindow() const override
+    [[nodiscard]] constexpr void *GetNativeWindow() const override
     {
         return m_Window;
     }
 
-    [[nodiscard]] inline void *GetContext() const override
+    [[nodiscard]] void *GetContext() const override
     {
         return m_Context.get();
     }

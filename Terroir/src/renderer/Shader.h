@@ -2,6 +2,7 @@
 #define TERROIR_SHADER_H
 
 #include "Terroir/src/core/Types.h"
+#include <glm/glm.hpp>
 #include <string>
 
 namespace Terroir
@@ -14,24 +15,18 @@ class Shader
     ~Shader();
     void Bind() const;
     void Unbind() const;
-    // inline void setBool(const std::string &name, bool value) const
-    // {
-    //     glUniform1i(glGetUniformLocation(m_ID, name.c_str()), (int)value);
-    // }
-    // // ------------------------------------------------------------------------
-    // inline void setInt(const std::string &name, int value) const
-    // {
-    //     glUniform1i(glGetUniformLocation(m_ID, name.c_str()), value);
-    // }
-    // // ------------------------------------------------------------------------
-    // inline void setFloat(const std::string &name, float value) const
-    // {
-    //     glUniform1f(glGetUniformLocation(m_ID, name.c_str()), value);
-    // }
+
+    void UploadUniformMat4(const std::string &, const glm::mat4 &);
+
+    // debug
+    inline u32 GetID()
+    {
+        return m_RendererID;
+    }
 
   private:
     void CheckCompileErrors(u32, const std::string &);
-    u32 m_ID;
+    u32 m_RendererID;
 };
 } // namespace Terroir
 

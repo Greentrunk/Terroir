@@ -17,12 +17,13 @@ commercial or hobby projects. The API will undergo considerable changes over thi
 
 Terroir provides ABSOLUTELY NO WARRANTY.
 
+Terroir in its primitive, 2D only form (version 1.0) does not support development on macOS or iOS as this is an OpenGL only backend engine. Apple since 2018/2019 have deemed OpenGL depreciated so in the wise words of a Redditor I forgot the name of, I deem that Apple has been depreciated.
+
 ---
 
-Terroir is planned to be a simple but powerful tool to create interactive 2D video games and experiences without
-worrying about cross-platform compatibility featuring first-class support for both Windows and Linux through OpenGL (for now).
+Terroir 1.0 is planned to be a simple but powerful tool to create interactive 2D video games and experiences featuring first-class support for both Windows and Linux through OpenGL.
 
-Overall, the main goal is to provide a thorough interface that focuses and emphasizes on ease of development and scalability while maintaining high performance. Because of this, the LuaJIT embedded runtime and optionally through the Lisp [Fennel](https://fennel-lang.org/), will be used for scripting in the Terroir engine. Modern C++ as a language has come a long way in terms of memory safety and other productivity, but for most 2D interactive experiences, and to take advantage of hot reloading, the LuaJIT will be powerful enough to make the developers dream a reality.
+Overall, the main goal is to provide a thorough interface that focuses and emphasizes on ease of development and scalability while maintaining high performance. Because of this, the LuaJIT embedded runtime and optionally through the Lisp [Fennel](https://fennel-lang.org/), will be used for scripting in the Terroir engine. Modern C++ as a language has come a long way in terms of memory safety and other productivities, but for most 2D interactive experiences and to take advantage of hot reloading, the LuaJIT will be powerful enough to make the developers dream a reality.
 
 Terroir will also have an Entity Component System (ECS) plugin based API will allow the developer the freedom to modularize how their code is structured as well as providing the foundation in how Terroir manages game data.
 
@@ -30,7 +31,7 @@ Terroir will also have an Entity Component System (ECS) plugin based API will al
 
 Building Requirements:
 
-- Any C++20 capable compiler
+- Any C++20 capable compiler (built and tested on g++)
 - CMake (min version 3.0)
 - Python 3
 
@@ -55,7 +56,7 @@ setup.bat
 - Platform abstraction (windowing, sound, input, memory, etc.) 
 - Logging and custom asserts 
 - Integrated debugging tools
-- 2D rendering
+- 2D rendering 
 - Text/Font rendering
 - UI management 
 - 2D physics
@@ -67,13 +68,14 @@ setup.bat
 - Scripting via LuaJIT and Fennel
 - Graphical Editor
 
-## Out of scope (Not planned for open source releases)
+## Out of scope (Not planned for version 1.0)
 
 - 3D rendering
 - Mobile builds
+- macOS builds
 
 ## License
 
-The 2D version of Terroir is free and open source under [Apache License 2.0](https://www.apache.org/licenses/LICENSE-2.0).
+Terroir is free and open source under [Apache License 2.0](https://www.apache.org/licenses/LICENSE-2.0).
 
 I sincerely hope you enjoy working with the engine, all I ask is for credit or a shoutout in your project. :)

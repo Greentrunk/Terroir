@@ -20,7 +20,11 @@
 #include "Terroir/src/core/Assert.h"
 
 // Events
+#include "Terroir/src/core/event/ApplicationEvent.h"
 #include "Terroir/src/core/event/Event.h"
+#include "Terroir/src/core/event/KeyEvent.h"
+#include "Terroir/src/core/event/MouseEvent.h"
+#include "Terroir/src/core/event/WindowEvent.h"
 
 // Input
 #include "Terroir/src/core/KeyCodes.h"
@@ -33,9 +37,14 @@
 // Dear IMGUi layer
 #include "Terroir/src/dear-imgui/DearImGuiLayer.h"
 
+// Rendering
+#include "Terroir/src/renderer/OrthographicCamera.h"
+#include "Terroir/src/renderer/RenderCommand.h"
+#include "Terroir/src/renderer/Renderer.h"
+#include "Terroir/src/renderer/Shader.h"
+#include "Terroir/src/renderer/VertexArray.h"
+#include "Terroir/src/renderer/buffer/IndexBuffer.h"
+#include "Terroir/src/renderer/buffer/VertexBuffer.h"
+
 #endif // TERROIR_TERROIR_H
 
-// TODO - Platform/App Layer
-// Path for vendors (vcpkg)
-// asserts?
-// memory

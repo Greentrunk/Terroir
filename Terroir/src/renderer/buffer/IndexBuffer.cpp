@@ -3,20 +3,22 @@
 #include "Tpch.h"
 #include "core/Assert.h"
 #include "log/Log.h"
+#include "renderer/RendererAPI.h"
 #include "renderer/opengl/OpenGLIndexBuffer.h"
 
 namespace Terroir
 {
 IndexBuffer *IndexBuffer::Create(u32 *indices, u32 size)
 {
-    switch (Renderer::GetRenderAPI())
+    using enum RendererAPI::API;
+    switch (Renderer::GetAPI())
     {
-    case RendererAPI::None: {
+    case None: {
         TERR_ASSERT(false, "RendererAPI::None is not support in Terroir!");
         return nullptr;
     }
 
-    case RendererAPI::OpenGL: {
+    case OpenGL: {
         return new OpenGLIndexBuffer(indices, size);
     }
 

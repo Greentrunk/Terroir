@@ -15,7 +15,7 @@ class OpenGLVertexBuffer : public VertexBuffer
     void Unbind() const override;
 
     void SetLayout(const BufferLayout &) override;
-    [[nodiscard]] inline const BufferLayout &GetLayout() const override
+    [[nodiscard]] constexpr const BufferLayout &GetLayout() const override
     {
         return m_Layout;
     }

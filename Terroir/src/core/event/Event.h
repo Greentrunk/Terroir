@@ -44,7 +44,7 @@ enum EventCategory
 };
 
 // Base interface class for all events
-class  Event
+class Event
 {
     friend class EventDispatch;
 
@@ -53,13 +53,13 @@ class  Event
 
     bool m_Handled = false;
 
-    virtual const char *GetName() const = 0;
+    [[nodiscard]] virtual const char *GetName() const = 0;
 
-    virtual EventType GetEventType() const = 0;
+    [[nodiscard]] virtual EventType GetEventType() const = 0;
 
-    virtual i32 GetCategoryFlags() const = 0;
+    [[nodiscard]] virtual i32 GetCategoryFlags() const = 0;
 
-    virtual std::string ToString() const
+    [[nodiscard]] virtual std::string ToString() const
     {
         return GetName();
     }

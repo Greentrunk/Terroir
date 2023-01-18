@@ -9,14 +9,15 @@ namespace Terroir
 {
 VertexBuffer *VertexBuffer::Create(f32 *vertices, u32 size)
 {
-    switch (Renderer::GetRenderAPI())
+    using enum RendererAPI::API;
+    switch (Renderer::GetAPI())
     {
-    case RendererAPI::None: {
+    case None: {
         TERR_ASSERT(false, "RendererAPI::None is not support in Terroir!");
         return nullptr;
     }
 
-    case RendererAPI::OpenGL: {
+    case OpenGL: {
         return new OpenGLVertexBuffer(vertices, size);
     }
 

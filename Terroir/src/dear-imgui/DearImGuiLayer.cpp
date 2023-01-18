@@ -18,9 +18,7 @@ DearImGuiLayer::DearImGuiLayer() : Layer("DearImGui Layer")
 {
 }
 
-DearImGuiLayer::~DearImGuiLayer()
-{
-}
+DearImGuiLayer::~DearImGuiLayer() = default;
 
 void DearImGuiLayer::OnEvent(Event &event)
 {

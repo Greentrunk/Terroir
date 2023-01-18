@@ -1,25 +1,33 @@
 #ifndef TERROIR_RENDERER_H
 #define TERROIR_RENDERER_H
 
+#include "RenderCommand.h"
+#include "Terroir/src/renderer/OrthographicCamera.h"
+#include "Terroir/src/renderer/RendererAPI.h"
+#include "Terroir/src/renderer/Shader.h"
 namespace Terroir
 {
-enum class RendererAPI
-{
-    None = 0,
-    OpenGL = 1,
-    Direct = 2,
-    Vulkan = 3,
-    Metal = 4,
-};
 
 class Renderer
 {
   public:
-    inline static RendererAPI GetRenderAPI()
+    static void BeginScene(OrthographicCamera &);
+    static void EndScene();
+
+    static void Submit(const std::shared_ptr<VertexArray> &, const std::shared_ptr<Shader> &);
+
+    static RendererAPI::API GetAPI()
     {
-        return s_RendererAPI;
+        return RendererAPI::GetAPI();
     }
-    static RendererAPI s_RendererAPI;
+
+  private:
+    using SceneData = struct SceneData
+    {
+        glm::mat4 m_ViewProjectionMatrix;
+    };
+
+    static SceneData *m_SceneData;
 };
 
 };     // namespace Terroir

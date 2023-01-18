@@ -16,13 +16,13 @@ namespace Terroir
 class Log
 {
   public:
-    inline static std::shared_ptr<spdlog::logger> &GetEngineLogger()
+    constexpr static std::shared_ptr<spdlog::logger> &GetEngineLogger()
     {
 
         return sp_EngineLogger;
     }
 
-    inline static std::shared_ptr<spdlog::logger> &GetClientLogger()
+    constexpr static std::shared_ptr<spdlog::logger> &GetClientLogger()
     {
 
         return sp_ClientLogger;

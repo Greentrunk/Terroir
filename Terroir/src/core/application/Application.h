@@ -7,6 +7,7 @@
 
 #include "../../dear-imgui/DearImGuiLayer.h"
 #include "../../platform/glfw/GLFWWindow.h"
+#include "../../renderer/OrthographicCamera.h"
 #include "../../renderer/Shader.h"
 #include "../../renderer/VertexArray.h"
 #include "../../renderer/buffer/IndexBuffer.h"
@@ -24,7 +25,7 @@ class Application
 
     Application(const std::string &name, u32 width, u32 height);
 
-    inline static Application &Get()
+    static Application &Get()
     {
         return *s_Instance;
     }
@@ -39,7 +40,7 @@ class Application
 
     void PushOverlay(LayerStack::LayerPtr);
 
-    inline Window &GetWindow()
+    Window &GetWindow()
     {
         return *m_Window;
     }
@@ -55,18 +56,17 @@ class Application
     static Application *s_Instance;
     std::unique_ptr<Window> m_Window;
 
-    std::shared_ptr<VertexArray> m_VertexArray;
-    std::shared_ptr<Shader> m_Shader;
     DearImGuiLayer *m_DearImGuiLayer;
     bool m_Running{true};
     LayerStack m_LayerStack;
-
-    std::shared_ptr<VertexArray> m_SquareVertexArray;
-    std::shared_ptr<Shader> m_Shader2;
 };
 
 // Client defined
 std::unique_ptr<Application> CreateApplication();
 } // namespace Terroir
+
+#define BIND_EVENT_FN(x) std::bind(&x, this, std::placeholders::_1)
+#define SET_EVENT_CB_LAMBDA(x) SetEventCallback([this](auto &&PH1) { x(std::forward<decltype(PH1)>(PH1)); })
+// #define EVENT_LAMBDA(x) [this](auto && PH1) { x(std::forward<decltype(PH1)>(PH1)); }
 
 #endif // TERROIR_APPLICATION_H

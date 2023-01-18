@@ -11,7 +11,7 @@
 namespace Terroir
 {
 // This stack controls engine's layer functionality
-class  LayerStack
+class LayerStack
 {
   public:
     // Takes pointer to layer for polymorphism
@@ -33,12 +33,12 @@ class  LayerStack
     // to be possibly changed
     void PopOverlay(LayerPtr &);
 
-    inline LayerStackVecIterator begin()
+    constexpr LayerStackVecIterator begin()
     {
         return m_Layers.begin();
     }
 
-    inline LayerStackVecIterator end()
+    constexpr LayerStackVecIterator end()
     {
         return m_Layers.end();
     }

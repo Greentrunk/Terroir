@@ -2,10 +2,11 @@
 #include "Tpch.h"
 #include "core/Assert.h"
 #include "glad/glad.h"
+#include <glm/gtc/type_ptr.hpp>
 
 namespace Terroir
 {
-Shader::Shader(const std::string &vertexShader, const std::string &fragShader) : m_ID(glCreateProgram())
+Shader::Shader(const std::string &vertexShader, const std::string &fragShader) : m_RendererID(glCreateProgram())
 {
     const auto vShader = vertexShader.c_str();
     const auto fShader = fragShader.c_str();
@@ -25,29 +26,35 @@ Shader::Shader(const std::string &vertexShader, const std::string &fragShader) :
     CheckCompileErrors(fragment, "FRAGMENT");
 
     // Shader program
-    glAttachShader(m_ID, vertex);
-    glAttachShader(m_ID, fragment);
-    glLinkProgram(m_ID);
-    CheckCompileErrors(m_ID, "PROGRAM");
+    glAttachShader(m_RendererID, vertex);
+    glAttachShader(m_RendererID, fragment);
+    glLinkProgram(m_RendererID);
+    CheckCompileErrors(m_RendererID, "PROGRAM");
 
     // Cleanup
-    glDetachShader(m_ID, vertex);
-    glDetachShader(m_ID, fragment);
+    glDetachShader(m_RendererID, vertex);
+    glDetachShader(m_RendererID, fragment);
 }
 
 Shader::~Shader()
 {
-    glDeleteProgram(m_ID);
+    glDeleteProgram(m_RendererID);
 }
 
 void Shader::Bind() const
 {
-    glUseProgram(m_ID);
+    glUseProgram(m_RendererID);
 }
 
 void Shader::Unbind() const
 {
     glUseProgram(0);
+}
+
+void Shader::UploadUniformMat4(const std::string &name, const glm::mat4 &matrix)
+{
+    GLint location{glGetUniformLocation(m_RendererID, name.c_str())};
+    glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(matrix));
 }
 
 void Shader::CheckCompileErrors(u32 shader, const std::string &type)

@@ -1,18 +1,22 @@
+#include "VertexArray.h"
 #include "Tpch.h"
 #include "core/Assert.h"
-#include "renderer/Renderer.h"
-#include "VertexArray.h"
 #include "opengl/OpenGLVertexArray.h"
-namespace Terroir {
-VertexArray* VertexArray::Create() {
-  switch (Renderer::GetRenderAPI())
+#include "renderer/Renderer.h"
+#include "renderer/RendererAPI.h"
+namespace Terroir
+{
+VertexArray *VertexArray::Create()
+{
+    using enum RendererAPI::API;
+    switch (Renderer::GetAPI())
     {
-    case RendererAPI::None: {
-        TERR_ASSERT(false, "RendererAPI::None is not support in Terroir!");
+    case None: {
+        TERR_ASSERT(false, "RendererAPI::None is not supported in Terroir!");
         return nullptr;
     }
 
-    case RendererAPI::OpenGL: {
+    case OpenGL: {
         return new OpenGLVertexArray();
     }
 
@@ -22,6 +26,5 @@ VertexArray* VertexArray::Create() {
         return nullptr;
     }
     }
-
 }
-}
+} // namespace Terroir
