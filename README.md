@@ -49,7 +49,9 @@ setup.bat
 
 ## Examples
 
--- Coming Soon --
+<!-- <img src="/resources/Triangle.gif" width="300" height="300" /> -->
+
+![Triangle](/resources/Triangle.gif)
 
 ## Planned Features
 
