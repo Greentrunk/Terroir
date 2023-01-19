@@ -2,7 +2,7 @@
 #define TERROIR_SHADER_H
 
 #include "Terroir/src/core/Types.h"
-#include <glm/glm.hpp>
+#include "Terroir/src/math/Math.h"
 #include <string>
 
 namespace Terroir
@@ -11,12 +11,13 @@ namespace Terroir
 class Shader
 {
   public:
-    Shader(const std::string &, const std::string &);
+    // const char* used for compatibility with C-style libraries
+    Shader(const char *, const char *);
     ~Shader();
     void Bind() const;
     void Unbind() const;
 
-    void UploadUniformMat4(const std::string &, const glm::mat4 &);
+    void UploadUniformMat4(const char *, const Mat4 &);
 
     // debug
     inline u32 GetID()
@@ -25,7 +26,7 @@ class Shader
     }
 
   private:
-    void CheckCompileErrors(u32, const std::string &);
+    void CheckCompileErrors(u32, const std::string_view &);
     u32 m_RendererID;
 };
 } // namespace Terroir

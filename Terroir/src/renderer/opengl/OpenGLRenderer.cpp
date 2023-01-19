@@ -1,6 +1,7 @@
 #include "OpenGLRendererAPI.h"
 #include "Tpch.h"
 #include <glad/glad.h>
+#include "Terroir/src/math/Math.h"
 
 namespace Terroir
 {
@@ -10,9 +11,9 @@ void OpenGLRendererAPI::Clear()
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
-void OpenGLRendererAPI::Clear(const glm::vec4 &color)
+void OpenGLRendererAPI::Clear(const Vec4 &color)
 {
-    glClearColor(color.r, color.g, color.b, color.a);
+    glClearColor(color.r, color.g, color.b, color.a); //NOLINT
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 

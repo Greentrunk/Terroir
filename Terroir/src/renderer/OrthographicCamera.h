@@ -2,7 +2,7 @@
 #define TERROIR_ORTHOGRAPHICCAMERA_H
 
 #include "Terroir/src/core/Types.h"
-#include <glm/glm.hpp>
+#include "Terroir/src/math/Math.h"
 
 namespace Terroir
 {
@@ -13,11 +13,11 @@ class OrthographicCamera
   public:
     OrthographicCamera(f32, f32, f32, f32);
 
-    [[nodiscard]] constexpr const glm::vec3 &GetPosition() const
+    [[nodiscard]] constexpr const Vec3 &GetPosition() const
     {
         return m_Position;
     }
-    void SetPosition(const glm::vec3 &position)
+    void SetPosition(const Vec3 &position)
     {
         m_Position = position;
         RecalculateViewMatrix();
@@ -33,7 +33,7 @@ class OrthographicCamera
         RecalculateViewMatrix();
     }
 
-    glm::mat4 constexpr const &GetViewProjectionMatrix()
+    constexpr const Mat4 &GetViewProjectionMatrix()
     {
         return m_ViewProjectionMatrix;
     }
@@ -41,11 +41,11 @@ class OrthographicCamera
   private:
     void RecalculateViewMatrix();
 
-    glm::mat4 m_ProjectionMatrix;
-    glm::mat4 m_ViewMatrix;
-    glm::mat4 m_ViewProjectionMatrix;
+    Mat4 m_ProjectionMatrix;
+    Mat4 m_ViewMatrix;
+    Mat4 m_ViewProjectionMatrix;
 
-    glm::vec3 m_Position{0.0f};
+    Vec3 m_Position{0.0f};
     f32 m_Rotation{0.0f};
 };
 

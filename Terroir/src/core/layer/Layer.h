@@ -6,6 +6,7 @@
 #define TERROIR_LAYER_H
 
 #include "Terroir/pch/Tpch.h"
+#include "Terroir/src/core/Timestep.h"
 #include "Terroir/src/core/event/Event.h"
 
 namespace Terroir
@@ -14,7 +15,7 @@ namespace Terroir
 class Layer
 {
   public:
-    explicit Layer(std::string name) : m_DebugName(std::move(name))
+    explicit Layer(std::string_view name) : m_DebugName(std::move(name))
     {
     }
 
@@ -31,7 +32,7 @@ class Layer
     {
     }
 
-    virtual void OnUpdate()
+    virtual void OnUpdate(Timestep)
     {
     }
 
@@ -49,7 +50,7 @@ class Layer
     }
 
   protected:
-    std::string m_DebugName;
+    std::string m_DebugName; // NOLINT
 };
 
 } // namespace Terroir

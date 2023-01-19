@@ -1,21 +1,23 @@
 #include "OrthographicCamera.h"
 #include "Tpch.h"
-#include <glm/gtc/matrix_transform.hpp>
+#include "math/Math.h"
 
 namespace Terroir
 {
+using namespace Math;
 OrthographicCamera::OrthographicCamera(f32 left, f32 right, f32 bottom, f32 top)
-    : m_ProjectionMatrix(glm::ortho(left, right, bottom, top, -1.0f, 1.0f)), m_ViewMatrix(1.0f)
+    : m_ProjectionMatrix(Transform::Ortho(left, right, bottom, top, -1.0f, 1.0f)), m_ViewMatrix(1.0f)
+
 {
     m_ViewProjectionMatrix = m_ProjectionMatrix * m_ViewMatrix;
 }
 
 void OrthographicCamera::RecalculateViewMatrix()
 {
-    glm::mat4 transform{glm::translate(glm::mat4(1.0f), m_Position) *
-                        glm::rotate(glm::mat4(1.0f), glm::radians(m_Rotation), glm::vec3(0, 0, 1))};
+    Mat4 transform{Transform::Translate(Mat4(1.0f), m_Position) *
+                   Transform::Rotate(Mat4(1.0f), Conversion::ToRadians(m_Rotation), Vec3(0, 0, 1))};
 
-    m_ViewMatrix = glm::inverse(transform);
+    m_ViewMatrix = Transform::Inverse(transform);
     m_ViewProjectionMatrix = m_ProjectionMatrix * m_ViewMatrix;
 }
 

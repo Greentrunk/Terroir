@@ -2,26 +2,25 @@
 #include "Tpch.h"
 #include "core/Assert.h"
 #include "glad/glad.h"
+#include "math/Math.h"
 #include <glm/gtc/type_ptr.hpp>
 
 namespace Terroir
 {
-Shader::Shader(const std::string &vertexShader, const std::string &fragShader) : m_RendererID(glCreateProgram())
+Shader::Shader(const char *vertexShader, const char *fragShader) : m_RendererID(glCreateProgram())
 {
-    const auto vShader = vertexShader.c_str();
-    const auto fShader = fragShader.c_str();
 
     u32 vertex{}, fragment{};
     vertex = glCreateShader(GL_VERTEX_SHADER);
 
     // Vertex shader
-    glShaderSource(vertex, 1, &vShader, nullptr);
+    glShaderSource(vertex, 1, &vertexShader, nullptr);
     glCompileShader(vertex);
     CheckCompileErrors(vertex, "VERTEX");
 
     // Frag shader
     fragment = glCreateShader(GL_FRAGMENT_SHADER);
-    glShaderSource(fragment, 1, &fShader, nullptr);
+    glShaderSource(fragment, 1, &fragShader, nullptr);
     glCompileShader(fragment);
     CheckCompileErrors(fragment, "FRAGMENT");
 
@@ -51,13 +50,13 @@ void Shader::Unbind() const
     glUseProgram(0);
 }
 
-void Shader::UploadUniformMat4(const std::string &name, const glm::mat4 &matrix)
+void Shader::UploadUniformMat4(const char *name, const Mat4 &matrix)
 {
-    GLint location{glGetUniformLocation(m_RendererID, name.c_str())};
-    glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(matrix));
+    GLint location{glGetUniformLocation(m_RendererID, name)};
+    glUniformMatrix4fv(location, 1, GL_FALSE, Math::Conversion::GetValuePtr(matrix));
 }
 
-void Shader::CheckCompileErrors(u32 shader, const std::string &type)
+void Shader::CheckCompileErrors(u32 shader, const std::string_view &type)
 {
     constexpr size_t logSize{1024};
     i32 success{};

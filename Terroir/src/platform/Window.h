@@ -15,7 +15,7 @@ namespace Terroir
 class WindowProperties
 {
   public:
-    WindowProperties(std::string windowTitle, u32 width, u32 height)
+    WindowProperties(const std::string_view &windowTitle, u32 width, u32 height)
         : m_Title(std::move(windowTitle)), m_Width(width), m_Height(height)
     {
     }
@@ -40,7 +40,7 @@ class Window
 
     [[nodiscard]] virtual void *GetNativeWindow() const = 0;
 
-    [[nodiscard]] virtual void* GetContext() const = 0;
+    [[nodiscard]] virtual void *GetContext() const = 0;
 
     virtual void OnUpdate() = 0;
 

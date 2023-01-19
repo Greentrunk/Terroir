@@ -10,6 +10,9 @@
 // To be used in applications with Terroir Engine
 #include "Terroir/src/core/application/Application.h"
 
+// Timestep
+#include "Terroir/src/core/Timestep.h"
+
 // Client entry-point
 #include "Terroir/src/core/AppEntry.h"
 
@@ -18,6 +21,9 @@
 
 // Asserts
 #include "Terroir/src/core/Assert.h"
+
+// Math
+#include "Terroir/src/math/Math.h"
 
 // Events
 #include "Terroir/src/core/event/ApplicationEvent.h"
@@ -41,10 +47,9 @@
 #include "Terroir/src/renderer/OrthographicCamera.h"
 #include "Terroir/src/renderer/RenderCommand.h"
 #include "Terroir/src/renderer/Renderer.h"
-#include "Terroir/src/renderer/Shader.h"
 #include "Terroir/src/renderer/VertexArray.h"
 #include "Terroir/src/renderer/buffer/IndexBuffer.h"
 #include "Terroir/src/renderer/buffer/VertexBuffer.h"
+#include "Terroir/src/renderer/shader/Shader.h"
 
 #endif // TERROIR_TERROIR_H
-

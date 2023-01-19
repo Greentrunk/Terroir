@@ -18,8 +18,6 @@
 #include "renderer/buffer/IndexBuffer.h"
 #include <GLFW/glfw3.h>
 #include <glad/glad.h>
-#include <glm/ext/matrix_transform.hpp>
-#include <glm/gtc/type_ptr.hpp>
 
 namespace Terroir
 {
@@ -33,10 +31,15 @@ void Application::Run()
 
     while (m_Running)
     {
+        // temporary
+        // Calculate delta-time
+        auto time = static_cast<f32>(glfwGetTime());
+        Timestep timestep{time - m_LastFrameTime};
+        m_LastFrameTime = time;
 
         for (auto &layer : m_LayerStack)
         {
-            layer->OnUpdate();
+            layer->OnUpdate(timestep);
         }
         m_DearImGuiLayer->Begin();
         for (auto &layer : m_LayerStack)
@@ -58,13 +61,14 @@ Application::Application()
     auto window{Window::Create({"Terroir Engine", defaultWidth, defaultHeight})};
     m_Window = std::unique_ptr<Window>(window);
     m_Window->SET_EVENT_CB_LAMBDA(OnEvent);
+    m_Window->SetVSync(false);
 
     auto dearImGuiLayer{std::make_unique<DearImGuiLayer>()};
     m_DearImGuiLayer = dearImGuiLayer.get();
     PushOverlay(std::move(dearImGuiLayer));
 }
 
-Application::Application(const std::string &name, u32 width, u32 height)
+Application::Application(const std::string_view &name, u32 width, u32 height)
 {
     TERR_ENGINE_ASSERT(!s_Instance, "Application already exists!");
     s_Instance = this;
@@ -72,6 +76,7 @@ Application::Application(const std::string &name, u32 width, u32 height)
     auto window{Window::Create({name, width, height})};
     m_Window = std::unique_ptr<Window>(window);
     m_Window->SET_EVENT_CB_LAMBDA(OnEvent);
+    m_Window->SetVSync(false);
 
     auto dearImGuiLayer{std::make_unique<DearImGuiLayer>()};
     m_DearImGuiLayer = dearImGuiLayer.get();
@@ -86,7 +91,7 @@ Application::~Application()
 void Application::OnEvent(Event &e)
 {
     EventDispatch dispatcher(e);
-    dispatcher.Dispatch<WindowCloseEvent>(BIND_EVENT_FN(Application::OnWindowClose));
+    dispatcher.Dispatch<WindowCloseEvent>(EVENT_LAMBDA(Application::OnWindowClose));
 
     // Iterate through layerstack
     for (auto it = m_LayerStack.end(); it != m_LayerStack.begin();)

@@ -1,8 +1,8 @@
 #ifndef TERROIR_RENDERERAPI_H
 #define TERROIR_RENDERERAPI_H
 
+#include "Terroir/src/math/Math.h"
 #include "VertexArray.h"
-#include <glm/vec4.hpp>
 #include <memory>
 
 namespace Terroir
@@ -23,7 +23,7 @@ class RendererAPI
     };
 
     virtual void Clear() = 0;
-    virtual void Clear(const glm::vec4 &) = 0;
+    virtual void Clear(const Vec4 &) = 0;
 
     virtual void DrawIndexed(const std::shared_ptr<VertexArray> &) = 0;
 

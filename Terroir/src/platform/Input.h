@@ -6,6 +6,7 @@
 #define TERROIRBASE_INPUT_H
 
 #include "Terroir/src/core/Types.h"
+#include <utility>
 
 namespace Terroir
 {
@@ -50,7 +51,7 @@ class Input
     virtual f32 GetMouseYImpl() = 0;
 
   private:
-    static Input *s_Instance;
+    static Input *s_Instance; // NOLINT
 };
 } // namespace Terroir
 

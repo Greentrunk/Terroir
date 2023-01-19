@@ -8,10 +8,11 @@
 #include "../../dear-imgui/DearImGuiLayer.h"
 #include "../../platform/glfw/GLFWWindow.h"
 #include "../../renderer/OrthographicCamera.h"
-#include "../../renderer/Shader.h"
 #include "../../renderer/VertexArray.h"
 #include "../../renderer/buffer/IndexBuffer.h"
 #include "../../renderer/buffer/VertexBuffer.h"
+#include "../../renderer/shader/Shader.h"
+#include "../Timestep.h"
 #include "../event/Event.h"
 #include "../event/WindowEvent.h"
 #include "../layer/LayerStack.h"
@@ -23,7 +24,7 @@ class Application
   public:
     Application();
 
-    Application(const std::string &name, u32 width, u32 height);
+    Application(const std::string_view &name, u32 width, u32 height);
 
     static Application &Get()
     {
@@ -53,20 +54,20 @@ class Application
   private:
     bool OnWindowClose(WindowCloseEvent &);
 
-    static Application *s_Instance;
+    static Application *s_Instance; // NOLINT
     std::unique_ptr<Window> m_Window;
 
     DearImGuiLayer *m_DearImGuiLayer;
     bool m_Running{true};
     LayerStack m_LayerStack;
+    f32 m_LastFrameTime = 0.0f;
 };
 
 // Client defined
 std::unique_ptr<Application> CreateApplication();
 } // namespace Terroir
 
-#define BIND_EVENT_FN(x) std::bind(&x, this, std::placeholders::_1)
 #define SET_EVENT_CB_LAMBDA(x) SetEventCallback([this](auto &&PH1) { x(std::forward<decltype(PH1)>(PH1)); })
-// #define EVENT_LAMBDA(x) [this](auto && PH1) { x(std::forward<decltype(PH1)>(PH1)); }
+#define EVENT_LAMBDA(x) [this](auto &&...PH1) -> decltype(auto) { return this->x(std::forward<decltype(PH1)>(PH1)...); }
 
 #endif // TERROIR_APPLICATION_H

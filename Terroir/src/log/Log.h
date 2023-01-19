@@ -31,9 +31,9 @@ class Log
     static void Init();
 
   private:
-    static std::shared_ptr<spdlog::logger> sp_EngineLogger;
+    static std::shared_ptr<spdlog::logger> sp_EngineLogger; // NOLINT
 
-    static std::shared_ptr<spdlog::logger> sp_ClientLogger;
+    static std::shared_ptr<spdlog::logger> sp_ClientLogger; // NOLINT
 };
 
 } // namespace Terroir
