@@ -3,6 +3,7 @@
 //
 
 #include "Terroir/src/math/Math.h"
+#include "Terroir/src/renderer/Renderer.h"
 #include <Terroir.h>
 #include <imgui.h>
 
@@ -31,43 +32,10 @@ class TestLayer : public Layer
         vertexBuffer->Unbind();
         m_VertexArray->Unbind();
 
-        std::string vertexSrc{R"(
-    #version 330 core
-
-    layout(location = 0) in vec3 a_Pos;
-    layout(location = 1) in vec4 a_Color;
-
-
-    out vec4 ourColor;
-    out vec3 ourPos;
-
-    uniform mat4 u_ViewProjection;
-    uniform mat4 u_Transform;
-
-    void main()
-    {
-    ourPos = a_Pos;
-    ourColor = a_Color;
-    gl_Position = u_ViewProjection * u_Transform * vec4(a_Pos, 1.0);
-    }
-  )"};
-
-        std::string fragSrc{R"(
-    #version 330 core
-
-    layout(location = 0) out vec4 FragColor;
-    in vec4 ourColor;
-    in vec3 ourPos;
-
-    void main()
-    {
-    FragColor = vec4(ourPos * 0.5 + 0.5, 1.0);
-    FragColor = ourColor;
-    }
-  )"};
         m_SquareVertexArray = std::shared_ptr<VertexArray>(VertexArray::Create());
 
-        m_Shader = std::make_shared<Shader>(vertexSrc.c_str(), fragSrc.c_str());
+        m_Shader = std::make_shared<Shader>();
+
         std::array<f32, 3 * 4> vertices2{-0.5f, -0.5f, 0.0f, 0.5f,  -0.5f, 0.0f,  // NOLINT
                                          0.5f,  0.5f,  0.0f, -0.5f, 0.5f,  0.0f}; // NOLINT
         std::shared_ptr<VertexBuffer> squareBufferArray{
@@ -80,36 +48,7 @@ class TestLayer : public Layer
             std::shared_ptr<IndexBuffer>(IndexBuffer::Create(&indices2[0], indices2.size()))};
         m_SquareVertexArray->SetIndexBuffer(ib2);
 
-        std::string vertexSrc2{R"(
-    #version 330 core
-
-    layout(location = 0) in vec3 a_Pos;
-
-    uniform mat4 u_ViewProjection;
-    uniform mat4 u_Transform;
-
-    out vec3 ourPos;
-
-    void main()
-    {
-      ourPos = a_Pos;
-      gl_Position = u_ViewProjection * u_Transform * vec4(a_Pos, 1.0);
-    }
-  )"};
-
-        std::string fragSrc2{R"(
-    #version 330 core
-
-    out vec4 FragColor;
-    in vec3 ourPos;
-
-    void main()
-    {
-    FragColor = vec4(ourPos, 1.0);
-    }
-  )"};
-
-        m_Shader2 = std::make_shared<Shader>(vertexSrc2.c_str(), fragSrc2.c_str());
+        m_Shader2 = std::make_shared<Shader>("VertexShader2.glsl", "FragShader2.glsl");
     }
 
     ~TestLayer() override
@@ -143,11 +82,12 @@ class TestLayer : public Layer
 
         RenderCommand::Clear({.2, .5, .4, 1}); // NOLINT
 
-        // m_Camera.SetRotation(glfwGetTime() * 100.f);
+        m_Camera.SetRotation(glfwGetTime() * 100.f);
         m_Camera.SetPosition(m_CameraPos);
         Renderer::BeginScene(m_Camera);
 
         Renderer::Submit(m_VertexArray, m_Shader);
+        Renderer::Submit(m_VertexArray, m_Shader2);
 
         Renderer::EndScene();
     }

@@ -3,12 +3,20 @@
 #include "core/Assert.h"
 #include "glad/glad.h"
 #include "math/Math.h"
+#include <filesystem>
 #include <glm/gtc/type_ptr.hpp>
 
 namespace Terroir
 {
-Shader::Shader(const char *vertexShader, const char *fragShader) : m_RendererID(glCreateProgram())
+Shader::Shader(const char *vertexShaderPath, const char *fragShaderPath)
+    : m_RendererID(glCreateProgram()),
+      m_ShaderLoader(
+          std::filesystem::path(std::filesystem::current_path() / "Terroir/src/renderer/shader" / vertexShaderPath),
+          std::filesystem::path(std::filesystem::current_path() / "Terroir/src/renderer/shader" / fragShaderPath))
 {
+
+    auto const vertexShader = m_ShaderLoader.GetVertexShader();
+    auto const fragShader = m_ShaderLoader.GetFragShader();
 
     u32 vertex{}, fragment{};
     vertex = glCreateShader(GL_VERTEX_SHADER);

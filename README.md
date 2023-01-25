@@ -49,8 +49,6 @@ setup.bat
 
 ## Examples
 
-<!-- <img src="/resources/Triangle.gif" width="300" height="300" /> -->
-
 ![Triangle](/resources/Triangle.gif)
 
 ## Planned Features
@@ -63,7 +61,7 @@ setup.bat
 - UI management 
 - 2D physics
 - ECS
-- Math
+- Math 
 - Networking
 - AI
 - Scenes
