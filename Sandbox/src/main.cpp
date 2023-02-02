@@ -8,7 +8,6 @@
 #include <imgui.h>
 
 using namespace Terroir;
-
 class TestLayer : public Layer
 {
   public:
@@ -16,8 +15,8 @@ class TestLayer : public Layer
         : Layer(name), m_Camera(-1.f, 1.f, -1.f, 1.f), m_CameraPos(0.0f), m_SquarePos(0.0f)
 
     {
-        std::array<f32, 3 * 7> vertices{-0.5f, -0.5f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0.5f, -0.5f, 0.0f, 0.0f, // NOLINT
-                                        1.0f,  0.0f,  1.0f, 0.0f, 0.5f, 0.0f, 0.0f, 1.0f, 0.0f,  1.0f};      // NOLINT
+        std::array<f32, 3 * 7> vertices{-0.5f, -0.5f, 0.0f, 0.0f, 0.8f, 0.0f, 1.0f, 0.5f, -0.5f, 0.0f, 0.0f,
+                                        0.8f,  0.0f,  1.0f, 0.0f, 0.5f, 0.0f, 0.0f, 0.8f, 0.0f,  1.0f};
         std::array<u32, 3> indices{0, 1, 2};
 
         m_VertexArray = std::shared_ptr<VertexArray>(VertexArray::Create());
@@ -34,10 +33,11 @@ class TestLayer : public Layer
 
         m_SquareVertexArray = std::shared_ptr<VertexArray>(VertexArray::Create());
 
-        m_Shader = std::make_shared<Shader>();
+        m_Shader = std::shared_ptr<Shader>(Shader::Create());
 
-        std::array<f32, 3 * 4> vertices2{-0.5f, -0.5f, 0.0f, 0.5f,  -0.5f, 0.0f,  // NOLINT
-                                         0.5f,  0.5f,  0.0f, -0.5f, 0.5f,  0.0f}; // NOLINT
+        std::array<f32, 3 * 4> vertices2{-0.5f, -0.5f, 0.0f, 0.5f,  -0.5f, 0.0f,
+
+                                         0.5f,  0.5f,  0.0f, -0.5f, 0.5f,  0.0f};
         std::shared_ptr<VertexBuffer> squareBufferArray{
             std::shared_ptr<VertexBuffer>(VertexBuffer::Create(&vertices2[0], sizeof(vertices2)))};
         squareBufferArray->SetLayout({{"a_Pos", ShaderDataType::Vec3}});
@@ -48,7 +48,7 @@ class TestLayer : public Layer
             std::shared_ptr<IndexBuffer>(IndexBuffer::Create(&indices2[0], indices2.size()))};
         m_SquareVertexArray->SetIndexBuffer(ib2);
 
-        m_Shader2 = std::make_shared<Shader>("VertexShader2.glsl", "FragShader2.glsl");
+        m_Shader2 = std::shared_ptr<Shader>(Shader::Create("VertexShader2.glsl", "FragShader2.glsl"));
     }
 
     ~TestLayer() override
@@ -58,7 +58,6 @@ class TestLayer : public Layer
 
     void OnUpdate(Timestep dt) override
     {
-        // NOLINTBEGIN(cppcoreguidelines-pro-type-union-access)
         if (Input::IsKeyPressed(TERR_KEY_LEFT))
         {
             m_CameraPos.x -= m_CameraVelocity * dt;
@@ -78,16 +77,28 @@ class TestLayer : public Layer
             m_CameraPos.y += m_CameraVelocity * dt;
         }
 
-        // NOLINTEND(cppcoreguidelines-pro-type-union-access)
+        RenderCommand::Clear({.2, .5, .4, 1});
 
-        RenderCommand::Clear({.2, .5, .4, 1}); // NOLINT
-
-        m_Camera.SetRotation(glfwGetTime() * 100.f);
+        // m_Camera.SetRotation(glfwGetTime() * 100.f);
         m_Camera.SetPosition(m_CameraPos);
         Renderer::BeginScene(m_Camera);
 
+        Mat4 scale{Math::Transform::Scale(Mat4(1.0f), Vec3(0.1f))};
+
+        std::dynamic_pointer_cast<OpenGLShader>(m_Shader2)->Bind();
+        std::dynamic_pointer_cast<OpenGLShader>(m_Shader2)->UploadUniform("u_Color", Vec3{m_SquareColor[0], m_SquareColor[1], m_SquareColor[2]});
+
+        for (auto y = 0; y != 10; ++y)
+        {
+            for (auto x = 0; x != 10; ++x)
+            {
+                Vec3 pos(x * 0.12f, y * 0.12f, 0.0f);
+                Mat4 transform = Math::Transform::Translate(Mat4(1.0f), pos) * scale;
+                Renderer::Submit(m_SquareVertexArray, m_Shader2, transform);
+            }
+        }
+
         Renderer::Submit(m_VertexArray, m_Shader);
-        Renderer::Submit(m_VertexArray, m_Shader2);
 
         Renderer::EndScene();
     }
@@ -98,8 +109,8 @@ class TestLayer : public Layer
 
     void OnDearImGuiRender() override
     {
-        ImGui::Begin("test");
-        ImGui::Text("Hello, Terroir!"); // NOLINT
+        ImGui::Begin("Settings");
+        ImGui::ColorEdit3("Square Color", m_SquareColor);
         ImGui::End();
     }
 
@@ -115,6 +126,8 @@ class TestLayer : public Layer
     f32 m_CameraVelocity{1.0f};
 
     Vec3 m_SquarePos;
+
+    f32 m_SquareColor[3] = {0.2f, 0.3f, 0.8f};
 };
 
 class SandboxGame : public Application

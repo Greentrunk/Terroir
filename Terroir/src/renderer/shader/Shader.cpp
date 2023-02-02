@@ -1,98 +1,46 @@
 #include "Shader.h"
 #include "Tpch.h"
 #include "core/Assert.h"
-#include "glad/glad.h"
-#include "math/Math.h"
-#include <filesystem>
-#include <glm/gtc/type_ptr.hpp>
-
+#include "renderer/Renderer.h"
+#include "renderer/RendererAPI.h"
+#include "renderer/opengl/OpenGLShader.h"
 namespace Terroir
 {
-Shader::Shader(const char *vertexShaderPath, const char *fragShaderPath)
-    : m_RendererID(glCreateProgram()),
-      m_ShaderLoader(
-          std::filesystem::path(std::filesystem::current_path() / "Terroir/src/renderer/shader" / vertexShaderPath),
-          std::filesystem::path(std::filesystem::current_path() / "Terroir/src/renderer/shader" / fragShaderPath))
+
+Shader *Shader::Create()
 {
-
-    auto const vertexShader = m_ShaderLoader.GetVertexShader();
-    auto const fragShader = m_ShaderLoader.GetFragShader();
-
-    u32 vertex{}, fragment{};
-    vertex = glCreateShader(GL_VERTEX_SHADER);
-
-    // Vertex shader
-    glShaderSource(vertex, 1, &vertexShader, nullptr);
-    glCompileShader(vertex);
-    CheckCompileErrors(vertex, "VERTEX");
-
-    // Frag shader
-    fragment = glCreateShader(GL_FRAGMENT_SHADER);
-    glShaderSource(fragment, 1, &fragShader, nullptr);
-    glCompileShader(fragment);
-    CheckCompileErrors(fragment, "FRAGMENT");
-
-    // Shader program
-    glAttachShader(m_RendererID, vertex);
-    glAttachShader(m_RendererID, fragment);
-    glLinkProgram(m_RendererID);
-    CheckCompileErrors(m_RendererID, "PROGRAM");
-
-    // Cleanup
-    glDetachShader(m_RendererID, vertex);
-    glDetachShader(m_RendererID, fragment);
-}
-
-Shader::~Shader()
-{
-    glDeleteProgram(m_RendererID);
-}
-
-void Shader::Bind() const
-{
-    glUseProgram(m_RendererID);
-}
-
-void Shader::Unbind() const
-{
-    glUseProgram(0);
-}
-
-void Shader::UploadUniformMat4(const char *name, const Mat4 &matrix)
-{
-    GLint location{glGetUniformLocation(m_RendererID, name)};
-    glUniformMatrix4fv(location, 1, GL_FALSE, Math::Conversion::GetValuePtr(matrix));
-}
-
-void Shader::CheckCompileErrors(u32 shader, const std::string_view &type)
-{
-    constexpr size_t logSize{1024};
-    i32 success{};
-    std::array<char, logSize> infoLog{};
-
-    if (type != "PROGRAM")
+    using enum RendererAPI::API;
+    switch (Renderer::GetAPI())
     {
-        glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
-        if (!success)
-        {
-            glGetShaderInfoLog(shader, logSize, nullptr, &infoLog[0]);
-            glDeleteShader(shader);
-            TERR_ENGINE_ERROR("Shader Compilation Error! Type: {}", type);
-            TERR_ENGINE_ERROR("Infolog: {}", infoLog.data());
-            TERR_ENGINE_ASSERT(false, "Shader compilation failure");
-        }
+    case None: {
+        TERR_ENGINE_ASSERT(false, "RendererAPI::None is not supported in Terroir!");
     }
-    else
-    {
-        glGetProgramiv(shader, GL_LINK_STATUS, &success);
-        if (!success)
-        {
-            glGetProgramInfoLog(shader, logSize, nullptr, &infoLog[0]);
-            glDeleteShader(shader);
-            TERR_ENGINE_ERROR("Shader Linking Error! Type: {}", type);
-            TERR_ENGINE_ERROR("Infolog: {}", infoLog.data());
-            TERR_ENGINE_ASSERT(false, "Shader linking failure");
-        }
+    case OpenGL: {
+        return new OpenGLShader();
+    }
+    default:
+
+        TERR_ENGINE_ERROR("Unknown RendererAPI");
+        return nullptr;
     }
 }
+
+Shader *Shader::Create(const char *vertexPath, const char *fragPath)
+{
+    using enum RendererAPI::API;
+    switch (Renderer::GetAPI())
+    {
+    case None: {
+        TERR_ENGINE_ASSERT(false, "RendererAPI::None is not supported in Terroir!");
+    }
+    case OpenGL: {
+        return new OpenGLShader(vertexPath, fragPath);
+    }
+    default:
+
+        TERR_ENGINE_ERROR("Unknown RendererAPI");
+        return nullptr;
+    }
+}
+
 } // namespace Terroir

@@ -5,7 +5,7 @@
 #ifndef TERROIR_LOG_H
 #define TERROIR_LOG_H
 
-#include <fmt/core.h>
+#include <fmt/core.h> 
 #include <fmt/format.h>
 #include <spdlog/sinks/stdout_color_sinks.h>
 #include <spdlog/spdlog.h>

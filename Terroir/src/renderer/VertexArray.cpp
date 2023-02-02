@@ -22,7 +22,7 @@ VertexArray *VertexArray::Create()
 
     default: {
 
-        TERR_ENGINE_ERROR("Unkown RendererAPI");
+        TERR_ENGINE_ERROR("Unknown RendererAPI");
         return nullptr;
     }
     }

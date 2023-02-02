@@ -11,8 +11,10 @@ namespace Terroir
 {
 
 // Basic types
+using Vec2 = glm::vec2;
 using Vec3 = glm::vec3;
 using Vec4 = glm::vec4;
+using Mat3 = glm::mat3;
 using Mat4 = glm::mat4;
 
 // Transforms
@@ -33,6 +35,11 @@ inline Mat4 Translate(const Mat4 &m, const Vec3 &v)
 inline Mat4 Rotate(const Mat4 &m, const f32 angle, const Vec3 &v)
 {
     return glm::rotate(m, angle, v);
+}
+
+inline Mat4 Scale(const Mat4 &m, const Vec3 &v)
+{
+    return glm::scale(m, v);
 }
 
 inline Mat4 Inverse(const Mat4 &m)

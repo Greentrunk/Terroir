@@ -1,4 +1,4 @@
 @echo off
-PUSH build-scripts
+PUSHD build-scripts
 python setup.py
-POP
+POPD

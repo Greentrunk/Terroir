@@ -3,7 +3,7 @@
 #include "Tpch.h"
 #include "math/Math.h"
 #include "renderer/OrthographicCamera.h"
-
+#include "renderer/opengl/OpenGLShader.h"
 namespace Terroir
 {
 Renderer::SceneData *Renderer::m_SceneData = new Renderer::SceneData; // NOLINT
@@ -22,8 +22,9 @@ void Renderer::Submit(const std::shared_ptr<VertexArray> &vertexArray, const std
 {
     // To be used with multiple threads
     shader->Bind();
-    shader->UploadUniformMat4("u_ViewProjection", m_SceneData->m_ViewProjectionMatrix);
-    shader->UploadUniformMat4("u_Transform", transform);
+    std::dynamic_pointer_cast<OpenGLShader>(shader)->UploadUniform("u_ViewProjection",
+                                                                   m_SceneData->m_ViewProjectionMatrix);
+    std::dynamic_pointer_cast<OpenGLShader>(shader)->UploadUniform("u_Transform", transform);
 
     vertexArray->Bind();
     RenderCommand::DrawIndexed(vertexArray);

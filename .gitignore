@@ -12,6 +12,8 @@
 
 # IDE
 .idea/
+.vs
+.vscode
 
 # random
 .cache

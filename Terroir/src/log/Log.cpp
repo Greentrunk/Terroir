@@ -22,6 +22,7 @@ void Log::Init()
     sp_EngineLogger->set_level(spdlog::level::trace);
     sp_ClientLogger->set_level(spdlog::level::trace);
 
+
     sp_EngineLogger->set_pattern(pattern);
     sp_ClientLogger->set_pattern(pattern);
 }

@@ -1,10 +1,7 @@
 #ifndef TERROIR_SHADER_H
 #define TERROIR_SHADER_H
 
-#include "ShaderLoader.h"
 #include "Terroir/src/core/Types.h"
-#include "Terroir/src/math/Math.h"
-#include <string>
 
 namespace Terroir
 {
@@ -13,24 +10,15 @@ class Shader
 {
   public:
     // const char* used for compatibility with C-style libraries
-    Shader(const char *vertexPath = "DefaultVertexShader.glsl", const char *fragPath = "DefaultFragShader.glsl");
-    ~Shader();
-    void Bind() const;
-    void Unbind() const;
+    virtual ~Shader() = default;
+    virtual void Bind() const = 0;
+    virtual void Unbind() const = 0;
 
-    void UploadUniformMat4(const char *, const Mat4 &);
-
-    // debug
-    inline u32 GetID()
-    {
-        return m_RendererID;
-    }
+    static Shader *Create();
+    static Shader *Create(const char *, const char *);
 
   private:
-    void CheckCompileErrors(u32, const std::string_view &);
-    u32 m_RendererID;
-    // This will be generic when using other shader languages
-    ShaderLoader m_ShaderLoader;
+    virtual void CheckCompileErrors(u32, const std::string_view &) = 0;
 };
 } // namespace Terroir
 
