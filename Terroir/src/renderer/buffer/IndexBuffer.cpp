@@ -8,7 +8,7 @@
 
 namespace Terroir
 {
-IndexBuffer *IndexBuffer::Create(u32 *indices, u32 size)
+std::unique_ptr<IndexBuffer> IndexBuffer::Create(u32 *indices, u32 size)
 {
     using enum RendererAPI::API;
     switch (Renderer::GetAPI())
@@ -19,7 +19,7 @@ IndexBuffer *IndexBuffer::Create(u32 *indices, u32 size)
     }
 
     case OpenGL: {
-        return new OpenGLIndexBuffer(indices, size);
+        return std::make_unique<OpenGLIndexBuffer>(indices, size);
     }
 
     default: {

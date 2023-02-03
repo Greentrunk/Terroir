@@ -4,9 +4,10 @@
 #include "math/Math.h"
 #include "renderer/OrthographicCamera.h"
 #include "renderer/opengl/OpenGLShader.h"
+
 namespace Terroir
 {
-Renderer::SceneData *Renderer::m_SceneData = new Renderer::SceneData; // NOLINT
+std::unique_ptr<Renderer::SceneData> Renderer::m_SceneData = std::make_unique<Renderer::SceneData>();
 
 void Renderer::BeginScene(OrthographicCamera &camera)
 {

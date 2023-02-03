@@ -54,7 +54,7 @@ class Application
   private:
     bool OnWindowClose(WindowCloseEvent &);
 
-    static Application *s_Instance; // NOLINT
+    static Application *s_Instance; 
     std::unique_ptr<Window> m_Window;
 
     DearImGuiLayer *m_DearImGuiLayer;

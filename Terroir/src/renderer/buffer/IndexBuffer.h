@@ -17,7 +17,7 @@ class IndexBuffer
 
     [[nodiscard]] virtual u32 GetIndexCount() const = 0;
 
-    static IndexBuffer *Create(u32 *, u32);
+    static std::unique_ptr<IndexBuffer> Create(u32 *, u32);
 };
 } // namespace Terroir
 

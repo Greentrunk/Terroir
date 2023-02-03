@@ -24,7 +24,7 @@ class Timestep
 
     [[nodiscard]] constexpr const f32 GetMilliseconds() const
     {
-        return m_Time * 1000; // NOLINT
+        return m_Time * 1000;
     }
 
   private:

@@ -25,7 +25,7 @@ class RenderCommand
     }
 
   private:
-    static RendererAPI *s_RendererAPI;
+    static std::unique_ptr<RendererAPI> s_RendererAPI;
 };
 } // namespace Terroir
 

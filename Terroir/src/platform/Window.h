@@ -50,7 +50,7 @@ class Window
     [[nodiscard]] virtual u32 GetWindowHeight() const = 0;
 
     // For other windowing systems
-    static Window *Create(const WindowProperties &);
+    static std::unique_ptr<Window> Create(const WindowProperties &);
 };
 } // namespace Terroir
 

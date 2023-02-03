@@ -6,6 +6,7 @@
 #include "Terroir/src/renderer/OrthographicCamera.h"
 #include "Terroir/src/renderer/RendererAPI.h"
 #include "Terroir/src/renderer/shader/Shader.h"
+#include <memory>
 namespace Terroir
 {
 
@@ -29,7 +30,7 @@ class Renderer
         Mat4 m_ViewProjectionMatrix;
     };
 
-    static SceneData *m_SceneData; // NOLINT
+    static std::unique_ptr<SceneData> m_SceneData;
 };
 
 };     // namespace Terroir

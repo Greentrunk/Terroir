@@ -2,8 +2,7 @@
 // Created by cjp on 1/3/23.
 //
 
-#include "Terroir/src/math/Math.h"
-#include "Terroir/src/renderer/Renderer.h"
+#include "Terroir/src/renderer/Renderer.h" //NOLINT
 #include <Terroir.h>
 #include <imgui.h>
 
@@ -35,12 +34,12 @@ class TestLayer : public Layer
 
         m_Shader = std::shared_ptr<Shader>(Shader::Create());
 
-        std::array<f32, 3 * 4> vertices2{-0.5f, -0.5f, 0.0f, 0.5f,  -0.5f, 0.0f,
+        std::array<f32, 5 * 4> vertices2{-0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 0.5f,  -0.5f, 0.0f, 1.0f, 0.0f,
 
-                                         0.5f,  0.5f,  0.0f, -0.5f, 0.5f,  0.0f};
+                                         0.5f,  0.5f,  0.0f, 1.0f, 1.0f, -0.5f, 0.5f,  0.0f, 0.0f, 1.0f};
         std::shared_ptr<VertexBuffer> squareBufferArray{
             std::shared_ptr<VertexBuffer>(VertexBuffer::Create(&vertices2[0], sizeof(vertices2)))};
-        squareBufferArray->SetLayout({{"a_Pos", ShaderDataType::Vec3}});
+        squareBufferArray->SetLayout({{"a_Pos", ShaderDataType::Vec3}, {"a_TexCoord", ShaderDataType::Vec2}});
         m_SquareVertexArray->AddVertexBuffer(squareBufferArray);
 
         std::array<u32, 6> indices2{0, 1, 2, 2, 3, 0}; // NOLINT
@@ -49,6 +48,8 @@ class TestLayer : public Layer
         m_SquareVertexArray->SetIndexBuffer(ib2);
 
         m_Shader2 = std::shared_ptr<Shader>(Shader::Create("VertexShader2.glsl", "FragShader2.glsl"));
+
+        m_TextureShader = std::shared_ptr<Shader>(Shader::Create("TextureVertexShader.glsl", "TextureFragShader.glsl"));
     }
 
     ~TestLayer() override
@@ -86,7 +87,8 @@ class TestLayer : public Layer
         Mat4 scale{Math::Transform::Scale(Mat4(1.0f), Vec3(0.1f))};
 
         std::dynamic_pointer_cast<OpenGLShader>(m_Shader2)->Bind();
-        std::dynamic_pointer_cast<OpenGLShader>(m_Shader2)->UploadUniform("u_Color", Vec3{m_SquareColor[0], m_SquareColor[1], m_SquareColor[2]});
+        std::dynamic_pointer_cast<OpenGLShader>(m_Shader2)->UploadUniform(
+            "u_Color", Vec3{m_SquareColor[0], m_SquareColor[1], m_SquareColor[2]});
 
         for (auto y = 0; y != 10; ++y)
         {
@@ -98,7 +100,11 @@ class TestLayer : public Layer
             }
         }
 
-        Renderer::Submit(m_VertexArray, m_Shader);
+        // square
+        Renderer::Submit(m_SquareVertexArray, m_TextureShader, Math::Transform::Scale(Mat4{1.0f}, Vec3{1.5f}));
+
+        // TRIANGLE
+        // Renderer::Submit(m_VertexArray, m_Shader);
 
         Renderer::EndScene();
     }
@@ -118,7 +124,7 @@ class TestLayer : public Layer
     std::shared_ptr<VertexArray> m_VertexArray;
     std::shared_ptr<Shader> m_Shader;
     std::shared_ptr<VertexArray> m_SquareVertexArray;
-    std::shared_ptr<Shader> m_Shader2;
+    std::shared_ptr<Shader> m_Shader2, m_TextureShader;
 
     OrthographicCamera m_Camera;
     Vec3 m_CameraPos;

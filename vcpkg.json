@@ -10,6 +10,7 @@
         "docking-experimental"
       ]
     },
-    "glm"
+    "glm",
+    "stb"
   ]
 }

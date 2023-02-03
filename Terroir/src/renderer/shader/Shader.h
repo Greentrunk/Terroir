@@ -14,8 +14,8 @@ class Shader
     virtual void Bind() const = 0;
     virtual void Unbind() const = 0;
 
-    static Shader *Create();
-    static Shader *Create(const char *, const char *);
+    static std::unique_ptr<Shader> Create();
+    static std::unique_ptr<Shader> Create(const char *, const char *);
 
   private:
     virtual void CheckCompileErrors(u32, const std::string_view &) = 0;

@@ -1,16 +1,16 @@
 //
 // Created by cjp on 1/9/23.
 //
-#include "Tpch.h"
 #include "Window.h"
+#include "Tpch.h"
 
 // add platform dependent defines
 #include "glfw/GLFWWindow.h"
 
 namespace Terroir
 {
-	Window* Window::Create(const WindowProperties& props)
-	{
-		return new GLFWWindow(props);
-	}
+std::unique_ptr<Window> Window::Create(const WindowProperties &props)
+{
+    return std::make_unique<GLFWWindow>(props);
 }
+} // namespace Terroir

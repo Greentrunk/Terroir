@@ -1,12 +1,13 @@
-#include "VertexArray.h"
+#include "Texture2D.h"
 #include "Tpch.h"
 #include "core/Assert.h"
-#include "opengl/OpenGLVertexArray.h"
 #include "renderer/Renderer.h"
 #include "renderer/RendererAPI.h"
+#include "renderer/opengl/OpenGLTexture.h"
+
 namespace Terroir
 {
-std::unique_ptr<VertexArray> VertexArray::Create()
+std::unique_ptr<Texture2D> Texture2D::Create(const std::filesystem::path &path)
 {
     using enum RendererAPI::API;
     switch (Renderer::GetAPI())
@@ -17,13 +18,13 @@ std::unique_ptr<VertexArray> VertexArray::Create()
     }
 
     case OpenGL: {
-        return std::make_unique<OpenGLVertexArray>();
-    }
+        return std::make_unique<OpenGLTexture2D>(path);
 
     default: {
 
         TERR_ENGINE_ERROR("Unknown RendererAPI");
         return nullptr;
+    }
     }
     }
 }

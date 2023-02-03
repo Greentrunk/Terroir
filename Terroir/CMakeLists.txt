@@ -8,6 +8,9 @@ find_package(glad CONFIG REQUIRED)
 find_package(imgui CONFIG REQUIRED)
 find_package(glm CONFIG REQUIRED)
 
+# Header only libraries
+find_path(STB_INCLUDE_DIRS "stb_image.h")
+
 # OpenGL per platform
 if(WIN32)
     set(OPENGL opengl32)
@@ -54,7 +57,7 @@ target_precompile_headers(Terroir PRIVATE pch/Tpch.h)
 include_directories(${PROJECT_SOURCE_DIR}/Terroir/pch)
 
 # Link Export Header
-target_include_directories(Terroir PUBLIC ${PROJECT_BINARY_DIR} ${PROJECT_SOURCE_DIR})
+target_include_directories(Terroir PUBLIC ${PROJECT_BINARY_DIR} ${PROJECT_SOURCE_DIR} ${STB_INCLUDE_DIRS})
 
 # Link libraries from vcpkg
-target_link_libraries(Terroir PUBLIC spdlog::spdlog glfw ${OPENGL} glad::glad imgui::imgui glm::glm)
+target_link_libraries(Terroir PUBLIC spdlog::spdlog glfw ${OPENGL} glad::glad imgui::imgui glm::glm )

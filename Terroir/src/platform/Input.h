@@ -51,7 +51,7 @@ class Input
     virtual f32 GetMouseYImpl() = 0;
 
   private:
-    static Input *s_Instance; // NOLINT
+    static Input *s_Instance;
 };
 } // namespace Terroir
 

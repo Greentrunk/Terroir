@@ -58,8 +58,8 @@ Application::Application()
     s_Instance = this;
 
     constexpr u32 defaultWidth{1000}, defaultHeight{1000};
-    auto window{Window::Create({"Terroir Engine", defaultWidth, defaultHeight})};
-    m_Window = std::unique_ptr<Window>(window);
+    m_Window = Window::Create({"Terroir Engine", defaultWidth, defaultHeight});
+    // m_Window = std::unique_ptr<Window>(window);
     m_Window->SET_EVENT_CB_LAMBDA(OnEvent);
     m_Window->SetVSync(false);
 
@@ -73,8 +73,8 @@ Application::Application(const std::string_view &name, u32 width, u32 height)
     TERR_ENGINE_ASSERT(!s_Instance, "Application already exists!");
     s_Instance = this;
 
-    auto window{Window::Create({name, width, height})};
-    m_Window = std::unique_ptr<Window>(window);
+    m_Window = Window::Create({name, width, height});
+    // m_Window = std::unique_ptr<Window>(window);
     m_Window->SET_EVENT_CB_LAMBDA(OnEvent);
     m_Window->SetVSync(false);
 

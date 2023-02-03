@@ -13,12 +13,12 @@ class ShaderLoader
     ShaderLoader(std::filesystem::path, std::filesystem::path);
     ~ShaderLoader() = default;
 
-    constexpr const char *GetVertexShader()
+    [[nodiscard]] constexpr const char *GetVertexShader()
     {
         return m_VertexShaderData.c_str();
     }
 
-    constexpr const char *GetFragShader()
+    [[nodiscard]] constexpr const char *GetFragShader()
     {
         return m_FragShaderData.c_str();
     }

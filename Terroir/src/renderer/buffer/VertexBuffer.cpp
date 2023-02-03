@@ -7,7 +7,7 @@
 
 namespace Terroir
 {
-VertexBuffer *VertexBuffer::Create(f32 *vertices, u32 size)
+std::unique_ptr<VertexBuffer> VertexBuffer::Create(f32 *vertices, u32 size)
 {
     using enum RendererAPI::API;
     switch (Renderer::GetAPI())
@@ -18,7 +18,7 @@ VertexBuffer *VertexBuffer::Create(f32 *vertices, u32 size)
     }
 
     case OpenGL: {
-        return new OpenGLVertexBuffer(vertices, size);
+        return std::make_unique<OpenGLVertexBuffer>(vertices, size);
     }
 
     default: {
