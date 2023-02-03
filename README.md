@@ -27,6 +27,10 @@ Overall, the main goal is to provide a thorough interface that focuses and empha
 
 Terroir will also have an Entity Component System (ECS) plugin based API will allow the developer the freedom to modularize how their code is structured as well as providing the foundation in how Terroir manages game data.
 
+## Examples
+
+![Triangle](/resources/Triangle.gif)
+
 ## Getting Started
 
 Building Requirements:
@@ -51,10 +55,6 @@ setup.bat
 
 -- Specific compile info coming soon --
 
-## Examples
-
-![Triangle](/resources/Triangle.gif)
-
 ## Planned Features
 
 - Platform abstraction (windowing, sound, input, memory, etc.) ✍️
@@ -71,6 +71,22 @@ setup.bat
 - Scenes
 - Scripting via LuaJIT
 - Graphical Editor
+
+## Road to the Next Vintage - (v0.1)
+
+Terroir (Vintage v0.1), ideally will allow the game developer to successfully create primitive 2D games. These would include classic retro arcade games like pong, tetris, and astroids.
+
+##### Required Features
+
+| Feature                | Description                                               | Status |
+| ---------------------- | --------------------------------------------------------- | ------ |
+| Platform Abstraction   | Windowing, Sound, Input, Application, Assets              | ⚙️      |
+| Basic Utilities        | Logging, Asserts, Profiling, Debugging                    | ⚙️      |
+| Event and Layer System | Events are passed into the engine and can be queried      | ✅      |
+| 2D Renderer            | Put geometry and textures onto the screen via OpenGL      | ⚙️      |
+| Fonts                  | Bitmap font support                                       | ⚙️      |
+| Math                   | Linear algebra abstraction with types and transformations | ✅      |
+| Basic UI               | Primitive UI support                                      | ⚙️      |
 
 ## Out of scope (Not planned for version 1.0) 😭
 
