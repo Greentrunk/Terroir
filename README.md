@@ -80,13 +80,13 @@ Terroir (Vintage v0.1), ideally will allow the game developer to successfully cr
 
 | Feature                | Description                                               | Status |
 | ---------------------- | --------------------------------------------------------- | ------ |
-| Platform Abstraction   | Windowing, Sound, Input, Application, Assets              | ⚙️      |
-| Basic Utilities        | Logging, Asserts, Profiling, Debugging                    | ⚙️      |
+| Platform Abstraction   | Windowing, Sound, Input, Application, Asset Pipeline      | ⚙️      |
+| Basic Utilities        | Logging, Asserts                                          | ✅      |
 | Event and Layer System | Events are passed into the engine and can be queried      | ✅      |
 | 2D Renderer            | Put geometry and textures onto the screen via OpenGL      | ⚙️      |
 | Fonts                  | Bitmap font support                                       | ⚙️      |
 | Math                   | Linear algebra abstraction with types and transformations | ✅      |
-| Basic UI               | Primitive UI support                                      | ⚙️      |
+| Basic UI               | Primitive UI support                                      | 🤷      |
 
 ## Out of scope (Not planned for version 1.0) 😭
 
