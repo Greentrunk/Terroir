@@ -46,9 +46,16 @@ class TestLayer : public Layer
         auto ib2{IndexBuffer::Create(&indices2[0], static_cast<u32>(indices2.size()))};
         m_SquareVertexArray->SetIndexBuffer(ib2);
 
-        m_Shader2 = Shader::Create("VertexShader2.glsl", "FragShader2.glsl");
+        m_Shader2 = Shader::Create("Terroir/src/renderer/shader/VertexShader2.glsl",
+                                   "Terroir/src/renderer/shader/FragShader2.glsl");
 
-        m_TextureShader = Shader::Create("TextureVertexShader.glsl", "TextureFragShader.glsl");
+        m_TextureShader = Shader::Create("Terroir/src/renderer/shader/TextureVertexShader.glsl",
+                                         "Terroir/src/renderer/shader/TextureFragShader.glsl");
+        const std::filesystem::path path{"Sandbox/assets/textures/gigachad.jpg"};
+        m_Texture = Texture2D::Create(path);
+
+        std::dynamic_pointer_cast<OpenGLShader>(m_TextureShader)->Bind();
+        std::dynamic_pointer_cast<OpenGLShader>(m_TextureShader)->UploadUniform("u_Texture", 0);
     }
 
     ~TestLayer() override
@@ -98,6 +105,7 @@ class TestLayer : public Layer
                 Renderer::Submit(m_SquareVertexArray, m_Shader2, transform);
             }
         }
+        m_Texture->Bind();
 
         // square
         Renderer::Submit(m_SquareVertexArray, m_TextureShader, Math::Transform::Scale(Mat4{1.0f}, Vec3{1.5f}));
@@ -126,6 +134,7 @@ class TestLayer : public Layer
     std::shared_ptr<Shader> m_Shader;
     std::shared_ptr<VertexArray> m_SquareVertexArray;
     std::shared_ptr<Shader> m_Shader2, m_TextureShader;
+    std::shared_ptr<Texture2D> m_Texture;
 
     OrthographicCamera m_Camera;
     Vec3 m_CameraPos;

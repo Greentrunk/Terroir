@@ -13,7 +13,7 @@ class Texture
     [[nodiscard]] virtual u32 GetWidth() const = 0;
     [[nodiscard]] virtual u32 GetHeight() const = 0;
 
-    virtual void Bind() = 0;
+    virtual void Bind(u32 slot = 0) = 0;
 };
 } // namespace Terroir
 

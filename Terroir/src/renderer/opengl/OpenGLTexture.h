@@ -17,7 +17,7 @@ class OpenGLTexture2D : public Texture2D
         return m_Height;
     }
 
-    virtual void Bind();
+    virtual void Bind(u32 slot = 0);
 
   private:
     std::filesystem::path m_Path;

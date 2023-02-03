@@ -13,7 +13,7 @@ class OpenGLShader : public Shader
 {
   public:
     // const char* used for compatibility with C-style libraries
-    OpenGLShader(const char *vertexPath = "DefaultVertexShader.glsl", const char *fragPath = "DefaultFragShader.glsl");
+    OpenGLShader(const char *vertexPath = "Terroir/src/renderer/shader/DefaultVertexShader.glsl", const char *fragPath = "Terroir/src/renderer/shader/DefaultFragShader.glsl");
     ~OpenGLShader() override;
     void Bind() const;
     void Unbind() const;

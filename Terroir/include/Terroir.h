@@ -51,6 +51,7 @@
 #include "Terroir/src/renderer/buffer/IndexBuffer.h"
 #include "Terroir/src/renderer/buffer/VertexBuffer.h"
 #include "Terroir/src/renderer/shader/Shader.h"
+#include "Terroir/src/renderer/texture/Texture2D.h"
 //TEMP
 #include "Terroir/src/renderer/opengl/OpenGLShader.h"
 
