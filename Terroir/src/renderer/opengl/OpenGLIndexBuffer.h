@@ -2,6 +2,7 @@
 #define TERROIR_OPENGLINDEXBUFFER_H
 
 #include "Terroir/src/renderer/buffer/IndexBuffer.h"
+
 namespace Terroir
 {
 

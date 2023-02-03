@@ -18,38 +18,37 @@ class TestLayer : public Layer
                                         0.8f,  0.0f,  1.0f, 0.0f, 0.5f, 0.0f, 0.0f, 0.8f, 0.0f,  1.0f};
         std::array<u32, 3> indices{0, 1, 2};
 
-        m_VertexArray = std::shared_ptr<VertexArray>(VertexArray::Create());
-        auto vertexBuffer = std::shared_ptr<VertexBuffer>(VertexBuffer::Create(&vertices[0], sizeof(vertices)));
+        m_VertexArray = VertexArray::Create();
+        auto vertexBuffer = VertexBuffer::Create(&vertices[0], sizeof(vertices));
 
         BufferLayout layout{{"a_Pos", ShaderDataType::Vec3}, {"a_Color", ShaderDataType::Vec4}};
         vertexBuffer->SetLayout(layout);
         m_VertexArray->AddVertexBuffer(vertexBuffer);
-        auto indexBuffer = std::shared_ptr<IndexBuffer>(IndexBuffer::Create(&indices[0], indices.size()));
+
+        auto indexBuffer = IndexBuffer::Create(&indices[0], static_cast<u32>(indices.size()));
         m_VertexArray->SetIndexBuffer(indexBuffer);
 
         vertexBuffer->Unbind();
         m_VertexArray->Unbind();
 
-        m_SquareVertexArray = std::shared_ptr<VertexArray>(VertexArray::Create());
+        m_SquareVertexArray = VertexArray::Create();
 
-        m_Shader = std::shared_ptr<Shader>(Shader::Create());
+        m_Shader = Shader::Create();
 
         std::array<f32, 5 * 4> vertices2{-0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 0.5f,  -0.5f, 0.0f, 1.0f, 0.0f,
 
                                          0.5f,  0.5f,  0.0f, 1.0f, 1.0f, -0.5f, 0.5f,  0.0f, 0.0f, 1.0f};
-        std::shared_ptr<VertexBuffer> squareBufferArray{
-            std::shared_ptr<VertexBuffer>(VertexBuffer::Create(&vertices2[0], sizeof(vertices2)))};
+        auto squareBufferArray{VertexBuffer::Create(&vertices2[0], sizeof(vertices2))};
         squareBufferArray->SetLayout({{"a_Pos", ShaderDataType::Vec3}, {"a_TexCoord", ShaderDataType::Vec2}});
         m_SquareVertexArray->AddVertexBuffer(squareBufferArray);
 
-        std::array<u32, 6> indices2{0, 1, 2, 2, 3, 0}; // NOLINT
-        std::shared_ptr<IndexBuffer> ib2{
-            std::shared_ptr<IndexBuffer>(IndexBuffer::Create(&indices2[0], indices2.size()))};
+        std::array<u32, 6> indices2{0, 1, 2, 2, 3, 0};
+        auto ib2{IndexBuffer::Create(&indices2[0], static_cast<u32>(indices2.size()))};
         m_SquareVertexArray->SetIndexBuffer(ib2);
 
-        m_Shader2 = std::shared_ptr<Shader>(Shader::Create("VertexShader2.glsl", "FragShader2.glsl"));
+        m_Shader2 = Shader::Create("VertexShader2.glsl", "FragShader2.glsl");
 
-        m_TextureShader = std::shared_ptr<Shader>(Shader::Create("TextureVertexShader.glsl", "TextureFragShader.glsl"));
+        m_TextureShader = Shader::Create("TextureVertexShader.glsl", "TextureFragShader.glsl");
     }
 
     ~TestLayer() override
@@ -111,6 +110,8 @@ class TestLayer : public Layer
 
     void OnEvent(Event &event) override
     {
+        // To shut the compiler warning ups
+        event;
     }
 
     void OnDearImGuiRender() override

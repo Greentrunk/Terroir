@@ -13,7 +13,7 @@ namespace Terroir
 class MouseMovedEvent : public Event
 {
   public:
-    MouseMovedEvent(f32 x, f32 y) : m_MouseX(x), m_MouseY(x)
+    MouseMovedEvent(f32 x, f32 y) : m_MouseX(x), m_MouseY(y)
     {
     }
 
@@ -45,7 +45,7 @@ class MouseMovedEvent : public Event
 class MouseScrolledEvent : public Event
 {
   public:
-    MouseScrolledEvent(f32 x, f32 y) : m_XOffset(x), m_YOffset(x)
+    MouseScrolledEvent(f32 x, f32 y) : m_XOffset(x), m_YOffset(y)
     {
     }
 

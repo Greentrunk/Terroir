@@ -19,7 +19,7 @@ class VertexBuffer
     virtual void SetLayout(const BufferLayout &) = 0;
     [[nodiscard]] virtual const BufferLayout &GetLayout() const = 0;
 
-    static std::unique_ptr<VertexBuffer> Create(f32 *, u32);
+    static std::shared_ptr<VertexBuffer> Create(f32 *, u32);
 };
 } // namespace Terroir
 

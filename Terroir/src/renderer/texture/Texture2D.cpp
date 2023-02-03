@@ -7,7 +7,7 @@
 
 namespace Terroir
 {
-std::unique_ptr<Texture2D> Texture2D::Create(const std::filesystem::path &path)
+std::shared_ptr<Texture2D> Texture2D::Create(const std::filesystem::path &path)
 {
     using enum RendererAPI::API;
     switch (Renderer::GetAPI())
@@ -18,7 +18,7 @@ std::unique_ptr<Texture2D> Texture2D::Create(const std::filesystem::path &path)
     }
 
     case OpenGL: {
-        return std::make_unique<OpenGLTexture2D>(path);
+        return std::make_shared<OpenGLTexture2D>(path);
 
     default: {
 

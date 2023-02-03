@@ -4,7 +4,7 @@
 #include "Terroir/pch/Tpch.h"
 #include "application/Application.h"
 
-int main(int argc, char **argv)
+int main()
 {
     Terroir::Log::Init();
 

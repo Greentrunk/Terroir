@@ -6,7 +6,7 @@
 #include "renderer/RendererAPI.h"
 namespace Terroir
 {
-std::unique_ptr<VertexArray> VertexArray::Create()
+std::shared_ptr<VertexArray> VertexArray::Create()
 {
     using enum RendererAPI::API;
     switch (Renderer::GetAPI())
@@ -17,7 +17,7 @@ std::unique_ptr<VertexArray> VertexArray::Create()
     }
 
     case OpenGL: {
-        return std::make_unique<OpenGLVertexArray>();
+        return std::make_shared<OpenGLVertexArray>();
     }
 
     default: {

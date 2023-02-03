@@ -10,7 +10,7 @@ namespace Terroir
 class Texture2D : public Texture
 {
   public:
-    static std::unique_ptr<Texture2D> Create(const std::filesystem::path &);
+    static std::shared_ptr<Texture2D> Create(const std::filesystem::path &);
 };
 
 } // namespace Terroir
