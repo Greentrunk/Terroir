@@ -17,7 +17,7 @@ std::shared_ptr<Shader> Shader::Create()
         TERR_ENGINE_ASSERT(false, "RendererAPI::None is not supported in Terroir!");
     }
     case OpenGL: {
-        return std::make_shared<OpenGLShader>();
+        return std::make_shared<OpenGLShader>("Default");
     }
     default:
 
@@ -26,7 +26,7 @@ std::shared_ptr<Shader> Shader::Create()
     }
 }
 
-std::shared_ptr<Shader> Shader::Create(const std::initializer_list<std::filesystem::path> &paths)
+std::shared_ptr<Shader> Shader::Create(const std::string_view& name, const std::initializer_list<std::filesystem::path> &paths)
 {
     using enum RendererAPI::API;
     switch (Renderer::GetAPI())
@@ -35,7 +35,7 @@ std::shared_ptr<Shader> Shader::Create(const std::initializer_list<std::filesyst
         TERR_ENGINE_ASSERT(false, "RendererAPI::None is not supported in Terroir!");
     }
     case OpenGL: {
-        return std::make_shared<OpenGLShader>(paths);
+        return std::make_shared<OpenGLShader>(name, paths);
     }
     default:
 

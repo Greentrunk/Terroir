@@ -14,12 +14,17 @@ class OpenGLShader : public Shader
   public:
     using ShaderMap = std::unordered_map<GLenum, std::string>;
     // const char* used for compatibility with C-style libraries
-    OpenGLShader(const std::initializer_list<std::filesystem::path> &paths = {
-                     "Terroir/src/renderer/shader/DefaultVertexShader.glsl",
-                     "Terroir/src/renderer/shader/DefaultFragShader.glsl"});
+    OpenGLShader(const std::string_view &name = "", const std::initializer_list<std::filesystem::path> &paths = {
+                                                        "Terroir/src/renderer/shader/DefaultVertexShader.glsl",
+                                                        "Terroir/src/renderer/shader/DefaultFragShader.glsl"});
     ~OpenGLShader() override;
     void Bind() const;
     void Unbind() const;
+
+    [[nodiscard]] constexpr const std::string &GetName() const override
+    {
+        return m_Name;
+    }
 
     void UploadUniform(const char *, const i32 &);
     void UploadUniform(const char *, const f32 &);
@@ -36,6 +41,7 @@ class OpenGLShader : public Shader
     }
 
     // Process generic shader and add its type and data to a hashmap
+    // When a max shader size will be decided, this will be turned into an array, not list
     ShaderMap PreProcess(const std::list<std::string> &);
 
     void Compile(const ShaderMap &);
@@ -45,6 +51,7 @@ class OpenGLShader : public Shader
     void CheckCompileErrors(u32, const std::string_view &);
 
     u32 m_RendererID;
+    std::string m_Name;
 };
 } // namespace Terroir
 

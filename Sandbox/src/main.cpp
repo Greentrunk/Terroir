@@ -28,7 +28,7 @@ class TestLayer : public Layer
 
         m_SquareVertexArray = VertexArray::Create();
 
-        m_Shader = Shader::Create();
+        auto shader1{m_ShaderLibrary.Load()};
 
         std::array<f32, 5 * 4> vertices2{-0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 0.5f,  -0.5f, 0.0f, 1.0f, 0.0f,
 
@@ -41,11 +41,11 @@ class TestLayer : public Layer
         auto ib2{IndexBuffer::Create(&indices2[0], static_cast<u32>(indices2.size()))};
         m_SquareVertexArray->SetIndexBuffer(ib2);
 
-        m_Shader2 = Shader::Create({"Terroir/src/renderer/shader/VertexShader2.glsl",
-                                   "Terroir/src/renderer/shader/FragShader2.glsl"});
+        auto shader2{m_ShaderLibrary.Load("Shader2", {"Terroir/src/renderer/shader/VertexShader2.glsl",
+                                                      "Terroir/src/renderer/shader/FragShader2.glsl"})};
 
-        m_TextureShader = Shader::Create({"Terroir/src/renderer/shader/TextureVertexShader.glsl",
-                                         "Terroir/src/renderer/shader/TextureFragShader.glsl"});
+        auto textureShader = m_ShaderLibrary.Load("Texture", {"Terroir/src/renderer/shader/TextureVertexShader.glsl",
+                                                              "Terroir/src/renderer/shader/TextureFragShader.glsl"});
         const std::filesystem::path path{"Sandbox/assets/textures/gigachad.jpg"};
         m_Texture = Texture2D::Create(path);
 
@@ -55,8 +55,8 @@ class TestLayer : public Layer
         // std::dynamic_pointer_cast<OpenGLShader>(m_LogoTexture)->Bind();
         // std::dynamic_pointer_cast<OpenGLShader>(m_LogoTexture)->UploadUniform("u_Texture", 0);
 
-        std::dynamic_pointer_cast<OpenGLShader>(m_TextureShader)->Bind();
-        std::dynamic_pointer_cast<OpenGLShader>(m_TextureShader)->UploadUniform("u_Texture", 0);
+        std::dynamic_pointer_cast<OpenGLShader>(textureShader)->Bind();
+        std::dynamic_pointer_cast<OpenGLShader>(textureShader)->UploadUniform("u_Texture", 0);
     }
 
     ~TestLayer() override
@@ -92,9 +92,9 @@ class TestLayer : public Layer
         Renderer::BeginScene(m_Camera);
 
         Mat4 scale{Math::Transform::Scale(Mat4(1.0f), Vec3(0.1f))};
-
-        std::dynamic_pointer_cast<OpenGLShader>(m_Shader2)->Bind();
-        std::dynamic_pointer_cast<OpenGLShader>(m_Shader2)->UploadUniform(
+        auto shader2{m_ShaderLibrary.Get("Shader2")};
+        std::dynamic_pointer_cast<OpenGLShader>(shader2)->Bind();
+        std::dynamic_pointer_cast<OpenGLShader>(shader2)->UploadUniform(
             "u_Color", Vec3{m_SquareColor[0], m_SquareColor[1], m_SquareColor[2]});
 
         for (auto y = 0; y != 10; ++y)
@@ -103,14 +103,15 @@ class TestLayer : public Layer
             {
                 Vec3 pos(x * 0.12f, y * 0.12f, 0.0f);
                 Mat4 transform = Math::Transform::Translate(Mat4(1.0f), pos) * scale;
-                Renderer::Submit(m_SquareVertexArray, m_Shader2, transform);
+                Renderer::Submit(m_SquareVertexArray, shader2, transform);
             }
         }
         m_Texture->Bind();
         // square
-        Renderer::Submit(m_SquareVertexArray, m_TextureShader, Math::Transform::Scale(Mat4{1.0f}, Vec3{1.5f}));
+        auto textureShader{m_ShaderLibrary.Get("Texture")};
+        Renderer::Submit(m_SquareVertexArray, textureShader, Math::Transform::Scale(Mat4{1.0f}, Vec3{1.5f}));
         m_LogoTexture->Bind();
-        Renderer::Submit(m_SquareVertexArray, m_TextureShader, Math::Transform::Scale(Mat4{1.0f}, Vec3{1.5f}));
+        Renderer::Submit(m_SquareVertexArray, textureShader, Math::Transform::Scale(Mat4{1.0f}, Vec3{1.5f}));
 
         // TRIANGLE
         // Renderer::Submit(m_VertexArray, m_Shader);
@@ -132,10 +133,9 @@ class TestLayer : public Layer
     }
 
   private:
+    ShaderLibrary m_ShaderLibrary;
     std::shared_ptr<VertexArray> m_VertexArray;
-    std::shared_ptr<Shader> m_Shader;
     std::shared_ptr<VertexArray> m_SquareVertexArray;
-    std::shared_ptr<Shader> m_Shader2, m_TextureShader;
     std::shared_ptr<Texture2D> m_Texture;
     std::shared_ptr<Texture2D> m_LogoTexture;
 

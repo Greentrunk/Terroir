@@ -27,9 +27,9 @@ static constexpr const char *StringFromShaderType(const GLenum type)
     return "";
 }
 
-OpenGLShader::OpenGLShader(const std::initializer_list<std::filesystem::path> &paths)
+OpenGLShader::OpenGLShader(const std::string_view &name, const std::initializer_list<std::filesystem::path> &paths)
 
-    : m_RendererID(glCreateProgram())
+    : m_RendererID(glCreateProgram()), m_Name(name)
 
 {
     // List to hold shader data to be sent to preprocessor
@@ -141,7 +141,9 @@ OpenGLShader::ShaderMap OpenGLShader::PreProcess(const std::list<std::string> &s
 void OpenGLShader::Compile(const ShaderMap &shaderSources)
 {
     // Store the shaders in local list for easy cleanup
-    std::list<GLuint> shaders;
+    TERR_ENGINE_ASSERT(shaderSources.size() <= 6, "Only 6 shaders max supported!");
+    std::array<GLuint, 6> shaders;
+    size_t index{0};
 
     for (auto &&[type, src] : shaderSources)
     {
@@ -154,7 +156,7 @@ void OpenGLShader::Compile(const ShaderMap &shaderSources)
 
         glAttachShader(m_RendererID, shader);
 
-        shaders.push_back(shader);
+        shaders[index++] = shader;
     }
 
     // After all shaders have been registered link program

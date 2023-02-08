@@ -54,5 +54,6 @@
 #include "Terroir/src/renderer/texture/Texture2D.h"
 // TEMP
 #include "Terroir/src/renderer/opengl/OpenGLShader.h"
+#include "Terroir/src/renderer/shader/ShaderLibrary.h"
 
 #endif // TERROIR_TERROIR_H
