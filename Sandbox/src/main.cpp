@@ -1,8 +1,3 @@
-//
-// Created by cjp on 1/3/23.
-//
-
-#include "Terroir/src/renderer/Renderer.h" //NOLINT
 #include <Terroir.h>
 #include <imgui.h>
 
@@ -46,13 +41,19 @@ class TestLayer : public Layer
         auto ib2{IndexBuffer::Create(&indices2[0], static_cast<u32>(indices2.size()))};
         m_SquareVertexArray->SetIndexBuffer(ib2);
 
-        m_Shader2 = Shader::Create("Terroir/src/renderer/shader/VertexShader2.glsl",
-                                   "Terroir/src/renderer/shader/FragShader2.glsl");
+        m_Shader2 = Shader::Create({"Terroir/src/renderer/shader/VertexShader2.glsl",
+                                   "Terroir/src/renderer/shader/FragShader2.glsl"});
 
-        m_TextureShader = Shader::Create("Terroir/src/renderer/shader/TextureVertexShader.glsl",
-                                         "Terroir/src/renderer/shader/TextureFragShader.glsl");
+        m_TextureShader = Shader::Create({"Terroir/src/renderer/shader/TextureVertexShader.glsl",
+                                         "Terroir/src/renderer/shader/TextureFragShader.glsl"});
         const std::filesystem::path path{"Sandbox/assets/textures/gigachad.jpg"};
         m_Texture = Texture2D::Create(path);
+
+        const std::filesystem::path logoPath{"Sandbox/assets/textures/logo.png"};
+        m_LogoTexture = Texture2D::Create(logoPath);
+        // BAD
+        // std::dynamic_pointer_cast<OpenGLShader>(m_LogoTexture)->Bind();
+        // std::dynamic_pointer_cast<OpenGLShader>(m_LogoTexture)->UploadUniform("u_Texture", 0);
 
         std::dynamic_pointer_cast<OpenGLShader>(m_TextureShader)->Bind();
         std::dynamic_pointer_cast<OpenGLShader>(m_TextureShader)->UploadUniform("u_Texture", 0);
@@ -106,8 +107,9 @@ class TestLayer : public Layer
             }
         }
         m_Texture->Bind();
-
         // square
+        Renderer::Submit(m_SquareVertexArray, m_TextureShader, Math::Transform::Scale(Mat4{1.0f}, Vec3{1.5f}));
+        m_LogoTexture->Bind();
         Renderer::Submit(m_SquareVertexArray, m_TextureShader, Math::Transform::Scale(Mat4{1.0f}, Vec3{1.5f}));
 
         // TRIANGLE
@@ -135,6 +137,7 @@ class TestLayer : public Layer
     std::shared_ptr<VertexArray> m_SquareVertexArray;
     std::shared_ptr<Shader> m_Shader2, m_TextureShader;
     std::shared_ptr<Texture2D> m_Texture;
+    std::shared_ptr<Texture2D> m_LogoTexture;
 
     OrthographicCamera m_Camera;
     Vec3 m_CameraPos;
@@ -149,8 +152,12 @@ class TestLayer : public Layer
 class SandboxGame : public Application
 {
   public:
-    SandboxGame()
+    SandboxGame(const std::string_view &name, u32 width, u32 height)
     {
+        // shut the warnings up
+        name;
+        width;
+        height;
         PushLayer(std::make_unique<TestLayer>("TEST"));
     }
 };
@@ -158,5 +165,5 @@ class SandboxGame : public Application
 std::unique_ptr<Application> Terroir::CreateApplication()
 {
     TERR_APP_INFO("Game Initialized!");
-    return std::make_unique<SandboxGame>();
+    return std::make_unique<SandboxGame>("Test", 1000, 1000);
 }

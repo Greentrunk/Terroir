@@ -22,6 +22,7 @@ class RendererAPI
         Metal = 4,
     };
 
+    virtual void Init() = 0;
     virtual void Clear() = 0;
     virtual void Clear(const Vec4 &) = 0;
 

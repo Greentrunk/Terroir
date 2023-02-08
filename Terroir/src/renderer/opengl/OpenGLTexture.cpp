@@ -29,13 +29,28 @@ OpenGLTexture2D::OpenGLTexture2D(const std::filesystem::path &path) : m_Path(pat
         m_Width = width;
         m_Height = height;
 
+        GLenum INTERNAL_FORMAT{0}, DATA_FORMAT{0};
+
+        if (channels == 4)
+        {
+            INTERNAL_FORMAT = GL_RGBA8;
+            DATA_FORMAT = GL_RGBA;
+        }
+        else if (channels == 3)
+        {
+            INTERNAL_FORMAT = GL_RGB8;
+            DATA_FORMAT = GL_RGB;
+        }
+
+        TERR_ENGINE_ASSERT(INTERNAL_FORMAT & DATA_FORMAT, "OpenGL format not supported!");
+
         glCreateTextures(GL_TEXTURE_2D, 1, &m_RendererID);
-        glTextureStorage2D(m_RendererID, 1, GL_RGB8, m_Width, m_Height);
+        glTextureStorage2D(m_RendererID, 1, INTERNAL_FORMAT, m_Width, m_Height);
 
         glTextureParameteri(m_RendererID, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
         glTextureParameteri(m_RendererID, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-        glTextureSubImage2D(m_RendererID, 0, 0, 0, m_Width, m_Height, GL_RGB, GL_UNSIGNED_BYTE, data);
+        glTextureSubImage2D(m_RendererID, 0, 0, 0, m_Width, m_Height, DATA_FORMAT, GL_UNSIGNED_BYTE, data);
 
         // minimap?
 

@@ -1,45 +1,56 @@
 #include "OpenGLShader.h"
 #include "Tpch.h"
 #include "core/Assert.h"
-#include "glad/glad.h"
 #include "math/Math.h"
 #include <filesystem>
-#include <glm/gtc/type_ptr.hpp>
 
 namespace Terroir
 {
-OpenGLShader::OpenGLShader(const char *vertexPath, const char *fragPath)
-
-    : m_RendererID(glCreateProgram()),
-      m_ShaderLoader(std::filesystem::path(std::filesystem::current_path() / vertexPath),
-                     std::filesystem::path(std::filesystem::current_path() / fragPath))
+// Two helper functions for shader debugging
+static constexpr GLenum ShaderTypeFromString(const std::string_view &type)
 {
-    auto const vertexShader = m_ShaderLoader.GetVertexShader();
-    auto const fragShader = m_ShaderLoader.GetFragShader();
+    if (type == "vertex")
+        return GL_VERTEX_SHADER;
+    if (type == "fragment" || type == "pixel")
+        return GL_FRAGMENT_SHADER;
 
-    u32 vertex{}, fragment{};
-    vertex = glCreateShader(GL_VERTEX_SHADER);
+    TERR_ENGINE_ASSERT(false, "Unknown Shader Type!");
+    return 0;
+}
 
-    // Vertex shader
-    glShaderSource(vertex, 1, &vertexShader, nullptr);
-    glCompileShader(vertex);
-    CheckCompileErrors(vertex, "VERTEX");
+static constexpr const char *StringFromShaderType(const GLenum type)
+{
+    if (type == GL_VERTEX_SHADER)
+        return "VERTEX";
+    if (type == GL_FRAGMENT_SHADER)
+        return "FRAGMENT";
+    return "";
+}
 
-    // Frag shader
-    fragment = glCreateShader(GL_FRAGMENT_SHADER);
-    glShaderSource(fragment, 1, &fragShader, nullptr);
-    glCompileShader(fragment);
-    CheckCompileErrors(fragment, "FRAGMENT");
+OpenGLShader::OpenGLShader(const std::initializer_list<std::filesystem::path> &paths)
 
-    // Shader program
-    glAttachShader(m_RendererID, vertex);
-    glAttachShader(m_RendererID, fragment);
-    glLinkProgram(m_RendererID);
-    CheckCompileErrors(m_RendererID, "PROGRAM");
+    : m_RendererID(glCreateProgram())
 
-    // Cleanup
-    glDetachShader(m_RendererID, vertex);
-    glDetachShader(m_RendererID, fragment);
+{
+    // List to hold shader data to be sent to preprocessor
+    std::list<std::string> list;
+    for (auto &path : paths)
+    {
+        std::string data;
+        if (std::filesystem::exists(path))
+        {
+            ReadShaderToString(std::filesystem::path(std::filesystem::current_path() / path), data);
+            list.push_back(data);
+        }
+        else
+        {
+            TERR_ENGINE_ERROR("Shader path: {} doesn't exist!", path.string());
+        }
+    }
+
+    auto shaderSources = PreProcess(list);
+
+    Compile(shaderSources);
 }
 
 OpenGLShader::~OpenGLShader()
@@ -95,6 +106,80 @@ void OpenGLShader::UploadUniform(const char *name, const Vec4 &vec)
 void OpenGLShader::UploadUniform(const char *, const Mat3 &)
 {
 }
+
+OpenGLShader::ShaderMap OpenGLShader::PreProcess(const std::list<std::string> &srcList)
+{
+    ShaderMap map;
+
+    constexpr const char *token = "#type";
+    auto tokenLength = strlen(token);
+
+    // For every shader string that comes in
+    for (const auto &src : srcList)
+    {
+        auto pos = src.find(token, 0);
+        while (pos != std::string_view::npos)
+        {
+            auto eol = src.find_first_of("\r\n", pos);
+            // Syntax errors
+            size_t begin = pos + tokenLength + 1;
+            auto type = src.substr(begin, eol - begin);
+            TERR_ENGINE_ASSERT(type == "vertex" || type == "fragment" || type == "pixel", "Unknown Shader Type!");
+
+            auto nextLinePos = src.find_first_not_of("\r\n", eol);
+            pos = src.find(token, nextLinePos);
+
+            // One shader in file or no?
+            map[ShaderTypeFromString(type)] =
+                src.substr(nextLinePos, pos - (nextLinePos == std::string_view::npos ? src.size() - 1 : nextLinePos));
+        }
+    }
+
+    return map;
+}
+
+void OpenGLShader::Compile(const ShaderMap &shaderSources)
+{
+    // Store the shaders in local list for easy cleanup
+    std::list<GLuint> shaders;
+
+    for (auto &&[type, src] : shaderSources)
+    {
+        auto shader = glCreateShader(type);
+        const auto csrc = src.c_str();
+
+        glShaderSource(shader, 1, &csrc, nullptr);
+        glCompileShader(shader);
+        CheckCompileErrors(shader, StringFromShaderType(type));
+
+        glAttachShader(m_RendererID, shader);
+
+        shaders.push_back(shader);
+    }
+
+    // After all shaders have been registered link program
+    glLinkProgram(m_RendererID);
+    CheckCompileErrors(m_RendererID, "PROGRAM");
+
+    // Loop again to cleanup
+    for (auto &shader : shaders)
+    {
+        glDetachShader(m_RendererID, shader);
+    }
+}
+
+void OpenGLShader::ReadShaderToString(const std::filesystem::path &path, std::string &s)
+{
+    std::ifstream shaderStream;
+    shaderStream.open(path);
+    std::stringstream buffer;
+    buffer << shaderStream.rdbuf();
+
+    s = buffer.str();
+
+    shaderStream.close();
+}
+
 void OpenGLShader::CheckCompileErrors(u32 shader, const std::string_view &type)
 {
     constexpr size_t logSize{1024};

@@ -14,8 +14,9 @@ class Shader
     virtual void Bind() const = 0;
     virtual void Unbind() const = 0;
 
-    static std::unique_ptr<Shader> Create();
-    static std::unique_ptr<Shader> Create(const char *, const char *);
+    static std::shared_ptr<Shader> Create();
+    // Pass a list of shader paths
+    static std::shared_ptr<Shader> Create(const std::initializer_list<std::filesystem::path> &);
 
   private:
     virtual void CheckCompileErrors(u32, const std::string_view &) = 0;

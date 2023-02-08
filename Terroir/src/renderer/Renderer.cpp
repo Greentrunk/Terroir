@@ -9,6 +9,11 @@ namespace Terroir
 {
 std::unique_ptr<Renderer::SceneData> Renderer::m_SceneData = std::make_unique<Renderer::SceneData>();
 
+void Renderer::Init()
+{
+    RenderCommand::Init(); 
+}
+
 void Renderer::BeginScene(OrthographicCamera &camera)
 {
     m_SceneData->m_ViewProjectionMatrix = camera.GetViewProjectionMatrix();

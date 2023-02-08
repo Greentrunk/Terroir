@@ -1,10 +1,17 @@
 #include "OpenGLRendererAPI.h"
+#include "Terroir/src/math/Math.h"
 #include "Tpch.h"
 #include <glad/glad.h>
-#include "Terroir/src/math/Math.h"
 
 namespace Terroir
 {
+void OpenGLRendererAPI::Init()
+{
+    // Blending
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+}
+
 void OpenGLRendererAPI::Clear()
 {
     glClearColor(0, 0, 0, 0);
@@ -13,7 +20,7 @@ void OpenGLRendererAPI::Clear()
 
 void OpenGLRendererAPI::Clear(const Vec4 &color)
 {
-    glClearColor(color.r, color.g, color.b, color.a); //NOLINT
+    glClearColor(color.r, color.g, color.b, color.a); // NOLINT
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 

@@ -9,6 +9,11 @@ namespace Terroir
 class RenderCommand
 {
   public:
+    inline static void Init()
+    {
+      s_RendererAPI->Init();
+    }
+
     static void Clear()
     {
         s_RendererAPI->Clear();

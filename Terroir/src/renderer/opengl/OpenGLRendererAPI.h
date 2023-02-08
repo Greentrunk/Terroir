@@ -11,6 +11,11 @@ class OpenGLRendererAPI : public RendererAPI
 {
   public:
     ~OpenGLRendererAPI() override = default;
+
+    // OpenGL default setups
+    void Init() override;
+
+    // Clear screen
     void Clear() override;
     void Clear(const Vec4 &) override;
 

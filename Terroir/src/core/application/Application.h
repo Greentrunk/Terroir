@@ -22,9 +22,7 @@ namespace Terroir
 class Application
 {
   public:
-    Application();
-
-    Application(const std::string_view &name, u32 width, u32 height);
+    Application(const std::string_view &name = "Terroir App", u32 width = 1000, u32 height = 1000);
 
     static Application &Get()
     {

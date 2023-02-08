@@ -7,7 +7,8 @@
 namespace Terroir
 {
 
-std::unique_ptr<Shader> Shader::Create()
+// May be removed
+std::shared_ptr<Shader> Shader::Create()
 {
     using enum RendererAPI::API;
     switch (Renderer::GetAPI())
@@ -16,7 +17,7 @@ std::unique_ptr<Shader> Shader::Create()
         TERR_ENGINE_ASSERT(false, "RendererAPI::None is not supported in Terroir!");
     }
     case OpenGL: {
-        return std::make_unique<OpenGLShader>();
+        return std::make_shared<OpenGLShader>();
     }
     default:
 
@@ -25,7 +26,7 @@ std::unique_ptr<Shader> Shader::Create()
     }
 }
 
-std::unique_ptr<Shader> Shader::Create(const char *vertexPath, const char *fragPath)
+std::shared_ptr<Shader> Shader::Create(const std::initializer_list<std::filesystem::path> &paths)
 {
     using enum RendererAPI::API;
     switch (Renderer::GetAPI())
@@ -34,7 +35,7 @@ std::unique_ptr<Shader> Shader::Create(const char *vertexPath, const char *fragP
         TERR_ENGINE_ASSERT(false, "RendererAPI::None is not supported in Terroir!");
     }
     case OpenGL: {
-        return std::make_unique<OpenGLShader>(vertexPath, fragPath);
+        return std::make_shared<OpenGLShader>(paths);
     }
     default:
 

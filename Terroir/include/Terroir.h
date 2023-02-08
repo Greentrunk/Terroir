@@ -52,7 +52,7 @@
 #include "Terroir/src/renderer/buffer/VertexBuffer.h"
 #include "Terroir/src/renderer/shader/Shader.h"
 #include "Terroir/src/renderer/texture/Texture2D.h"
-//TEMP
+// TEMP
 #include "Terroir/src/renderer/opengl/OpenGLShader.h"
 
 #endif // TERROIR_TERROIR_H

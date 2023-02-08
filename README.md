@@ -76,7 +76,7 @@ setup.bat
 
 Terroir (Vintage v0.1), ideally will allow the game developer to successfully create primitive 2D games. These would include classic retro arcade games like pong, tetris, and astroids.
 
-##### Required Features
+### Required Features
 
 | Feature                | Description                                               | Status |
 | ---------------------- | --------------------------------------------------------- | ------ |

@@ -52,32 +52,22 @@ void Application::Run()
     }
 }
 
-Application::Application()
-{
-    TERR_ENGINE_ASSERT(!s_Instance, "Application already exists!");
-    s_Instance = this;
-
-    constexpr u32 defaultWidth{1000}, defaultHeight{1000};
-    m_Window = Window::Create({"Terroir Engine", defaultWidth, defaultHeight});
-    // m_Window = std::unique_ptr<Window>(window);
-    m_Window->SET_EVENT_CB_LAMBDA(OnEvent);
-    m_Window->SetVSync(false);
-
-    auto dearImGuiLayer{std::make_unique<DearImGuiLayer>()};
-    m_DearImGuiLayer = dearImGuiLayer.get();
-    PushOverlay(std::move(dearImGuiLayer));
-}
-
 Application::Application(const std::string_view &name, u32 width, u32 height)
 {
+    // Can't have more than one instance
     TERR_ENGINE_ASSERT(!s_Instance, "Application already exists!");
     s_Instance = this;
 
+    // Cross platform window subsystem init
     m_Window = Window::Create({name, width, height});
     // m_Window = std::unique_ptr<Window>(window);
     m_Window->SET_EVENT_CB_LAMBDA(OnEvent);
     m_Window->SetVSync(false);
 
+    // Cross platform renderer sybsystem init
+    Renderer::Init();
+
+    // Layers
     auto dearImGuiLayer{std::make_unique<DearImGuiLayer>()};
     m_DearImGuiLayer = dearImGuiLayer.get();
     PushOverlay(std::move(dearImGuiLayer));
