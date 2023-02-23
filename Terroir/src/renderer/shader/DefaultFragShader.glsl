@@ -1,13 +1,16 @@
 #type fragment
 #version 330 core
 
-layout(location = 0) out vec4 FragColor;
-in vec4 ourColor;
-in vec3 ourPos;
+ in vec3 v_Position;
+in vec4 v_Color;
+layout (location = 0) out vec4 color;
+
+uniform sampler2D image;
+uniform vec3 spriteColor;
 
 void main()
 {
-  FragColor = vec4(ourPos * 0.5 + 0.5, 1.0);
-  FragColor = ourColor;
+color = vec4(v_Position * 0.5 + 0.5, 1.0);
+color = v_Color;
 }
 

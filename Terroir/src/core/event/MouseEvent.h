@@ -29,7 +29,7 @@ class MouseMovedEvent : public Event
 
     EVENT_CLASS_TYPE(MouseMoved);
 
-    EVENT_CLASS_CATEGORY(EventCategoryMouse)
+    EVENT_CLASS_CATEGORY(EventCategoryMouse | EventCategoryInput)
 
     [[nodiscard]] std::string ToString() const override
     {
@@ -51,17 +51,17 @@ class MouseScrolledEvent : public Event
 
     [[nodiscard]] constexpr f32 GetXOffset() const
     {
-        return m_YOffset;
+        return m_XOffset;
     }
 
     [[nodiscard]] constexpr f32 GetYOffset() const
     {
-        return m_XOffset;
+        return m_YOffset;
     }
 
     EVENT_CLASS_TYPE(MouseScrolled);
 
-    EVENT_CLASS_CATEGORY(EventCategoryMouse)
+    EVENT_CLASS_CATEGORY(EventCategoryMouse | EventCategoryInput)
 
     [[nodiscard]] std::string ToString() const override
     {
@@ -81,6 +81,8 @@ class MouseButtonEvent : public Event
     {
         return m_Button;
     }
+
+    EVENT_CLASS_CATEGORY(EventCategoryMouse | EventCategoryInput | EventCategoryMouseButton);
 
     [[nodiscard]] std::string ToString() const override
     {
@@ -106,8 +108,6 @@ class MouseButtonPressedEvent : public MouseButtonEvent
     }
 
     EVENT_CLASS_TYPE(MouseButtonPressed);
-
-    EVENT_CLASS_CATEGORY(EventCategoryMouseButton)
 };
 
 class MouseButtonReleasedEvent : public MouseButtonEvent
@@ -118,8 +118,6 @@ class MouseButtonReleasedEvent : public MouseButtonEvent
     }
 
     EVENT_CLASS_TYPE(MouseButtonReleased);
-
-    EVENT_CLASS_CATEGORY(EventCategoryMouseButton)
 };
 } // namespace Terroir
 

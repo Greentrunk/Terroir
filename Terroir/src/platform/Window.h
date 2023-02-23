@@ -16,7 +16,7 @@ class WindowProperties
 {
   public:
     WindowProperties(const std::string_view &windowTitle, u32 width, u32 height)
-        : m_Title(std::move(windowTitle)), m_Width(width), m_Height(height)
+        : m_Title(windowTitle), m_Width(width), m_Height(height)
     {
     }
 

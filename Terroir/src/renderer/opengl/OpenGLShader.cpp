@@ -1,3 +1,20 @@
+////////////////////////////////////////////////////////////////////////////////
+// Copyright (c) Christopher J. Pohl 2023 to Present  All Rights Reserved.
+//
+// This file is part of TERROIR ENGINE:
+// This is free software as described by the Apache 2.0 License
+//
+// The above copyright notice shall be included in all portions of this software
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+// EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+// IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+// CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+// TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+// SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+////////////////////////////////////////////////////////////////////////////////
+
 #include "OpenGLShader.h"
 #include "Tpch.h"
 #include "core/Assert.h"
@@ -68,43 +85,46 @@ void OpenGLShader::Unbind() const
     glUseProgram(0);
 }
 
-void OpenGLShader::UploadUniform(const char *name, const Mat4 &matrix)
-{
-    GLint location{glGetUniformLocation(m_RendererID, name)};
-    glUniformMatrix4fv(location, 1, GL_FALSE, Math::Conversion::GetValuePtr(matrix));
-}
-
-void OpenGLShader::UploadUniform(const char *name, const i32 &i)
+void OpenGLShader::UploadUniform(const char *name, const i32 i) const
 {
     GLint location{glGetUniformLocation(m_RendererID, name)};
     glUniform1i(location, i);
 }
 
-void OpenGLShader::UploadUniform(const char *name, const f32 &f)
+void OpenGLShader::UploadUniform(const char *name, const f32 f) const
 {
     GLint location{glGetUniformLocation(m_RendererID, name)};
     glUniform1f(location, f);
 }
 
-void OpenGLShader::UploadUniform(const char *name, const Vec2 &vec)
+void OpenGLShader::UploadUniform(const char *name, const Vec2 &vec) const
 {
     GLint location{glGetUniformLocation(m_RendererID, name)};
     glUniform2f(location, vec.x, vec.y);
 }
 
-void OpenGLShader::UploadUniform(const char *name, const Vec3 &vec)
+void OpenGLShader::UploadUniform(const char *name, const Vec3 &vec) const
 {
     GLint location{glGetUniformLocation(m_RendererID, name)};
     glUniform3f(location, vec.x, vec.y, vec.z);
 }
 
-void OpenGLShader::UploadUniform(const char *name, const Vec4 &vec)
+void OpenGLShader::UploadUniform(const char *name, const Vec4 &vec) const
 {
     GLint location{glGetUniformLocation(m_RendererID, name)};
     glUniform4f(location, vec.x, vec.y, vec.z, vec.w);
 }
-void OpenGLShader::UploadUniform(const char *, const Mat3 &)
+
+void OpenGLShader::UploadUniform(const char *name, const Mat3 &matrix) const
 {
+    GLint location{glGetUniformLocation(m_RendererID, name)};
+    glUniformMatrix3fv(location, 1, GL_FALSE, Math::Conversion::GetValuePtr(matrix));
+}
+
+void OpenGLShader::UploadUniform(const char *name, const Mat4 &matrix) const
+{
+    GLint location{glGetUniformLocation(m_RendererID, name)};
+    glUniformMatrix4fv(location, 1, GL_FALSE, Math::Conversion::GetValuePtr(matrix));
 }
 
 OpenGLShader::ShaderMap OpenGLShader::PreProcess(const std::list<std::string> &srcList)

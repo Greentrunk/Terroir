@@ -18,12 +18,12 @@ class WindowResizeEvent : public Event
     {
     }
 
-    [[nodiscard]] constexpr u32 GetMWidth() const
+    [[nodiscard]] constexpr u32 GetWidth() const
     {
         return m_Width;
     }
 
-    [[nodiscard]] constexpr u32 GetMHeight() const
+    [[nodiscard]] constexpr u32 GetHeight() const
     {
         return m_Height;
     }

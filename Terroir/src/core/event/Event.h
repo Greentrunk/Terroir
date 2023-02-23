@@ -7,7 +7,6 @@
 
 #include <Terroir/pch/Tpch.h>
 #include <Terroir/src/core/Types.h>
-#include <Terroir/terroir_export.h>
 
 namespace Terroir
 {
@@ -117,4 +116,10 @@ inline std::ostream &operator<<(std::ostream &os, const Event &e)
     {                                                                                                                  \
         return category;                                                                                               \
     }
+
+#define SET_EVENT_CB_LAMBDA(x) SetEventCallback([this](auto &&PH1) { x(std::forward<decltype(PH1)>(PH1)); })
+
+#define TERR_BIND_EVENT_LAMBDA(fn)                                                                                     \
+    [this](auto &&...args) -> decltype(auto) { return this->fn(std::forward<decltype(args)>(args)...); }
+
 #endif

@@ -15,32 +15,33 @@
 // SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ////////////////////////////////////////////////////////////////////////////////
 
-#include "OpenGLIndexBuffer.h"
+#include "OrthographicCamera.h"
 #include "Tpch.h"
-#include "glad/glad.h"
+#include "math/Math.h"
 
 namespace Terroir
 {
-OpenGLIndexBuffer::OpenGLIndexBuffer(u32 *indices, u32 count) : m_Count(count)
+using namespace Math;
+OrthographicCamera::OrthographicCamera(f32 left, f32 right, f32 bottom, f32 top)
+    : m_ProjectionMatrix(Transform::Ortho(left, right, bottom, top, -1.0f, 1.0f)), m_ViewMatrix(1.0f),
+      m_ViewProjectionMatrix(m_ProjectionMatrix * m_ViewMatrix)
+
 {
-    glGenBuffers(1, &m_RendererId);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_RendererId);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, count * sizeof(u32), indices, GL_STATIC_DRAW);
 }
 
-OpenGLIndexBuffer::~OpenGLIndexBuffer()
+void OrthographicCamera::SetProjection(f32 left, f32 right, f32 bottom, f32 top)
 {
-    glDeleteBuffers(1, &m_RendererId);
+    m_ProjectionMatrix = Transform::Ortho(left, right, bottom, top, -1.0f, 1.0f);
+    m_ViewProjectionMatrix = m_ProjectionMatrix * m_ViewMatrix;
 }
 
-void OpenGLIndexBuffer::Bind() const
+void OrthographicCamera::RecalculateViewMatrix()
 {
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_RendererId);
-}
+    Mat4 transform{Transform::Translate(Mat4(1.0f), m_Position) *
+                   Transform::Rotate(Mat4(1.0f), Conversion::ToRadians(m_Rotation), Vec3(0, 0, 1))};
 
-void OpenGLIndexBuffer::Unbind() const
-{
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+    m_ViewMatrix = Transform::Inverse(transform);
+    m_ViewProjectionMatrix = m_ProjectionMatrix * m_ViewMatrix;
 }
 
 } // namespace Terroir

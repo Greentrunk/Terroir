@@ -15,32 +15,35 @@
 // SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ////////////////////////////////////////////////////////////////////////////////
 
-#include "OpenGLIndexBuffer.h"
+#include "OpenGLRendererAPI.h"
+#include "Terroir/src/math/Math.h"
 #include "Tpch.h"
-#include "glad/glad.h"
+#include <glad/glad.h>
 
 namespace Terroir
 {
-OpenGLIndexBuffer::OpenGLIndexBuffer(u32 *indices, u32 count) : m_Count(count)
+void OpenGLRendererAPI::Init()
 {
-    glGenBuffers(1, &m_RendererId);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_RendererId);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, count * sizeof(u32), indices, GL_STATIC_DRAW);
+    // Blending
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 }
 
-OpenGLIndexBuffer::~OpenGLIndexBuffer()
+void OpenGLRendererAPI::SetViewport(u32 x, u32 y, u32 width, u32 height)
 {
-    glDeleteBuffers(1, &m_RendererId);
+    glViewport(static_cast<i32>(x), static_cast<i32>(y), static_cast<i32>(width), static_cast<i32>(height));
 }
 
-void OpenGLIndexBuffer::Bind() const
+void OpenGLRendererAPI::Clear(const Vec4 &color)
 {
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_RendererId);
+    glClearColor(color.r, color.g, color.b, color.a);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
-void OpenGLIndexBuffer::Unbind() const
+void OpenGLRendererAPI::DrawIndexed(const std::shared_ptr<VertexArray> &vertexArray)
 {
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+    glDrawElements(GL_TRIANGLES, static_cast<i32>(vertexArray->GetIndexBuffer()->GetIndexCount()), GL_UNSIGNED_INT,
+                   nullptr);
 }
 
 } // namespace Terroir

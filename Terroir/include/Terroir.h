@@ -44,12 +44,13 @@
 #include "Terroir/src/dear-imgui/DearImGuiLayer.h"
 
 // Rendering
-#include "Terroir/src/renderer/OrthographicCamera.h"
 #include "Terroir/src/renderer/RenderCommand.h"
 #include "Terroir/src/renderer/Renderer.h"
 #include "Terroir/src/renderer/VertexArray.h"
 #include "Terroir/src/renderer/buffer/IndexBuffer.h"
 #include "Terroir/src/renderer/buffer/VertexBuffer.h"
+#include "Terroir/src/renderer/camera/OrthographicCamera.h"
+#include "Terroir/src/renderer/camera/OrthographicCameraController.h"
 #include "Terroir/src/renderer/shader/Shader.h"
 #include "Terroir/src/renderer/texture/Texture2D.h"
 // TEMP

@@ -7,7 +7,6 @@ print("Building...")
 # Go back to root
 os.chdir('./../')
 
-
 print("\nUpdating submodules...")
 subprocess.call(["git", "submodule", "update", "--init", "--recursive"])
 
@@ -18,11 +17,16 @@ try:
     # If project built with msvc, don't need compile commands
     if os.name == 'nt':
         subprocess.call(["cmake", "-S.",
-                        "-DCMAKE_TOOLCHAIN_FILE=./vendor/vcpkg/scripts/buildsystems/vcpkg.cmake", "-Bbuild"])
+                         "-DCMAKE_TOOLCHAIN_FILE=./vendor/vcpkg/scripts/buildsystems/vcpkg.cmake", "-Bbuild"])
     else:
         subprocess.call(["cmake", "-S.", "-DCMAKE_TOOLCHAIN_FILE=./vendor/vcpkg/scripts/buildsystems/vcpkg.cmake",
-                        "-DCMAKE_EXPORT_COMPILE_COMMANDS=1", "-Bbuild"])
+                         "-DCMAKE_EXPORT_COMPILE_COMMANDS=1", "-Bbuild"])
+
     print("\nSetup completed")
+    print(
+        "\nConfigure your IDE to gen/build the project as necessary. If on linux, you need to export compile "
+        "commands.  Always set the cmake toolchain file to ./vendor/vcpkg/scripts/buildsystems/vcpkg.cmake")
+    print("\nWhile running Sandbox... MAKE SURE TO SET THE WORKING DIRECTORY TO THE ROOT DIR OF THE REPO")
     print("Thank you for checking out Terroir!")
 
 
