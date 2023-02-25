@@ -5,6 +5,6 @@ add_compile_definitions(IMGUI_IMPL_OPENGL_LOADER_CUSTOM)
 
 # Include SO headers
 include_directories(${PROJECT_SOURCE_DIR}/Terroir/include)
-add_executable(Sandbox src/main.cpp)
+add_executable(Sandbox src/main.cpp src/Sandbox2D.cpp src/Sandbox2D.h)
 
 target_link_libraries(Sandbox PRIVATE Terroir)

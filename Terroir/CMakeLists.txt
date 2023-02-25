@@ -11,6 +11,7 @@ find_package(glm CONFIG REQUIRED)
 # Header only libraries
 find_path(STB_INCLUDE_DIRS "stb_image.h")
 
+
 # OpenGL per platform
 if (WIN32)
     set(OPENGL opengl32)
@@ -54,4 +55,4 @@ include_directories(${PROJECT_SOURCE_DIR}/Terroir/pch)
 target_include_directories(Terroir PUBLIC ${PROJECT_BINARY_DIR} ${PROJECT_SOURCE_DIR} ${STB_INCLUDE_DIRS})
 
 # Link libraries from vcpkg
-target_link_libraries(Terroir PUBLIC spdlog::spdlog glfw ${OPENGL} glad::glad imgui::imgui glm::glm)
+target_link_libraries(Terroir PUBLIC spdlog::spdlog glfw ${OPENGL} glad::glad imgui::imgui glm::glm Tracy::TracyClient)

@@ -44,7 +44,18 @@ void OpenGLContext::Init()
     TERR_ENGINE_INFO("Vendor: {}", reinterpret_cast<const char *>(glGetString(GL_VENDOR)));
     TERR_ENGINE_INFO("Renderer: {}", reinterpret_cast<const char *>(glGetString(GL_RENDERER)));
     TERR_ENGINE_INFO("Version: {}", reinterpret_cast<const char *>(glGetString(GL_VERSION)));
+
+    // Check for OpenGL 4.5 support
+#ifdef TERR_ENABLE_ASSERTS
+    int versionMajor;
+    int versionMinor;
+    glGetIntegerv(GL_MAJOR_VERSION, &versionMajor);
+    glGetIntegerv(GL_MINOR_VERSION, &versionMinor);
+
+    TERR_ENGINE_ASSERT(versionMajor > 4 || (versionMajor == 4 && versionMinor >= 5),
+                       "Terroir requires at least OpenGL version 4.5!");
 }
+#endif
 
 void OpenGLContext::SwapBuffers()
 {

@@ -16,6 +16,7 @@
 #include "../event/Event.h"
 #include "../event/WindowEvent.h"
 #include "../layer/LayerStack.h"
+#include <tracy/Tracy.hpp>
 
 namespace Terroir
 {

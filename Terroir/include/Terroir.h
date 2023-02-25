@@ -13,9 +13,6 @@
 // Timestep
 #include "Terroir/src/core/Timestep.h"
 
-// Client entry-point
-#include "Terroir/src/core/AppEntry.h"
-
 // Logging logging
 #include "Terroir/src/log/Log.h"
 

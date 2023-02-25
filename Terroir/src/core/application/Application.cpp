@@ -52,6 +52,7 @@ Application::~Application()
 
 void Application::Run()
 {
+    ZoneScoped;
     TERR_ENGINE_INFO("Terroir Application Initialized");
 
     while (m_Running)
@@ -81,6 +82,7 @@ void Application::Run()
 
         m_Window->OnUpdate();
     }
+    FrameMark;
 }
 
 void Application::OnEvent(Event &e)

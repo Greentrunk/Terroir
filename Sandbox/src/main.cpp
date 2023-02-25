@@ -15,16 +15,12 @@
 // SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ////////////////////////////////////////////////////////////////////////////////
 
+#include "Sandbox2D.h"
 #include <Terroir.h>
+#include <Terroir/src/core/AppEntry.h>
 #include <imgui.h>
 
 using namespace Terroir;
-constexpr const i32 NUM_TIMES_TO_SUBDIVIDE{5};
-constexpr const i32 NUM_TRIANGLES{729};
-constexpr const i32 NUM_VERTICES{NUM_TRIANGLES * 3};
-
-std::array<Vec2, NUM_VERTICES> points;
-i32 index{0};
 
 class TestLayer : public Layer
 {
@@ -142,7 +138,7 @@ class SandboxGame : public Application
     {
         // shut the warnings up
         TERR_APP_DEBUG("THIS IS TO SHUT OFF COMPILER WARNINGS, {}{}{}", name, width, height);
-        PushLayer(std::make_unique<TestLayer>("TEST"));
+        PushLayer(std::make_unique<Sandbox2D>("2D"));
     }
 };
 
