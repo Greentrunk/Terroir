@@ -20,6 +20,11 @@ static auto s_GLFWInit{false};
 static const auto GLFWErrorCallback{
     [](i32 err, const char *desc) { TERR_ENGINE_ERROR("[glfw Error]: ({}): {}", err, desc); }};
 
+GLFWWindow::GLFWWindow(const WindowProperties &props) : m_GlfwData({props.m_Title, props.m_Width, props.m_Height})
+{
+    GLFWWindow::Init();
+}
+
 GLFWWindow::~GLFWWindow()
 {
     GLFWWindow::Shutdown();
@@ -27,12 +32,14 @@ GLFWWindow::~GLFWWindow()
 
 void GLFWWindow::OnUpdate()
 {
+    TERR_PROFILE_FUNC;
     glfwPollEvents();
     m_Context->SwapBuffers();
 }
 
 void GLFWWindow::SetVSync(bool enabled)
 {
+    TERR_PROFILE_FUNC;
     if (enabled)
     {
         glfwSwapInterval(1);
@@ -51,6 +58,7 @@ bool GLFWWindow::IsVSync() const
 
 void GLFWWindow::Init()
 {
+    TERR_PROFILE_FUNC;
     TERR_ENGINE_INFO("Initializing glfw Window {} of size: ({}, {})", m_GlfwData.m_WindowTitle,
                      m_GlfwData.m_WindowWidth, m_GlfwData.m_WindowHeight);
 
@@ -72,6 +80,7 @@ void GLFWWindow::Init()
                                 m_GlfwData.m_WindowTitle.c_str(), nullptr, nullptr);
 
     m_Context = std::unique_ptr<GraphicsContext>(new OpenGLContext(m_Window));
+    TERR_PROFILE_ALLOC_SMART(m_Context);
     m_Context->Init();
 
     glfwSetWindowUserPointer(m_Window, &m_GlfwData);
@@ -166,7 +175,9 @@ void GLFWWindow::Init()
 
 void GLFWWindow::Shutdown()
 {
+    TERR_PROFILE_FUNC;
     glfwDestroyWindow(m_Window);
     glfwTerminate();
+    TERR_PROFILE_FREE_SMART(m_Context);
 }
 } // namespace Terroir

@@ -52,7 +52,7 @@ class OrthographicCamera
         RecalculateViewMatrix();
     }
 
-    [[nodiscard]] constexpr const Mat4 &GetViewProjectionMatrix()
+    [[nodiscard]] constexpr const Mat4 &GetViewProjectionMatrix() const
     {
         return m_ViewProjectionMatrix;
     }

@@ -29,10 +29,6 @@ endif (UNIX AND NOT APPLE)
 
 set(CMAKE_CXX_STANDARD 20)
 
-
-# Project-wide defines
-add_compile_definitions(TRACY_ENABLE)
-
 set(LibraryName Terroir)
 
 # Tracy profiler

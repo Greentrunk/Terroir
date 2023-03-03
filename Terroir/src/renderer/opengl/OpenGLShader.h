@@ -40,11 +40,16 @@ class OpenGLShader : public Shader
     void Bind() const override;
     void Unbind() const override;
 
-    [[nodiscard]] constexpr const std::string &GetName() const override
-    {
-        return m_Name;
-    }
+    // High level uniforms
+    void SetUniform(const std::string_view &, i32) const override;
+    void SetUniform(const std::string_view &, f32) const override;
+    void SetUniform(const std::string_view &, const Vec2 &) const override;
+    void SetUniform(const std::string_view &, const Vec3 &) const override;
+    void SetUniform(const std::string_view &, const Vec4 &) const override;
+    void SetUniform(const std::string_view &, const Mat3 &) const override;
+    void SetUniform(const std::string_view &, const Mat4 &) const override;
 
+    // OpenGL specific uniforms
     void UploadUniform(const char *, i32) const;
     void UploadUniform(const char *, f32) const;
     void UploadUniform(const char *, const Vec2 &) const;
@@ -52,6 +57,11 @@ class OpenGLShader : public Shader
     void UploadUniform(const char *, const Vec4 &) const;
     void UploadUniform(const char *, const Mat3 &) const;
     void UploadUniform(const char *, const Mat4 &) const;
+
+    [[nodiscard]] constexpr const std::string &GetName() const override
+    {
+        return m_Name;
+    }
 
     // debug
     inline u32 GetID()

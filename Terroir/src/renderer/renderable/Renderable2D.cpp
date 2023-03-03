@@ -15,26 +15,12 @@
 // SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ////////////////////////////////////////////////////////////////////////////////
 
-#ifndef TERROIR_OPENGLCONTEXT_H
-#define TERROIR_OPENGLCONTEXT_H
+//
+// Created by Greentrunk on 3/3/2023.
+//
 
-#include "../GraphicsContext.h"
-#include <GLFW/glfw3.h>
+#include "Renderable2D.h"
 
 namespace Terroir
 {
-class OpenGLContext : public GraphicsContext
-{
-  public:
-    explicit OpenGLContext(GLFWwindow *);
-    ~OpenGLContext() override;
-
-    void Init() override;
-    void SwapBuffers() override;
-
-  private:
-    GLFWwindow *m_WindowHandle;
-};
-
 } // namespace Terroir
-#endif

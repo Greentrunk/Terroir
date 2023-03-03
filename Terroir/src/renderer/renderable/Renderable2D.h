@@ -15,39 +15,43 @@
 // SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ////////////////////////////////////////////////////////////////////////////////
 
-#include "OpenGLRendererAPI.h"
+#ifndef TERROIR_RENDERABLE2D_H
+#define TERROIR_RENDERABLE2D_H
+
 #include "Terroir/src/math/Math.h"
-#include "Tpch.h"
-#include <glad/glad.h>
 
 namespace Terroir
 {
-void OpenGLRendererAPI::Init()
-{
-    // Blending
-    glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-    // Depth
-    glEnable(GL_DEPTH_TEST);
-}
-
-void OpenGLRendererAPI::SetViewport(u32 x, u32 y, u32 width, u32 height)
+class Renderable2D
 {
-    glViewport(static_cast<i32>(x), static_cast<i32>(y), static_cast<i32>(width), static_cast<i32>(height));
-}
+  public:
+    // Constrctor that takes in a position, size, color, and rotation
+    Renderable2D(const Vec3 &position, const Vec2 &size, const Vec4 &color, f32 rotation = 0.0f)
+        : m_Position(position), m_Size(size), m_Color(color), m_Rotation(rotation)
+    {
+    }
 
-void OpenGLRendererAPI::Clear(const Vec4 &color)
-{
-    glClearColor(color.r, color.g, color.b, color.a);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-}
+    // constexpr function that returns a the total transform matrix
+    [[nodiscard]] Mat4 GetTransform() const noexcept
+    {
+        // Set rotation if default value isn't used
+        Mat4 rotate{1.0f};
+        if (m_Rotation != 0.0f)
+        {
+            rotate = Math::Transform::Rotate(Mat4(1.0f), m_Rotation, {0.0f, 0.0f, 1.0f});
+        }
+        return Math::Transform::Translate(Mat4(1.0f), m_Position) * rotate *
+               Math::Transform::Scale(Mat4(1.0f), {m_Size.x, m_Size.y, 1.0f});
+    }
 
-void OpenGLRendererAPI::DrawIndexed(const std::shared_ptr<VertexArray> &vertexArray)
-{
-    glDrawElements(GL_TRIANGLES, static_cast<i32>(vertexArray->GetIndexBuffer()->GetIndexCount()), GL_UNSIGNED_INT,
-                   nullptr);
-    glBindTexture(GL_TEXTURE_2D, 0);
-}
+  private:
+    Vec3 m_Position;
+    Vec2 m_Size;
+    Vec4 m_Color;
+    f32 m_Rotation;
+};
 
 } // namespace Terroir
+
+#endif // TERROIR_RENDERABLE2D_H

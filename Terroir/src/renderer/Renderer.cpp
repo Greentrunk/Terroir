@@ -17,6 +17,7 @@
 
 #include "Renderer.h"
 #include "RenderCommand.h"
+#include "Renderer2D.h"
 #include "Tpch.h"
 #include "math/Math.h"
 #include "renderer/opengl/OpenGLShader.h"
@@ -28,6 +29,14 @@ std::unique_ptr<Renderer::SceneData> Renderer::m_SceneData = std::make_unique<Re
 void Renderer::Init()
 {
     RenderCommand::Init();
+    Renderer2D::Init();
+    TERR_ENGINE_INFO("Terroir Renderer Initialized");
+}
+
+void Renderer::Shutdown()
+{
+    Renderer2D::Shutdown();
+    TERR_ENGINE_INFO("Terroir Renderer Shutdown");
 }
 
 void Renderer::BeginScene(OrthographicCamera &camera)

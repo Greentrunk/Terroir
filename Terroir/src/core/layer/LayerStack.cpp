@@ -8,9 +8,7 @@
 namespace Terroir
 {
 // Set insert iterator pointer to the beginning on construction
-LayerStack::LayerStack()
-{
-}
+LayerStack::LayerStack() = default;
 
 // Cleanup
 LayerStack::~LayerStack()
@@ -18,6 +16,7 @@ LayerStack::~LayerStack()
     TERR_ENGINE_INFO("DELETING LAYERSTACK");
     for (auto &layer : m_Layers)
     {
+        TERR_PROFILE_FREE_SMART(layer);
         layer.reset(nullptr);
     }
 }

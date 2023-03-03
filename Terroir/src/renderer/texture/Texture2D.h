@@ -27,6 +27,9 @@ namespace Terroir
 class Texture2D : public Texture
 {
   public:
+    ~Texture2D() override = default;
+
+    static std::shared_ptr<Texture2D> Create(u32, u32);
     static std::shared_ptr<Texture2D> Create(const std::filesystem::path &);
 };
 

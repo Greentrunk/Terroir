@@ -45,4 +45,25 @@ std::shared_ptr<Texture2D> Texture2D::Create(const std::filesystem::path &path)
     }
     }
 }
+std::shared_ptr<Texture2D> Texture2D::Create(u32 width, u32 height)
+{
+    using enum RendererAPI::API;
+    switch (Renderer::GetAPI())
+    {
+    case None: {
+        TERR_ASSERT(false, "RendererAPI::None is not supported in Terroir!");
+        return nullptr;
+    }
+
+    case OpenGL: {
+        return std::make_shared<OpenGLTexture2D>(width, height);
+
+    default: {
+
+        TERR_ENGINE_ERROR("Unknown RendererAPI");
+        return nullptr;
+    }
+    }
+    }
+}
 } // namespace Terroir

@@ -22,4 +22,7 @@
 // Logging
 #include "Terroir/src/log/Log.h"
 
+// Profile
+#include "Terroir/src/core/Profile.h"
+
 #endif // TERROIR_TPCH_H

@@ -16,6 +16,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 #include "Sandbox2D.h"
+#include "filesystem"
 #include <imgui.h>
 
 Sandbox2D::Sandbox2D(const std::string_view &name) : Layer(name), m_CameraController(1280.0f / 720.0f, false)
@@ -24,45 +25,35 @@ Sandbox2D::Sandbox2D(const std::string_view &name) : Layer(name), m_CameraContro
 
 void Sandbox2D::OnAttach()
 {
-    std::array<f32, 3 * 7> vertices{-0.5f, -0.5f, 0.0f, 0.0f, 0.8f, 0.0f, 1.0f, 0.5f, -0.5f, 0.0f, 0.0f,
-                                    0.8f,  0.0f,  1.0f, 0.0f, 0.5f, 0.0f, 0.0f, 0.8f, 0.0f,  1.0f};
-    std::array<u32, 3> indices{0, 1, 2};
-
-    m_VertexArray = VertexArray::Create();
-    auto vertexBuffer = VertexBuffer::Create(&vertices[0], sizeof(vertices));
-
-    BufferLayout layout{{"a_Position", ShaderDataType::Vec3}, {"a_Color", ShaderDataType::Vec4}};
-    vertexBuffer->SetLayout(layout);
-    m_VertexArray->AddVertexBuffer(vertexBuffer);
-
-    auto indexBuffer = IndexBuffer::Create(&indices[0], static_cast<u32>(indices.size()));
-    m_VertexArray->SetIndexBuffer(indexBuffer);
-
-    vertexBuffer->Unbind();
-    m_VertexArray->Unbind();
-
-    m_SquareVertexArray = VertexArray::Create();
-
-    auto shader1{m_ShaderLibrary.Load()};
+    m_GreenTrunkTexture = Texture2D::Create(std::filesystem::path("Sandbox/assets/textures/logo.png"));
 }
+
 void Sandbox2D::OnDetach()
 {
-    Layer::OnDetach();
 }
+
 void Sandbox2D::OnUpdate(Timestep dt)
 {
-    // Update
+    TERR_PROFILE_FUNC;
+
+    // Update camera
     m_CameraController.OnUpdate(dt);
 
+    // Clear Screen to color
     RenderCommand::Clear({.1, 1, .6, 1});
-    Renderer::BeginScene(m_CameraController.GetCamera());
-    auto shader{m_ShaderLibrary.Get("Default")};
-    Renderer::Submit(m_VertexArray, shader, Math::Transform::Scale(Mat4{1.0f}, Vec3{1.5f}));
 
-    Renderer::EndScene();
+    // Draw whatever you want
+    Renderer2D::BeginScene(m_CameraController.GetCamera());
+    Sprite greenTrunk(m_GreenTrunkTexture, {0.0f, 0.0f, -0.1f}, {3.0f, 3.0f}, {1.0f, 0.0f, 0.0f, 1.0f});
+    Renderer2D::DrawSprite(greenTrunk);
+    Renderer2D::DrawRect({-1.0f, 0.0}, {0.3, 0.3f}, {0.1f, 0.8f, 0.3f, 1.0f});
+    Renderer2D::DrawRect({0.5f, -0.5}, {0.5, 0.3f}, {1.0f, 0.8f, 0.3f, 1.0f});
+    Renderer2D::EndScene();
 }
 void Sandbox2D::OnDearImGuiRender()
 {
+    TERR_PROFILE_FUNC;
+
     ImGui::Begin("Settings");
     ImGui::End();
 }

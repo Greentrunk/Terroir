@@ -17,10 +17,7 @@ class GLFWWindow : public Window
 {
 
   public:
-    explicit GLFWWindow(const WindowProperties &props) : m_GlfwData({props.m_Title, props.m_Width, props.m_Height})
-    {
-        GLFWWindow::Init();
-    }
+    explicit GLFWWindow(const WindowProperties &props);
 
     ~GLFWWindow() override;
 

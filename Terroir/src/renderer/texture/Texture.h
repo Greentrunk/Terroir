@@ -30,6 +30,9 @@ class Texture
     [[nodiscard]] virtual u32 GetWidth() const = 0;
     [[nodiscard]] virtual u32 GetHeight() const = 0;
 
+    // Void pointer to be used with C-Style library
+    virtual void SetData(void *data, u32 size) = 0;
+
     virtual void Bind(u32 slot = 0) = 0;
 };
 } // namespace Terroir

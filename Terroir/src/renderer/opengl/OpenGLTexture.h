@@ -16,12 +16,14 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 #include "Terroir/src/renderer/texture/Texture2D.h"
+#include <glad/glad.h>
 
 namespace Terroir
 {
 class OpenGLTexture2D : public Texture2D
 {
   public:
+    OpenGLTexture2D(u32, u32);
     OpenGLTexture2D(const std::filesystem::path &);
     virtual ~OpenGLTexture2D() override;
 
@@ -34,11 +36,14 @@ class OpenGLTexture2D : public Texture2D
         return m_Height;
     }
 
+    void SetData(void *, u32) override;
+
     virtual void Bind(u32 slot = 0) override;
 
   private:
     std::filesystem::path m_Path;
     u32 m_Width, m_Height;
     u32 m_RendererID;
+    GLenum m_InternalFormat, m_DataFormat;
 };
 } // namespace Terroir

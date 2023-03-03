@@ -49,6 +49,7 @@ OpenGLShader::OpenGLShader(const std::string_view &name, const std::initializer_
     : m_RendererID(glCreateProgram()), m_Name(name)
 
 {
+    TERR_PROFILE_FUNC;
     // List to hold shader data to be sent to preprocessor
     std::list<std::string> list;
     for (auto &path : paths)
@@ -129,6 +130,7 @@ void OpenGLShader::UploadUniform(const char *name, const Mat4 &matrix) const
 
 OpenGLShader::ShaderMap OpenGLShader::PreProcess(const std::list<std::string> &srcList)
 {
+    TERR_PROFILE_FUNC;
     ShaderMap map;
 
     constexpr const char *token = "#type";
@@ -162,7 +164,7 @@ void OpenGLShader::Compile(const ShaderMap &shaderSources)
 {
     // Store the shaders in local list for easy cleanup
     TERR_ENGINE_ASSERT(shaderSources.size() <= 6, "Only 6 shaders max supported!");
-    std::array<GLuint, 6> shaders;
+    std::array<GLuint, 6> shaders{};
     size_t index{0};
 
     for (auto &&[type, src] : shaderSources)
@@ -192,6 +194,7 @@ void OpenGLShader::Compile(const ShaderMap &shaderSources)
 
 void OpenGLShader::ReadShaderToString(const std::filesystem::path &path, std::string &s)
 {
+    TERR_PROFILE_FUNC;
     std::ifstream shaderStream;
     shaderStream.open(path);
     std::stringstream buffer;
@@ -204,6 +207,7 @@ void OpenGLShader::ReadShaderToString(const std::filesystem::path &path, std::st
 
 void OpenGLShader::CheckCompileErrors(u32 shader, const std::string_view &type)
 {
+    TERR_PROFILE_FUNC;
     constexpr size_t logSize{1024};
     i32 success{};
     std::array<char, logSize> infoLog{};
@@ -232,5 +236,33 @@ void OpenGLShader::CheckCompileErrors(u32 shader, const std::string_view &type)
             TERR_ENGINE_ASSERT(false, "Shader linking failure");
         }
     }
+}
+void OpenGLShader::SetUniform(const std::string_view &name, i32 i) const
+{
+    UploadUniform(name.data(), i);
+}
+void OpenGLShader::SetUniform(const std::string_view &name, f32 f) const
+{
+    UploadUniform(name.data(), f);
+}
+void OpenGLShader::SetUniform(const std::string_view &name, const Vec2 &vec) const
+{
+    UploadUniform(name.data(), vec);
+}
+void OpenGLShader::SetUniform(const std::string_view &name, const Vec3 &vec) const
+{
+    UploadUniform(name.data(), vec);
+}
+void OpenGLShader::SetUniform(const std::string_view &name, const Vec4 &vec) const
+{
+    UploadUniform(name.data(), vec);
+}
+void OpenGLShader::SetUniform(const std::string_view &name, const Mat3 &mat) const
+{
+    UploadUniform(name.data(), mat);
+}
+void OpenGLShader::SetUniform(const std::string_view &name, const Mat4 &mat) const
+{
+    UploadUniform(name.data(), mat);
 }
 } // namespace Terroir

@@ -1,6 +1,19 @@
+////////////////////////////////////////////////////////////////////////////////
+// Copyright (c) Christopher J. Pohl 2023 to Present  All Rights Reserved.
 //
-// Created by cjp on 1/4/23.
+// This file is part of TERROIR ENGINE:
+// This is free software as described by the Apache 2.0 License
 //
+// The above copyright notice shall be included in all portions of this software
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+// EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+// IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+// CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+// TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+// SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+////////////////////////////////////////////////////////////////////////////////
 
 #include "Application.h"
 #include "Tpch.h"
@@ -26,13 +39,17 @@ Application *Application::s_Instance{nullptr};
 
 Application::Application(const std::string_view &name, u32 width, u32 height)
 {
+    TERR_PROFILE_SCOPE("Terroir Application Startup");
+
     // Can't have more than one instance
     TERR_ENGINE_ASSERT(!s_Instance, "Application already exists!");
     s_Instance = this;
 
+    TERR_ENGINE_INFO("Initializing Terroir Subsystems...");
+
     // Cross platform window subsystem init
     m_Window = Window::Create({name, width, height});
-    // m_Window = std::unique_ptr<Window>(window);
+    TERR_PROFILE_ALLOC_SMART(m_Window);
     m_Window->SET_EVENT_CB_LAMBDA(OnEvent);
     m_Window->SetVSync(false);
 
@@ -40,23 +57,26 @@ Application::Application(const std::string_view &name, u32 width, u32 height)
     Renderer::Init();
 
     // Layers
-    auto dearImGuiLayer{std::make_unique<DearImGuiLayer>()};
+    auto dearImGuiLayer = std::make_unique<DearImGuiLayer>();
     m_DearImGuiLayer = dearImGuiLayer.get();
+    TERR_PROFILE_ALLOC_SMART(dearImGuiLayer);
     PushOverlay(std::move(dearImGuiLayer));
 }
 
 Application::~Application()
 {
     TERR_ENGINE_INFO("Exiting Application");
+    TERR_PROFILE_FREE_SMART(m_Window);
+    Renderer::Shutdown();
 }
 
 void Application::Run()
 {
-    ZoneScoped;
     TERR_ENGINE_INFO("Terroir Application Initialized");
 
     while (m_Running)
     {
+        TERR_PROFILE_SCOPE("Terroir Application Run Loop");
         // temporary
         // Calculate delta-time
         auto time = static_cast<f32>(glfwGetTime());

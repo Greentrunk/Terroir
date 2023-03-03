@@ -34,11 +34,9 @@ class Sandbox2D : public Layer
     void OnEvent(Event &) override;
 
   private:
-    ShaderLibrary m_ShaderLibrary;
-    std::shared_ptr<VertexArray> m_VertexArray;
     OrthographicCameraController m_CameraController;
-    std::shared_ptr<VertexArray> m_SquareVertexArray;
-    Vec3 m_SquarePos;
+
+    std::shared_ptr<Texture2D> m_GreenTrunkTexture;
 };
 
 #endif // TERROIR_SANDBOX2D_H

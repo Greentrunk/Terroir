@@ -19,6 +19,7 @@
 #define TERROIR_SHADER_H
 
 #include "Terroir/src/core/Types.h"
+#include "Terroir/src/math/Math.h"
 
 namespace Terroir
 {
@@ -30,6 +31,15 @@ class Shader
     virtual ~Shader() = default;
     virtual void Bind() const = 0;
     virtual void Unbind() const = 0;
+
+    // Uniforms
+    virtual void SetUniform(const std::string_view &, i32) const = 0;
+    virtual void SetUniform(const std::string_view &, f32) const = 0;
+    virtual void SetUniform(const std::string_view &, const Vec2 &) const = 0;
+    virtual void SetUniform(const std::string_view &, const Vec3 &) const = 0;
+    virtual void SetUniform(const std::string_view &, const Vec4 &) const = 0;
+    virtual void SetUniform(const std::string_view &, const Mat3 &) const = 0;
+    virtual void SetUniform(const std::string_view &, const Mat4 &) const = 0;
 
     [[nodiscard]] virtual constexpr const std::string &GetName() const = 0;
 

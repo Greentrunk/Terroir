@@ -18,6 +18,7 @@
 #include "renderer/opengl/OpenGLContext.h"
 #include "Tpch.h"
 #include "core/Assert.h"
+#include "core/Profile.h"
 #include "log/Log.h"
 #include <glad/glad.h>
 
@@ -35,6 +36,7 @@ OpenGLContext::~OpenGLContext()
 
 void OpenGLContext::Init()
 {
+    TERR_PROFILE_FUNC;
     glfwMakeContextCurrent(m_WindowHandle);
     auto status = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
     TERR_ENGINE_ASSERT(status, "Failed to init Glad!");
@@ -59,6 +61,9 @@ void OpenGLContext::Init()
 
 void OpenGLContext::SwapBuffers()
 {
+    TERR_PROFILE_FUNC;
     glfwSwapBuffers(m_WindowHandle);
+    //    TERR_PROFILE_GPU_Collect;
 }
+
 } // namespace Terroir

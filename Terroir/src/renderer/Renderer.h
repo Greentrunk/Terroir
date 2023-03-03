@@ -31,6 +31,7 @@ class Renderer
 {
   public:
     static void Init();
+    static void Shutdown();
 
     static void OnWindowResize(u32, u32);
 
@@ -44,6 +45,7 @@ class Renderer
     {
         return RendererAPI::GetAPI();
     }
+
 
   private:
     using SceneData = struct SceneData
