@@ -37,5 +37,3 @@ add_subdirectory(${PROJECT_SOURCE_DIR}/vendor/tracy)
 add_subdirectory(Terroir)
 add_subdirectory(Sandbox)
 
-# YOU NEED TO COMMENT THIS OUT
-# add_subdirectory(opengltest)

@@ -76,7 +76,7 @@ class OpenGLShader : public Shader
     void Compile(const ShaderMap &);
 
   private:
-    void ReadShaderToString(const std::filesystem::path &, std::string &);
+    static void ReadShaderToString(const std::filesystem::path &, std::string &);
     void CheckCompileErrors(u32, const std::string_view &) override;
 
     u32 m_RendererID;

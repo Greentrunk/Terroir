@@ -76,7 +76,7 @@ void OpenGLVertexArray::Unbind()
 
 void OpenGLVertexArray::AddVertexBuffer(const std::shared_ptr<VertexBuffer> &vertexBuffer)
 {
-    TERR_ENGINE_ASSERT(vertexBuffer->GetLayout().GetElements().size(), "VB has no layout!");
+    TERR_ENGINE_ASSERT(!vertexBuffer->GetLayout().GetElements().empty(), "VB has no layout!");
 
     glBindVertexArray(m_RendererId);
     vertexBuffer->Bind();

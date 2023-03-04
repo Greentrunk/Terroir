@@ -23,7 +23,7 @@ std::shared_ptr<VertexBuffer> VertexBuffer::Create(f32 *vertices, u32 size)
 
     default: {
 
-        TERR_ENGINE_ERROR("Unkown RendererAPI");
+        TERR_ENGINE_ERROR("Unknown RendererAPI");
         return nullptr;
     }
     }

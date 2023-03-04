@@ -35,7 +35,7 @@ void LayerStack::PushOverlay(LayerStack::LayerPtr overlay)
 
 void LayerStack::PopLayer(LayerStack::LayerPtr &layer)
 {
-    if (auto it = std::find(m_Layers.begin(), m_Layers.end(), layer); it != m_Layers.end())
+    if (auto it = std::ranges::find(m_Layers, layer); it != m_Layers.end())
     {
         m_Layers.erase(it);
         --m_LayerInsertIndex;
@@ -44,7 +44,7 @@ void LayerStack::PopLayer(LayerStack::LayerPtr &layer)
 
 void LayerStack::PopOverlay(LayerStack::LayerPtr &overlay)
 {
-    if (auto it = std::find(m_Layers.begin(), m_Layers.end(), overlay); it != m_Layers.end())
+    if (auto it = std::ranges::find(m_Layers, overlay); it != m_Layers.end())
     {
         m_Layers.erase(it);
     }

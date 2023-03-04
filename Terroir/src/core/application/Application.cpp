@@ -112,9 +112,9 @@ void Application::OnEvent(Event &e)
     dispatcher.Dispatch<WindowResizeEvent>(TERR_BIND_EVENT_LAMBDA(Application::OnWindowResize));
 
     // Iterate through layerstack
-    for (auto it = m_LayerStack.end(); it != m_LayerStack.begin();)
+    for (auto &layer : std::ranges::reverse_view(m_LayerStack))
     {
-        (*--it)->OnEvent(e);
+        layer->OnEvent(e);
         if (e.m_Handled)
             break;
     }

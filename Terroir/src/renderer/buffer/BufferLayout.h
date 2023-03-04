@@ -3,8 +3,6 @@
 
 #include "Terroir/src/core/Types.h"
 #include "Terroir/src/log/Log.h"
-#include <string>
-#include <utility>
 
 namespace Terroir
 {
