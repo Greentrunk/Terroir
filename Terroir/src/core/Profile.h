@@ -18,15 +18,10 @@
 #ifndef TERROIR_PROFILE_H
 #define TERROIR_PROFILE_H
 
-#include <tracy/Tracy.hpp>
-//#include <tracy/TracyOpenGL.hpp>
-
-// TODO
-/*
- * Go back and create templates over macros
- */
 // TRACY DEFINES
-#ifdef TRACY_ENABLE
+#ifdef TERR_ENABLE_PROFILING
+#include <tracy/Tracy.hpp>
+// #include <tracy/TracyOpenGL.hpp>
 #define TERR_PROFILE ZoneScoped
 #define TERR_PROFILE_FUNC ZoneScopedN(__FUNCTION__)
 #define TERR_PROFILE_SCOPE(name) ZoneScopedN(name)
@@ -67,11 +62,12 @@ template <SmartPointer T> constexpr void TERR_PROFILE_FREE_SMART(T &ptr)
 #define TERR_PROFILE_VALUE(name, value)
 #define TERR_PROFILE_ALLOC(ptr, size)
 #define TERR_PROFILE_FREE(ptr)
-#define TERR_PROFILE_ALLOC_SMART(ptr, type)
-#define TERR_PRFOFILE_ALLOC_SMART(ptr)
+// #define TERR_PROFILE_ALLOC_SMART(ptr, type)
+#define TERR_PROFILE_ALLOC_SMART(ptr)
+#define TERR_PROFILE_FREE_SMART(ptr)
 #define TERR_PROFILE_GPU_CTX
 #define TERR_PROFILE_GPU_ZONE(name)
 #define TERR_PROFILE_GPU_ZONE_N(name, n)
 #define TERR_PROFILE_GPU_Collect
-#endif // TRACY_ENABLE
+#endif // TERR_ENABLE_PROFILING
 #endif // TERROIR_PROFILE_H

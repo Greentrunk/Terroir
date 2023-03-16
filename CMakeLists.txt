@@ -31,9 +31,11 @@ set(CMAKE_CXX_STANDARD 20)
 
 set(LibraryName Terroir)
 
-# Tracy profiler
-add_subdirectory(${PROJECT_SOURCE_DIR}/vendor/tracy)
+
 
 add_subdirectory(Terroir)
 add_subdirectory(Sandbox)
+
+# Tracy profiler
+add_subdirectory(${PROJECT_SOURCE_DIR}/vendor/tracy)
 

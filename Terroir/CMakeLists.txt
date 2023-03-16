@@ -19,28 +19,15 @@ elseif (UNIX AND NOT APPLE)
     set(OPENGL OpenGL)
 endif (WIN32)
 
-# Terroir platform defines
-if (WIN32)
-    add_compile_definitions(TERROIR_WINDOWS)
-endif (WIN32)
-
-if (UNIX AND NOT APPLE)
-    add_compile_definitions(TERROIR_LINUX)
-endif (UNIX AND NOT APPLE)
-
 # Include headers
 include_directories(${PROJECT_SOURCE_DIR}/Terroir/src)
 
-# Defines
-add_compile_definitions(TERR_ENABLE_ASSERTS)
-#add_compile_definitions(TILING_WM)
-add_compile_definitions(GLFW_INCLUDE_NONE)
-add_compile_definitions(IMGUI_IMPL_OPENGL_LOADER_CUSTOM)
 
-# add_compile_definitions(GLM_FORCE_CTOR_INIT)
+
+# target_compile_definitions(GLM_FORCE_CTOR_INIT)
 
 # Remove comment to enable test gui
-#add_compile_definitions(SHOW_TEST_GUI)
+#target_compile_definitions(SHOW_TEST_GUI)
 #file(GLOB_RECURSE sources "*.c" "*.cpp" "*.h" "*.hpp")
 set(sources
         src/core/application/Application.cpp
@@ -117,10 +104,27 @@ set(sources
         src/renderer/VertexArray.cpp
         src/renderer/VertexArray.h
         src/renderer/stb_image.cpp
-        src/renderer/Renderer2D.cpp src/renderer/Renderer2D.h src/renderer/renderable/Sprite.cpp src/renderer/renderable/Sprite.h src/renderer/renderable/Renderable2D.cpp src/renderer/renderable/Renderable2D.h)
+        src/renderer/Renderer2D.cpp src/renderer/Renderer2D.h src/renderer/renderable/Sprite.cpp src/renderer/renderable/Sprite.h src/renderer/renderable/Renderable2D.cpp src/renderer/renderable/Renderable2D.h src/core/Color.h)
 
 
 add_library(Terroir STATIC ${sources} src/core/Profile.h)
+
+
+# Terroir platform defines
+if (WIN32)
+    target_compile_definitions(Terroir PRIVATE TERROIR_WINDOWS)
+endif (WIN32)
+
+if (UNIX AND NOT APPLE)
+    target_compile_definitions(Terroir PRIVATE TERROIR_LINUX)
+endif (UNIX AND NOT APPLE)
+
+# Defines
+target_compile_definitions(Terroir PRIVATE TERR_ENABLE_ASSERTS)
+#target_compile_definitions(Terroir PRIVATE TERR_ENABLE_PROFILING)
+#target_compile_definitions(TILING_WM)
+target_compile_definitions(Terroir PRIVATE GLFW_INCLUDE_NONE)
+target_compile_definitions(Terroir PRIVATE IMGUI_IMPL_OPENGL_LOADER_CUSTOM)
 
 # Pre compiled headers
 target_precompile_headers(Terroir PRIVATE pch/Tpch.h)
@@ -132,4 +136,4 @@ include_directories(${PROJECT_SOURCE_DIR}/Terroir/pch)
 target_include_directories(Terroir PUBLIC ${PROJECT_BINARY_DIR} ${PROJECT_SOURCE_DIR} ${STB_INCLUDE_DIRS})
 
 # Link libraries from vcpkg
-target_link_libraries(Terroir PUBLIC spdlog::spdlog glfw ${OPENGL} glad::glad imgui::imgui glm::glm Tracy::TracyClient)
+target_link_libraries(Terroir PUBLIC spdlog::spdlog glfw ${OPENGL} glad::glad imgui::imgui glm::glm TracyClient)

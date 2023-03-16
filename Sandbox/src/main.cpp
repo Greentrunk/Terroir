@@ -25,8 +25,6 @@ class SandboxGame : public Application
   public:
     SandboxGame(const std::string_view &name, u32 width, u32 height) : Application(name, width, height)
     {
-        // shut the warnings up
-        TERR_APP_DEBUG("THIS IS TO SHUT OFF COMPILER WARNINGS, {}{}{}", name, width, height);
         PushLayer(std::make_unique<Sandbox2D>("2D"));
     }
 };

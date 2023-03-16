@@ -19,7 +19,7 @@ class KeyEventBase : public Event
     }
 
   protected:
-    KeyEventBase(i32 keyCode) : m_KeyCode(keyCode)
+    explicit KeyEventBase(i32 keyCode) : m_KeyCode(keyCode)
     {
     }
 
@@ -56,7 +56,7 @@ class KeyPressedEvent : public KeyEventBase
 class KeyReleasedEvent : public KeyEventBase
 {
   public:
-    KeyReleasedEvent(i32 keyCode) : KeyEventBase(keyCode)
+    explicit KeyReleasedEvent(i32 keyCode) : KeyEventBase(keyCode)
     {
     }
 

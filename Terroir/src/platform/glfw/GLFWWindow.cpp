@@ -178,6 +178,5 @@ void GLFWWindow::Shutdown()
     TERR_PROFILE_FUNC;
     glfwDestroyWindow(m_Window);
     glfwTerminate();
-    TERR_PROFILE_FREE_SMART(m_Context);
 }
 } // namespace Terroir

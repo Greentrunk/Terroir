@@ -32,9 +32,11 @@ class Sandbox2D : public Layer
     void OnUpdate(Timestep) override;
     void OnDearImGuiRender() override;
     void OnEvent(Event &) override;
+    void CreateCamera(u32, u32);
 
   private:
-    OrthographicCameraController m_CameraController;
+
+    std::unique_ptr<OrthographicCamera> m_Camera;
 
     std::shared_ptr<Texture2D> m_GreenTrunkTexture;
 };

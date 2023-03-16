@@ -22,6 +22,9 @@
 // Math
 #include "Terroir/src/math/Math.h"
 
+// Color
+#include "Terroir/src/core/Color.h"
+
 // Events
 #include "Terroir/src/core/event/ApplicationEvent.h"
 #include "Terroir/src/core/event/Event.h"

@@ -53,16 +53,15 @@ void Renderer2D::Init()
     s_Data->m_QUAD_VBO->Unbind();
     s_Data->m_QUAD_VAO->Unbind();
 
-    s_Data->m_TextureShader = Shader::Create("Texture", {"Terroir/src/renderer/shader/TextureVertexShader.glsl",
-                                                         "Terroir/src/renderer/shader/TextureFragShader.glsl"});
-    s_Data->m_TextureShader->Bind();
-    s_Data->m_TextureShader->SetUniform("u_Texture", 0);
+    s_Data->m_ShaderLibrary.Load("Texture", {"Terroir/src/renderer/shader/TextureVertexShader.glsl",
+                                             "Terroir/src/renderer/shader/TextureFragShader.glsl"});
+    s_Data->m_ShaderLibrary.Get("Texture")->SetUniform("u_Texture", 0);
 }
 
 void Renderer2D::BeginScene(const OrthographicCamera &camera)
 {
-    s_Data->m_TextureShader->Bind();
-    s_Data->m_TextureShader->SetUniform("u_ViewProjection", camera.GetViewProjectionMatrix());
+    s_Data->m_ShaderLibrary.Get("Texture")->Bind();
+    s_Data->m_ShaderLibrary.Get("Texture")->SetUniform("u_ViewProjection", camera.GetViewProjectionMatrix());
 }
 
 void Renderer2D::DrawRect(const Vec2 &pos, const Vec2 &size, const Vec4 &color, f32 rotation)
@@ -72,7 +71,7 @@ void Renderer2D::DrawRect(const Vec2 &pos, const Vec2 &size, const Vec4 &color, 
 
 void Renderer2D::DrawRect(const Vec3 &pos, const Vec2 &size, const Vec4 &color, f32 rotation)
 {
-    s_Data->m_TextureShader->SetUniform("u_Color", color);
+    s_Data->m_ShaderLibrary.Get("Texture")->SetUniform("u_Color", color);
     s_Data->m_WhiteTexture->Bind();
 
     const auto scale{Math::Transform::Scale(Mat4(1.0f), {size.x, size.y, 1.0f})};
@@ -84,7 +83,7 @@ void Renderer2D::DrawRect(const Vec3 &pos, const Vec2 &size, const Vec4 &color, 
         rotate = Math::Transform::Rotate(Mat4(1.0f), rotation, {0.0f, 0.0f, 1.0f});
     }
     const auto transform{Math::Transform::Translate(Mat4(1.0f), pos) * scale * rotate};
-    s_Data->m_TextureShader->SetUniform("u_Transform", transform);
+    s_Data->m_ShaderLibrary.Get("Texture")->SetUniform("u_Transform", transform);
 
     // Draw Indexed arrays
     s_Data->m_QUAD_VAO->Bind();
@@ -95,10 +94,10 @@ void Renderer2D::DrawSprite(const Sprite &sprite)
 {
     sprite.GetTexture()->Bind();
 
-    s_Data->m_TextureShader->SetUniform("u_Color", sprite.GetTintColor());
-    s_Data->m_TextureShader->SetUniform("u_TileFactor", sprite.GetTileFactor());
+    s_Data->m_ShaderLibrary.Get("Texture")->SetUniform("u_Color", sprite.GetTintColor());
+    s_Data->m_ShaderLibrary.Get("Texture")->SetUniform("u_TileFactor", sprite.GetTileFactor());
 
-    s_Data->m_TextureShader->SetUniform("u_Transform", sprite.GetTransform());
+    s_Data->m_ShaderLibrary.Get("Texture")->SetUniform("u_Transform", sprite.GetTransform());
 
     // Draw Indexed arrays
     s_Data->m_QUAD_VAO->Bind();
@@ -118,8 +117,8 @@ void Renderer2D::EndScene()
 
 void Renderer2D::Shutdown()
 {
-    s_Data.reset();
     TERR_PROFILE_FREE_SMART(s_Data);
+    s_Data.reset();
 }
 Renderer2D::~Renderer2D()
 {

@@ -59,6 +59,16 @@ class Application
         return *m_Window;
     }
 
+    [[nodiscard]] u32 GetWindowWidth() const
+    {
+        return m_Window->GetWindowWidth();
+    }
+
+    [[nodiscard]] u32 GetWindowHeight() const
+    {
+        return m_Window->GetWindowHeight();
+    }
+
     enum class WindowBackendType
     {
         GLFW

@@ -66,7 +66,6 @@ Application::Application(const std::string_view &name, u32 width, u32 height)
 Application::~Application()
 {
     TERR_ENGINE_INFO("Exiting Application");
-    TERR_PROFILE_FREE_SMART(m_Window);
     Renderer::Shutdown();
 }
 
@@ -102,7 +101,7 @@ void Application::Run()
 
         m_Window->OnUpdate();
     }
-    FrameMark;
+//    FrameMark;
 }
 
 void Application::OnEvent(Event &e)

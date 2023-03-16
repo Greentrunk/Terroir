@@ -17,7 +17,6 @@ int main()
 
     // Cleanup Subsystems
     // Terroir::Log::Exit();
-    TERR_PROFILE_FREE(app.get());
 }
 
 #endif // TERROIR_APPENTRY_H

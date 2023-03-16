@@ -23,6 +23,7 @@
 #include "Terroir/src/renderer/renderable/Sprite.h"
 #include "Terroir/src/renderer/shader/Shader.h"
 #include "Terroir/src/renderer/texture/Texture2D.h"
+#include "Terroir/src/renderer/shader/ShaderLibrary.h"
 
 namespace Terroir
 {
@@ -63,6 +64,7 @@ struct Renderer2DData
     std::shared_ptr<VertexBuffer> m_QUAD_VBO;
     std::shared_ptr<IndexBuffer> m_QUAD_IBO;
     std::shared_ptr<Shader> m_TextureShader;
+    ShaderLibrary m_ShaderLibrary;
     std::shared_ptr<Texture2D> m_WhiteTexture;
 };
 

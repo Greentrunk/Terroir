@@ -19,13 +19,101 @@
 #include "filesystem"
 #include <imgui.h>
 
-Sandbox2D::Sandbox2D(const std::string_view &name) : Layer(name), m_CameraController(1280.0f / 720.0f, false)
+constexpr const auto SCREEN_WIDTH{1280.f};
+constexpr const auto SCREEN_HEIGHT{720.f};
+constexpr const auto SCREEN_TOP{SCREEN_HEIGHT / 2};
+constexpr const auto SCREEN_BOTTOM{-SCREEN_HEIGHT / 2};
+constexpr const auto SCREEN_LEFT{-SCREEN_WIDTH / 2};
+constexpr const auto SCREEN_RIGHT{SCREEN_WIDTH / 2};
+constexpr const f32 PADDLE_WIDTH{30.f};
+constexpr const f32 PADDLE_HEIGHT{SCREEN_HEIGHT / 4};
+constexpr const f32 HALF_PADDLE_Y{PADDLE_HEIGHT / 2};
+auto humanPos{Vec2(SCREEN_LEFT + PADDLE_WIDTH, 0.f)};
+constexpr auto paddleVelocity{800.0f};
+constexpr const f32 BALL_SIDE = 20.f;
+auto ballPos{Vec2{0.f, 0.f}};
+auto cpuPos{Vec2(SCREEN_RIGHT - PADDLE_WIDTH, 0.f)};
+auto ballVelocity{Vec2(-700.f, -700.f)};
+
+void MovePaddle(f32 dt, f32 velocity)
 {
+    auto &paddleY{humanPos.y};
+    auto newPos{velocity * dt};
+    if (Input::IsKeyPressed(TERR_KEY_W))
+    {
+        auto paddleTop{paddleY + newPos + HALF_PADDLE_Y};
+        if (paddleTop >= SCREEN_TOP)
+        {
+            paddleY += 0;
+        }
+        else
+        {
+            paddleY += newPos;
+        }
+    }
+    if (Input::IsKeyPressed(TERR_KEY_S))
+    {
+        auto paddleBottom{paddleY - newPos - HALF_PADDLE_Y};
+        if (paddleBottom <= SCREEN_BOTTOM)
+        {
+            paddleY -= 0;
+        }
+        else
+        {
+            paddleY -= newPos;
+        }
+    }
+}
+
+// each frame, move the ball by the ball velocity and check for collisions
+void MoveBall(f32 dt)
+{
+    ballPos.x += ballVelocity.x * dt;
+    ballPos.y += ballVelocity.y * dt;
+
+    auto ballLeft{ballPos.x - BALL_SIDE / 2};
+    auto ballRight{ballPos.x + BALL_SIDE / 2};
+    auto ballTop{ballPos.y + BALL_SIDE / 2};
+    auto ballBottom{ballPos.y - BALL_SIDE / 2};
+    auto cpuPaddleY{cpuPos.y};
+    auto humanPaddleY{humanPos.y};
+
+    // Check colisions for walls
+    if (ballPos.y >= SCREEN_TOP || ballPos.y <= SCREEN_BOTTOM)
+    {
+        ballVelocity.y = -ballVelocity.y;
+    }
+
+    // Check colisions for paddels
+    if (ballLeft <= SCREEN_LEFT + PADDLE_WIDTH)
+    {
+        if (ballTop >= humanPaddleY - HALF_PADDLE_Y && ballBottom <= humanPaddleY + HALF_PADDLE_Y)
+        {
+            ballVelocity.x = -ballVelocity.x;
+        }
+    }
+    if (ballRight >= SCREEN_RIGHT - PADDLE_WIDTH)
+    {
+        if (ballTop >= cpuPaddleY - HALF_PADDLE_Y && ballBottom <= cpuPaddleY + HALF_PADDLE_Y)
+        {
+            ballVelocity.x = -ballVelocity.x;
+        }
+    }
+}
+
+// CPU Paddle AI slowly go up and down and check for collisions
+void CpuPaddleAI(f32 dt)
+{
+    cpuPos.y = ballPos.y;
+}
+
+Sandbox2D::Sandbox2D(const std::string_view &name) : Layer(name)
+{
+    CreateCamera(Application::Get().GetWindowWidth(), Application::Get().GetWindowHeight());
 }
 
 void Sandbox2D::OnAttach()
 {
-    m_GreenTrunkTexture = Texture2D::Create(std::filesystem::path("Sandbox/assets/textures/logo.png"));
 }
 
 void Sandbox2D::OnDetach()
@@ -35,29 +123,41 @@ void Sandbox2D::OnDetach()
 void Sandbox2D::OnUpdate(Timestep dt)
 {
     TERR_PROFILE_FUNC;
-
-    // Update camera
-    m_CameraController.OnUpdate(dt);
-
     // Clear Screen to color
-    RenderCommand::Clear({.1, 1, .6, 1});
+    RenderCommand::Clear(Color::BLACK);
+
+    // Process input and update
+    MovePaddle(dt, paddleVelocity);
+    MoveBall(dt);
+    CpuPaddleAI(dt);
 
     // Draw whatever you want
-    Renderer2D::BeginScene(m_CameraController.GetCamera());
-    Sprite greenTrunk(m_GreenTrunkTexture, {0.0f, 0.0f, -0.1f}, {3.0f, 3.0f}, {1.0f, 0.0f, 0.0f, 1.0f});
-    Renderer2D::DrawSprite(greenTrunk);
-    Renderer2D::DrawRect({-1.0f, 0.0}, {0.3, 0.3f}, {0.1f, 0.8f, 0.3f, 1.0f});
-    Renderer2D::DrawRect({0.5f, -0.5}, {0.5, 0.3f}, {1.0f, 0.8f, 0.3f, 1.0f});
+    Renderer2D::BeginScene(*m_Camera);
+    // Ball
+    Renderer2D::DrawRect(ballPos, {BALL_SIDE, BALL_SIDE}, Color::WHITE);
+
+    // Paddles
+    Renderer2D::DrawRect(humanPos, {PADDLE_WIDTH, PADDLE_HEIGHT}, Color::WHITE);
+    Renderer2D::DrawRect(cpuPos, {PADDLE_WIDTH, PADDLE_HEIGHT}, Color::WHITE);
+
     Renderer2D::EndScene();
 }
 void Sandbox2D::OnDearImGuiRender()
 {
     TERR_PROFILE_FUNC;
-
-    ImGui::Begin("Settings");
-    ImGui::End();
 }
+
 void Sandbox2D::OnEvent(Event &e)
 {
-    m_CameraController.OnEvent(e);
+}
+
+void Sandbox2D::CreateCamera(u32 width, u32 height)
+{
+    auto aspectRatio{static_cast<f32>(width) / static_cast<f32>(height)};
+    auto camHeight{Application::Get().GetWindowHeight() / 2};
+    auto bottom{-static_cast<i32>(camHeight)};
+    auto top{camHeight};
+    auto left{static_cast<f32>(bottom) * aspectRatio};
+    auto right{static_cast<f32>(top) * aspectRatio};
+    m_Camera = std::make_unique<OrthographicCamera>(left, right, bottom, top);
 }

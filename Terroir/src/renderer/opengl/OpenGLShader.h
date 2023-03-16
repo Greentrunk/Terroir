@@ -71,7 +71,7 @@ class OpenGLShader : public Shader
 
     // Process generic shader and add its type and data to a hashmap
     // When a max shader size will be decided, this will be turned into an array, not list
-    ShaderMap PreProcess(const std::list<std::string> &);
+    static ShaderMap PreProcess(const std::list<std::string> &);
 
     void Compile(const ShaderMap &);
 

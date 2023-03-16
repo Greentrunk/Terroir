@@ -38,80 +38,25 @@ class Log
 
 } // namespace Terroir
 
-/// ---- Terroir engine macros ---- ///
+/// ---- Terroir engine logging macros ---- ///
 
 // Engine Logging
-template <typename... Args> constexpr void TERR_ENGINE_TRACE(std::string_view fmt, Args... args)
-{
 
-    Terroir::Log::GetEngineLogger()->trace(fmt::vformat(fmt, fmt::make_format_args(std::forward<Args>(args)...)));
-}
-
-template <typename... Args> constexpr void TERR_ENGINE_DEBUG(std::string_view fmt, Args... args)
-{
-
-    Terroir::Log::GetEngineLogger()->debug(fmt::vformat(fmt, fmt::make_format_args(std::forward<Args>(args)...)));
-}
-
-template <typename... Args> constexpr void TERR_ENGINE_INFO(std::string_view fmt, Args... args)
-{
-
-    Terroir::Log::GetEngineLogger()->info(fmt::vformat(fmt, fmt::make_format_args(std::forward<Args>(args)...)));
-}
-
-template <typename... Args> constexpr void TERR_ENGINE_WARN(std::string_view fmt, Args... args)
-{
-
-    Terroir::Log::GetEngineLogger()->warn(fmt::vformat(fmt, fmt::make_format_args(std::forward<Args>(args)...)));
-}
-
-template <typename... Args> constexpr void TERR_ENGINE_ERROR(std::string_view fmt, Args &&...args)
-{
-
-    Terroir::Log::GetEngineLogger()->error(fmt::vformat(fmt, fmt::make_format_args(std::forward<Args>(args)...)));
-}
-
-template <typename... Args> constexpr void TERR_ENGINE_CRIT(std::string_view fmt, Args &&...args)
-{
-
-    Terroir::Log::GetEngineLogger()->critical(fmt::vformat(fmt, fmt::make_format_args(std::forward<Args>(args)...)));
-}
+#define TERR_ENGINE_TRACE(...) SPDLOG_LOGGER_TRACE(Terroir::Log::GetEngineLogger(), __VA_ARGS__)
+#define TERR_ENGINE_DEBUG(...) SPDLOG_LOGGER_DEBUG(Terroir::Log::GetEngineLogger(), __VA_ARGS__)
+#define TERR_ENGINE_INFO(...) SPDLOG_LOGGER_INFO(Terroir::Log::GetEngineLogger(), __VA_ARGS__)
+#define TERR_ENGINE_WARN(...) SPDLOG_LOGGER_WARN(Terroir::Log::GetEngineLogger(), __VA_ARGS__)
+#define TERR_ENGINE_ERROR(...) SPDLOG_LOGGER_ERROR(Terroir::Log::GetEngineLogger(), __VA_ARGS__)
+#define TERR_ENGINE_CRITICAL(...) SPDLOG_LOGGER_CRITICAL(Terroir::Log::GetEngineLogger(), __VA_ARGS__)
 
 // Client Logging
-template <typename... Args> constexpr void TERR_APP_TRACE(std::string_view fmt, Args &&...args)
-{
 
-    Terroir::Log::GetClientLogger()->trace(fmt::vformat(fmt, fmt::make_format_args(std::forward<Args>(args)...)));
-}
+#define TERR_APP_TRACE(...) SPDLOG_LOGGER_TRACE(Terroir::Log::GetClientLogger(), __VA_ARGS__)
+#define TERR_APP_DEBUG(...) SPDLOG_LOGGER_DEBUG(Terroir::Log::GetClientLogger(), __VA_ARGS__)
+#define TERR_APP_INFO(...) SPDLOG_LOGGER_INFO(Terroir::Log::GetClientLogger(), __VA_ARGS__)
+#define TERR_APP_WARN(...) SPDLOG_LOGGER_WARN(Terroir::Log::GetClientLogger(), __VA_ARGS__)
+#define TERR_APP_ERROR(...) SPDLOG_LOGGER_ERROR(Terroir::Log::GetClientLogger(), __VA_ARGS__)
+#define TERR_APP_CRITICAL(...) SPDLOG_LOGGER_CRITICAL(Terroir::Log::GetClientLogger(), __VA_ARGS__)
 
-template <typename... Args> constexpr void TERR_APP_DEBUG(std::string_view fmt, Args &&...args)
-{
-
-    Terroir::Log::GetClientLogger()->debug(fmt::vformat(fmt, fmt::make_format_args(std::forward<Args>(args)...)));
-}
-
-template <typename... Args> constexpr void TERR_APP_INFO(std::string_view fmt, Args &&...args)
-{
-
-    Terroir::Log::GetClientLogger()->info(fmt::vformat(fmt, fmt::make_format_args(std::forward<Args>(args)...)));
-}
-
-template <typename... Args> constexpr void TERR_APP_WARN(std::string_view fmt, Args &&...args)
-{
-
-    Terroir::Log::GetClientLogger()->warn(fmt::vformat(fmt, fmt::make_format_args(std::forward<Args>(args)...)));
-}
-
-template <typename... Args> constexpr void TERR_APP_ERROR(std::string_view fmt, Args &&...args)
-{
-
-    Terroir::Log::GetClientLogger()->error(fmt::vformat(fmt, fmt::make_format_args(std::forward<Args>(args)...)));
-}
-
-template <typename... Args> constexpr void TERR_APP_CRIT(std::string_view fmt, Args &&...args)
-{
-
-    Terroir::Log::GetClientLogger()->critical(fmt::vformat(fmt, fmt::make_format_args(std::forward<Args>(args)...)));
-}
 
 #endif // TERROIR_LOG_H

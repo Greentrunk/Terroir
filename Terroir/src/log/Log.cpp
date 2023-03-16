@@ -14,7 +14,7 @@ void Log::Init()
 {
     auto engineSink{std::make_shared<spdlog::sinks::stdout_color_sink_mt>()};
     auto clientSink{std::make_shared<spdlog::sinks::stdout_color_sink_mt>()};
-    auto pattern{"%^[%c] [%n] [%l]: %v%$"};
+    auto pattern{"%^[%c] [%n] [%l] [%s:%#]: %v%$"};
 
     sp_EngineLogger = std::make_shared<spdlog::logger>("TERROIR", engineSink);
     sp_ClientLogger = std::make_shared<spdlog::logger>("APP", clientSink);

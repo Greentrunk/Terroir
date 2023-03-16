@@ -16,7 +16,6 @@ LayerStack::~LayerStack()
     TERR_ENGINE_INFO("DELETING LAYERSTACK");
     for (auto &layer : m_Layers)
     {
-        TERR_PROFILE_FREE_SMART(layer);
         layer.reset(nullptr);
     }
 }
