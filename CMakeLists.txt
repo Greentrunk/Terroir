@@ -5,7 +5,7 @@ endif ()
 
 set(CMAKE_TOOLCHAIN_FILE "${CMAKE_CURRENT_SOURCE_DIR}/vendor/vcpkg/scripts/buildsystems/vcpkg.cmake" CACHE STRING "Vcpkg toolchain file")
 
-project(Terroir)
+project(Terroir CXX C)
 
 if (WIN32)
     set(CMAKE_CXX_FLAGS "-W4")
@@ -28,10 +28,6 @@ if (UNIX AND NOT APPLE)
 endif (UNIX AND NOT APPLE)
 
 set(CMAKE_CXX_STANDARD 20)
-
-set(LibraryName Terroir)
-
-
 
 add_subdirectory(Terroir)
 add_subdirectory(Sandbox)

@@ -23,7 +23,6 @@ endif (WIN32)
 include_directories(${PROJECT_SOURCE_DIR}/Terroir/src)
 
 
-
 # target_compile_definitions(GLM_FORCE_CTOR_INIT)
 
 # Remove comment to enable test gui
@@ -104,15 +103,20 @@ set(sources
         src/renderer/VertexArray.cpp
         src/renderer/VertexArray.h
         src/renderer/stb_image.cpp
-        src/renderer/Renderer2D.cpp src/renderer/Renderer2D.h src/renderer/renderable/Sprite.cpp src/renderer/renderable/Sprite.h src/renderer/renderable/Renderable2D.cpp src/renderer/renderable/Renderable2D.h src/core/Color.h)
+        src/renderer/Renderer2D.cpp src/renderer/Renderer2D.h src/renderer/renderable/Sprite.cpp src/renderer/renderable/Sprite.h src/renderer/renderable/Renderable2D.cpp src/renderer/renderable/Renderable2D.h src/core/Color.h
+        src/core/Profile.h
+         src/platform/audio/AudioManager.cpp src/platform/audio/AudioManager.h)
 
 
-add_library(Terroir STATIC ${sources} src/core/Profile.h)
+
+add_library(Terroir STATIC ${sources})
 
 
 # Terroir platform defines
 if (WIN32)
     target_compile_definitions(Terroir PRIVATE TERROIR_WINDOWS)
+    # SoLoud backend define
+    target_compile_definitions(Terroir PRIVATE WITH_MINIAUDIO)
 endif (WIN32)
 
 if (UNIX AND NOT APPLE)

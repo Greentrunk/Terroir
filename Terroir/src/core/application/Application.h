@@ -21,6 +21,7 @@
 #define TERROIR_APPLICATION_H
 
 #include "../../dear-imgui/DearImGuiLayer.h"
+#include "../../platform/audio/AudioManager.h"
 #include "../../platform/glfw/GLFWWindow.h"
 #include "../../renderer/VertexArray.h"
 #include "../../renderer/buffer/IndexBuffer.h"
@@ -80,10 +81,10 @@ class Application
 
     static Application *s_Instance;
     std::unique_ptr<Window> m_Window;
-
+    std::unique_ptr<AudioManager> m_AudioManager;
     DearImGuiLayer *m_DearImGuiLayer;
-    bool m_Running{true}, m_Minimized{false};
     LayerStack m_LayerStack;
+    bool m_Running{true}, m_Minimized{false};
     f32 m_LastFrameTime = 0.0f;
 };
 
