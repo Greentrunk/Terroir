@@ -53,12 +53,9 @@ Application::Application(const std::string_view &name, u32 width, u32 height)
     m_Window->SET_EVENT_CB_LAMBDA(OnEvent);
     m_Window->SetVSync(false);
 
-    // Cross platform audio subsystem init
+    // // Cross platform audio subsystem init
     m_AudioManager = AudioManager::Create({});
     TERR_PROFILE_ALLOC_SMART(m_AudioManager);
-
-    m_AudioManager->Add("music", "Sandbox/assets/music.wav");
-    m_AudioManager->Play("music");
 
     // Cross platform renderer sybsystem init
     Renderer::Init();
@@ -108,6 +105,9 @@ void Application::Run()
         m_DearImGuiLayer->End();
 
         m_Window->OnUpdate();
+
+        // Cleanup sounds
+        m_AudioManager->Cleanup();
     }
     //    FrameMark;
 }

@@ -13,7 +13,7 @@
 // Timestep
 #include "Terroir/src/core/Timestep.h"
 
-// Logging logging
+// Logging 
 #include "Terroir/src/log/Log.h"
 
 // Asserts
@@ -55,5 +55,8 @@
 #include "Terroir/src/renderer/renderable/Sprite.h"
 #include "Terroir/src/renderer/shader/Shader.h"
 #include "Terroir/src/renderer/texture/Texture2D.h"
+
+// Sound
+#include "Terroir/src/platform/audio/AudioManager.h"
 
 #endif // TERROIR_TERROIR_H

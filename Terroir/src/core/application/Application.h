@@ -1,5 +1,3 @@
-
-
 ////////////////////////////////////////////////////////////////////////////////
 // Copyright (c) Christopher J. Pohl 2023 to Present  All Rights Reserved.
 //
@@ -55,9 +53,14 @@ class Application
 
     void PushOverlay(LayerStack::LayerPtr);
 
-    Window &GetWindow()
+    [[nodiscard]] Window &GetWindow()
     {
         return *m_Window;
+    }
+
+    [[nodiscard]] AudioManager &GetAudioManager() const
+    {
+        return *m_AudioManager;
     }
 
     [[nodiscard]] u32 GetWindowWidth() const

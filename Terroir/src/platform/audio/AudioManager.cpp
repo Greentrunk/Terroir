@@ -16,13 +16,13 @@
 // ///////////////////////////////////////////////////////////////////////////
 
 #include "AudioManager.h"
-// #include "openal/OpenALAudioManager.h"
+#include "MAAudioManager.h"
 #include "Tpch.h"
 
 namespace Terroir
 {
 std::unique_ptr<AudioManager> AudioManager::Create(const AudioManagerProperties &props)
 {
-    // return std::make_unique<OpenALAudioManager>();
+    return std::make_unique<MAAudioManager>();
 }
 } // namespace Terroir

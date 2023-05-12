@@ -17,6 +17,7 @@
 
 #include "ShaderLibrary.h"
 #include "Terroir/src/core/Assert.h"
+#include "Tpch.h"
 
 namespace Terroir
 {

@@ -35,7 +35,6 @@ class Sandbox2D : public Layer
     void CreateCamera(u32, u32);
 
   private:
-
     std::unique_ptr<OrthographicCamera> m_Camera;
 
     std::shared_ptr<Texture2D> m_GreenTrunkTexture;

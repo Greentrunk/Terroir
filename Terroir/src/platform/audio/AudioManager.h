@@ -31,14 +31,18 @@ class AudioManager
     AudioManager() = default;
     virtual ~AudioManager() = default;
 
-    virtual void Add(const std::string &, const std::filesystem::path&) = 0;
+    virtual void Add(const std::string &, const std::filesystem::path &) = 0;
     virtual void Play(const std::string &) = 0;
 
-
+    // abstract method to cleanup sounds at end of file
+    virtual void Cleanup() = 0;
 
     // Create new audiomanager by platform
     static std::unique_ptr<AudioManager> Create(const AudioManagerProperties &);
 
+    // SoundLibrary
+  protected:
+    std::unordered_map<std::string, std::filesystem::path> m_SoundLibrary{};
 };
 
 } // namespace Terroir

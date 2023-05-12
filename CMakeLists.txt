@@ -23,6 +23,9 @@ if (UNIX AND NOT APPLE)
     # append flag, best practice, suggested, don't lose previously defined flags
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall")
 
+    # miniaudio requires this flag
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -ldl -lpthread -lm")
+
     # set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Werror")
     set(CMAKE_CXX_FLAGS_DEBUG "-ggdb -O0")
 endif (UNIX AND NOT APPLE)

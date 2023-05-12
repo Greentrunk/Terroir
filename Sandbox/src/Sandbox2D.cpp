@@ -33,7 +33,26 @@ constexpr auto paddleVelocity{800.0f};
 constexpr const f32 BALL_SIDE = 20.f;
 auto ballPos{Vec2{0.f, 0.f}};
 auto cpuPos{Vec2(SCREEN_RIGHT - PADDLE_WIDTH, 0.f)};
-auto ballVelocity{Vec2(-700.f, -700.f)};
+auto ballVelocity{Vec2(-1000.f, -1000.f)};
+
+// round number
+auto roundNum{1};
+
+// Reset round
+void ResetRound()
+{
+    roundNum++;
+    ballPos = Vec2(0.f, 0.f);
+    // Check if round is even or odd
+    if (roundNum % 2 == 0)
+    {
+        ballVelocity = Vec2(1000.f, 1000.f);
+    }
+    else
+    {
+        ballVelocity = Vec2(-1000.f, -1000.f);
+    }
+}
 
 void MovePaddle(f32 dt, f32 velocity)
 {
@@ -68,6 +87,10 @@ void MovePaddle(f32 dt, f32 velocity)
 // each frame, move the ball by the ball velocity and check for collisions
 void MoveBall(f32 dt)
 {
+
+    // Grab audio manager
+    auto &audioManager{Application::Get().GetAudioManager()};
+
     ballPos.x += ballVelocity.x * dt;
     ballPos.y += ballVelocity.y * dt;
 
@@ -90,26 +113,50 @@ void MoveBall(f32 dt)
         if (ballTop >= humanPaddleY - HALF_PADDLE_Y && ballBottom <= humanPaddleY + HALF_PADDLE_Y)
         {
             ballVelocity.x = -ballVelocity.x;
+            audioManager.Play("bounce");
+        }
+        else
+        {
+            // CPU Scored
+            ResetRound();
         }
     }
-    if (ballRight >= SCREEN_RIGHT - PADDLE_WIDTH)
+    else if (ballRight >= SCREEN_RIGHT - PADDLE_WIDTH)
     {
         if (ballTop >= cpuPaddleY - HALF_PADDLE_Y && ballBottom <= cpuPaddleY + HALF_PADDLE_Y)
         {
             ballVelocity.x = -ballVelocity.x;
+            audioManager.Play("bounce");
+        }
+        else
+        {
+            // Human Scored
+            ResetRound();
         }
     }
 }
 
-// CPU Paddle AI slowly go up and down and check for collisions
+// CPU Paddle AI impl
 void CpuPaddleAI(f32 dt)
 {
-    cpuPos.y = ballPos.y;
+    if (ballPos.y < cpuPos.y)
+    {
+        cpuPos.y -= paddleVelocity * dt;
+    }
+    else if (ballPos.y > cpuPos.y)
+    {
+        cpuPos.y += paddleVelocity * dt;
+    }
 }
 
 Sandbox2D::Sandbox2D(const std::string_view &name) : Layer(name)
 {
     CreateCamera(Application::Get().GetWindowWidth(), Application::Get().GetWindowHeight());
+
+    // // Register test sound
+    auto &audioManager{Application::Get().GetAudioManager()};
+    audioManager.Add("music", "Sandbox/assets/music.wav");
+    audioManager.Add("bounce", "Sandbox/assets/bounce.wav");
 }
 
 void Sandbox2D::OnAttach()
@@ -123,6 +170,7 @@ void Sandbox2D::OnDetach()
 void Sandbox2D::OnUpdate(Timestep dt)
 {
     TERR_PROFILE_FUNC;
+
     // Clear Screen to color
     RenderCommand::Clear(Color::BLACK);
 

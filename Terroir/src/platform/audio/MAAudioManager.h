@@ -15,7 +15,43 @@
 // SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ////////////////////////////////////////////////////////////////////////////////
 
-#include "Tpch.h"
-#define STBI_NO_SIMD
-#define STB_IMAGE_IMPLEMENTATION
-#include "stb_image.h"
+#ifndef TERROIR_H_MAAudioManager
+#define TERROIR_H_MAAudioManager
+
+#include "AudioManager.h"
+
+#include "MiniAudio.h"
+#include <filesystem>
+#include <string>
+#include <vector>
+
+namespace Terroir
+{
+
+// Class the wraps around the high level MiniAudio api
+class MAAudioManager : public AudioManager
+{
+  public:
+    MAAudioManager();
+
+    ~MAAudioManager() override;
+
+    void Add(const std::string &, const std::filesystem::path &) override;
+    void Play(const std::string &) override;
+
+    // abstract method to cleanup ma_sounds at end of file
+    void Cleanup() override;
+
+  private:
+    bool Exists(const std::string &) const;
+
+    // Audio Engine
+    std::unique_ptr<ma_engine> m_Engine;
+
+    // List of ma_sounds may be own class in future | owns the respective ma_sounds
+    std::vector<std::unique_ptr<ma_sound>> m_Sounds;
+};
+
+} // namespace Terroir
+
+#endif
