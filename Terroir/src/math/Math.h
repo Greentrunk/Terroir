@@ -27,6 +27,11 @@ inline Mat4 Ortho(const f32 left, const f32 right, const f32 bottom, const f32 t
     return glm::ortho(left, right, bottom, top, zNear, zFar);
 }
 
+inline Mat4 Ortho(const f32 left, const f32 right, const f32 bottom, const f32 top)
+{
+    return glm::ortho(left, right, bottom, top);
+}
+
 inline Mat4 Translate(const Mat4 &m, const Vec3 &v)
 {
     return glm::translate(m, v);

@@ -46,6 +46,11 @@ class RenderCommand
         s_RendererAPI->DrawIndexed(vertexArray);
     }
 
+    static void DrawArrays(u32 count)
+    {
+        s_RendererAPI->DrawArrays(count);
+    }
+
   private:
     static std::unique_ptr<RendererAPI> s_RendererAPI;
 };

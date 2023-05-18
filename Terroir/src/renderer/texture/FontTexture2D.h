@@ -15,26 +15,26 @@
 // SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ////////////////////////////////////////////////////////////////////////////////
 
-#ifndef __TEXTURE2D_H__
-#define __TEXTURE2D_H__
+#ifndef TERRIOR_FONTTEXTURE2D_H
+#define TERRIOR_FONTTEXTURE2D_H
 
-#include "Texture.h"
-#include <filesystem>
-#include <memory>
+#include <ft2build.h>
+#include FT_FREETYPE_H
+
+#include "Terroir/src/renderer/texture/Texture.h"
 
 namespace Terroir
 {
-class Texture2D : public Texture
+class FontTexture2D : public Texture
 {
   public:
-    ~Texture2D() override = default;
-
-    static std::shared_ptr<Texture2D> Create(u32, u32);
-    static std::shared_ptr<Texture2D> Create(const std::filesystem::path &);
+    ~FontTexture2D() override = default;
 
     // Get ID
     [[nodiscard]] virtual constexpr u32 GetID() const = 0;
-};
 
+    static std::shared_ptr<FontTexture2D> Create(u32, const FT_Face &);
+};
 } // namespace Terroir
-#endif // __TEXTURE2D_H__
+
+#endif

@@ -7,7 +7,7 @@
 
 namespace Terroir
 {
-std::shared_ptr<VertexBuffer> VertexBuffer::Create(f32 *vertices, u32 size)
+std::shared_ptr<VertexBuffer> VertexBuffer::Create(f32 *vertices, u32 size, bool dyn)
 {
     using enum RendererAPI::API;
     switch (Renderer::GetAPI())
@@ -18,7 +18,7 @@ std::shared_ptr<VertexBuffer> VertexBuffer::Create(f32 *vertices, u32 size)
     }
 
     case OpenGL: {
-        return std::make_shared<OpenGLVertexBuffer>(vertices, size);
+        return std::make_shared<OpenGLVertexBuffer>(vertices, size, dyn);
     }
 
     default: {

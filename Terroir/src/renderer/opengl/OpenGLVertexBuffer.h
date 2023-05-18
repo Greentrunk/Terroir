@@ -25,7 +25,7 @@ namespace Terroir
 class OpenGLVertexBuffer : public VertexBuffer
 {
   public:
-    OpenGLVertexBuffer(f32 *, u32);
+    OpenGLVertexBuffer(f32 *, u32, bool dyn = false);
     ~OpenGLVertexBuffer() override;
 
     void Bind() const override;
@@ -36,6 +36,14 @@ class OpenGLVertexBuffer : public VertexBuffer
     {
         return m_Layout;
     }
+
+    // Get ID
+    [[nodiscard]] constexpr u32 GetID() const override
+    {
+        return m_RendererId;
+    }
+
+    void SetBufferSubData(u32,f32 *) override;
 
   private:
     u32 m_RendererId{};

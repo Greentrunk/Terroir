@@ -39,6 +39,7 @@ class OpenGLRendererAPI : public RendererAPI
     void Clear(const Vec4 &) override;
 
     void DrawIndexed(const std::shared_ptr<VertexArray> &) override;
+    void DrawArrays(u32) override;
 };
 
 } // namespace Terroir

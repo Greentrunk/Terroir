@@ -14,7 +14,8 @@
 // TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 // SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ////////////////////////////////////////////////////////////////////////////////
-
+#ifndef TERROIR_OPENGLTEXTURE2D_H
+#define TERROIR_OPENGLTEXTURE2D_H
 #include "Terroir/src/renderer/texture/Texture2D.h"
 #include <glad/glad.h>
 
@@ -36,6 +37,11 @@ class OpenGLTexture2D : public Texture2D
         return m_Height;
     }
 
+    [[nodiscard]] virtual constexpr u32 GetID() const override
+    {
+        return m_RendererID;
+    }
+
     void SetData(void *, u32) override;
 
     virtual void Bind(u32 slot = 0) override;
@@ -47,3 +53,4 @@ class OpenGLTexture2D : public Texture2D
     GLenum m_InternalFormat, m_DataFormat;
 };
 } // namespace Terroir
+#endif

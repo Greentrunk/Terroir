@@ -28,6 +28,9 @@ void OpenGLRendererAPI::Init()
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
+    // Culling
+    glEnable(GL_CULL_FACE);
+
     // Depth
     glEnable(GL_DEPTH_TEST);
 }
@@ -48,6 +51,11 @@ void OpenGLRendererAPI::DrawIndexed(const std::shared_ptr<VertexArray> &vertexAr
     glDrawElements(GL_TRIANGLES, static_cast<i32>(vertexArray->GetIndexBuffer()->GetIndexCount()), GL_UNSIGNED_INT,
                    nullptr);
     glBindTexture(GL_TEXTURE_2D, 0);
+}
+
+void OpenGLRendererAPI::DrawArrays(u32 count)
+{
+    glDrawArrays(GL_TRIANGLES, 0, static_cast<i32>(count));
 }
 
 } // namespace Terroir

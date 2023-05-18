@@ -38,6 +38,10 @@ auto ballVelocity{Vec2(-1000.f, -1000.f)};
 // round number
 auto roundNum{1};
 
+// Scores
+auto humanScore{0};
+auto cpuScore{0};
+
 // Reset round
 void ResetRound()
 {
@@ -118,6 +122,7 @@ void MoveBall(f32 dt)
         else
         {
             // CPU Scored
+            cpuScore++;
             ResetRound();
         }
     }
@@ -131,6 +136,7 @@ void MoveBall(f32 dt)
         else
         {
             // Human Scored
+            humanScore++;
             ResetRound();
         }
     }
@@ -181,6 +187,18 @@ void Sandbox2D::OnUpdate(Timestep dt)
 
     // Draw whatever you want
     Renderer2D::BeginScene(*m_Camera);
+
+    // Middle of screen coords
+    auto textPos{Vec3(-50.f, 0.0f, 1.0f)};
+    auto humanScorePos{Vec3(-200.f, 200.0f, 1.0f)};
+    auto cpuScorePos{Vec3(200.f, 200.0f, 1.0f)};
+    const auto humanScoreStr{std::to_string(humanScore)};
+    const auto cpuScoreStr{std::to_string(cpuScore)};
+    // Text
+    Renderer2D::DrawText("Pong", textPos, {1.f, 1.f}, Color::WHITE);
+    Renderer2D::DrawText(humanScoreStr, humanScorePos ,{3.f, 3.f}, Color::WHITE);
+    Renderer2D::DrawText(cpuScoreStr, cpuScorePos ,{3.f, 3.f}, Color::WHITE);
+
     // Ball
     Renderer2D::DrawRect(ballPos, {BALL_SIDE, BALL_SIDE}, Color::WHITE);
 

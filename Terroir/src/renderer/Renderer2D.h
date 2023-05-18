@@ -21,9 +21,10 @@
 #include "Terroir/src/renderer/VertexArray.h"
 #include "Terroir/src/renderer/camera/OrthographicCamera.h"
 #include "Terroir/src/renderer/renderable/Sprite.h"
+#include "Terroir/src/renderer/renderable/font/Font.h"
 #include "Terroir/src/renderer/shader/Shader.h"
-#include "Terroir/src/renderer/texture/Texture2D.h"
 #include "Terroir/src/renderer/shader/ShaderLibrary.h"
+#include "Terroir/src/renderer/texture/Texture2D.h"
 
 namespace Terroir
 {
@@ -56,8 +57,16 @@ class Renderer2D
     //    std::shared_ptr<SubTexture2D> &); static void DrawSprite(const Vec3 &, const Vec2 &, const
     //    std::shared_ptr<Shader> &, const std::shared_ptr<SubTexture2D> &,
     // const Vec4 &);
-};
 
+    static void DrawText(const std::string &, Vec3 &, const Vec2 &, const Vec4 &, f32 rotation = 0.0f);
+};
+struct Character
+{
+    unsigned int TextureID; // ID handle of the glyph texture
+    glm::ivec2 Size;        // Size of glyph
+    glm::ivec2 Bearing;     // Offset from baseline to left/top of glyph
+    unsigned int Advance;   // Horizontal offset to advance to next glyph
+};
 struct Renderer2DData
 {
     std::shared_ptr<VertexArray> m_QUAD_VAO;
@@ -66,6 +75,9 @@ struct Renderer2DData
     std::shared_ptr<Shader> m_TextureShader;
     ShaderLibrary m_ShaderLibrary;
     std::shared_ptr<Texture2D> m_WhiteTexture;
+    std::shared_ptr<Font> m_Font;
+    std::shared_ptr<VertexArray> m_fVAO;
+    std::shared_ptr<VertexBuffer> m_fVBO;
 };
 
 } // namespace Terroir

@@ -21,11 +21,12 @@
 
 namespace Terroir
 {
-OpenGLVertexBuffer::OpenGLVertexBuffer(f32 *vertices, u32 size)
+OpenGLVertexBuffer::OpenGLVertexBuffer(f32 *vertices, u32 size, bool dyn)
 {
+    const auto usage { dyn ? GL_DYNAMIC_DRAW : GL_STATIC_DRAW};
     glGenBuffers(1, &m_RendererId);
     glBindBuffer(GL_ARRAY_BUFFER, m_RendererId);
-    glBufferData(GL_ARRAY_BUFFER, size, vertices, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, size, vertices, usage);
 }
 
 OpenGLVertexBuffer::~OpenGLVertexBuffer()
@@ -46,6 +47,12 @@ void OpenGLVertexBuffer::Unbind() const
 void OpenGLVertexBuffer::SetLayout(const BufferLayout &layout)
 {
     m_Layout = layout;
+}
+
+void OpenGLVertexBuffer::SetBufferSubData(u32 size, f32 *vertices)
+{
+    glBindBuffer(GL_ARRAY_BUFFER, m_RendererId);
+    glBufferSubData(GL_ARRAY_BUFFER, 0, size, vertices);
 }
 
 } // namespace Terroir

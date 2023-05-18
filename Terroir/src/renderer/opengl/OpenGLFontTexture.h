@@ -15,26 +15,47 @@
 // SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ////////////////////////////////////////////////////////////////////////////////
 
-#ifndef __TEXTURE2D_H__
-#define __TEXTURE2D_H__
+#ifndef TERROIR_OPENGLFONTTEXTURE_H
+#define TERROIR_OPENGLFONTTEXTURE_H
 
-#include "Texture.h"
-#include <filesystem>
-#include <memory>
+#include "Terroir/src/renderer/texture/FontTexture2D.h"
+#include <glad/glad.h>
 
+#include <ft2build.h>
+#include FT_FREETYPE_H
 namespace Terroir
 {
-class Texture2D : public Texture
+class OpenGLFontTexture2D : public FontTexture2D
 {
   public:
-    ~Texture2D() override = default;
+    OpenGLFontTexture2D(u32, const FT_Face &);
+    virtual ~OpenGLFontTexture2D() override;
 
-    static std::shared_ptr<Texture2D> Create(u32, u32);
-    static std::shared_ptr<Texture2D> Create(const std::filesystem::path &);
+    [[nodiscard]] virtual u32 GetWidth() const override
+    {
+        return m_Width;
+    }
+    [[nodiscard]] virtual u32 GetHeight() const override
+    {
+        return m_Height;
+    }
 
-    // Get ID
-    [[nodiscard]] virtual constexpr u32 GetID() const = 0;
+    [[nodiscard]] virtual constexpr u32 GetID() const override
+    {
+        return m_RendererID;
+    }
+
+    void SetData(void *, u32) override
+    {
+    }
+
+    virtual void Bind(u32 slot = 0) override;
+
+  private:
+    u32 m_CharCode;
+    u32 m_Width, m_Height;
+    u32 m_RendererID;
+    GLenum m_InternalFormat, m_DataFormat;
 };
-
 } // namespace Terroir
-#endif // __TEXTURE2D_H__
+#endif

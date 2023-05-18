@@ -15,26 +15,34 @@
 // SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ////////////////////////////////////////////////////////////////////////////////
 
-#ifndef __TEXTURE2D_H__
-#define __TEXTURE2D_H__
-
-#include "Texture.h"
-#include <filesystem>
-#include <memory>
-
+#include "FontTexture2D.h"
+#include "Tpch.h"
+#include "core/Assert.h"
+#include "renderer/Renderer.h"
+#include "renderer/RendererAPI.h"
+#include "renderer/opengl/OpenGLFontTexture.h"
 namespace Terroir
 {
-class Texture2D : public Texture
+std::shared_ptr<FontTexture2D> FontTexture2D::Create(u32 c, const FT_Face &face)
 {
-  public:
-    ~Texture2D() override = default;
+    using enum RendererAPI::API;
+    switch (Renderer::GetAPI())
+    {
+    case None: {
+        TERR_ASSERT(false, "RendererAPI::None is not supported in Terroir!");
+        return nullptr;
+    }
 
-    static std::shared_ptr<Texture2D> Create(u32, u32);
-    static std::shared_ptr<Texture2D> Create(const std::filesystem::path &);
+    case OpenGL: {
+        return std::make_shared<OpenGLFontTexture2D>(c, face);
 
-    // Get ID
-    [[nodiscard]] virtual constexpr u32 GetID() const = 0;
-};
+    default: {
+
+        TERR_ENGINE_ERROR("Unknown RendererAPI");
+        return nullptr;
+    }
+    }
+    }
+}
 
 } // namespace Terroir
-#endif // __TEXTURE2D_H__
