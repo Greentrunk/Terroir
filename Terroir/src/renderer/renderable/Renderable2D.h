@@ -45,7 +45,7 @@ class Renderable2D
                Math::Transform::Scale(Mat4(1.0f), {m_Size.x, m_Size.y, 1.0f});
     }
 
-  private:
+   private:
     Vec3 m_Position;
     Vec2 m_Size;
     Vec4 m_Color;

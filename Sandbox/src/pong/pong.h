@@ -15,18 +15,18 @@
 // SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ////////////////////////////////////////////////////////////////////////////////
 
-#ifndef TERROIR_SANDBOX2D_H
-#define TERROIR_SANDBOX2D_H
+#ifndef PONG 
+#define PONG 
 
 #include "Terroir.h"
 
 using namespace Terroir;
 
-class Sandbox2D : public Layer
+class Pong : public Layer
 {
   public:
-    explicit Sandbox2D(const std::string_view &);
-    ~Sandbox2D() override = default;
+    explicit Pong(const std::string_view &);
+    ~Pong() override = default;
     void OnAttach() override;
     void OnDetach() override;
     void OnUpdate(Timestep) override;
@@ -38,4 +38,4 @@ class Sandbox2D : public Layer
     std::unique_ptr<OrthographicCamera> m_Camera;
 };
 
-#endif // TERROIR_SANDBOX2D_H
+#endif // PONG 

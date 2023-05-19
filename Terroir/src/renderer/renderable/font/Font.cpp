@@ -39,7 +39,7 @@ Font::Font() : Renderable2D({0, 0, 0}, {0, 0}, {0, 0, 0, 0}, 0)
         auto characterData{CharacterData{charTexture,
                                          {face->glyph->bitmap.width, face->glyph->bitmap.rows},
                                          {face->glyph->bitmap_left, face->glyph->bitmap_top},
-                                         face->glyph->advance.x}};
+                                         static_cast<u32>(face->glyph->advance.x)}};
         m_Characters.insert(std::pair<char, CharacterData>(c, characterData));
     }
 

@@ -60,10 +60,11 @@ MAAudioManager::~MAAudioManager()
 }
 void MAAudioManager::Add(const std::string &name, const std::filesystem::path &path)
 {
+    // Check if path exists
+    TERR_ENGINE_ASSERT(std::filesystem::exists(path), "Path does not exist");
     // Check if sound is in SoundLibrary
     TERR_ENGINE_ASSERT(!Exists(name), "Sound already exists in SoundLibrary");
     m_SoundLibrary[name] = path;
-    // TERR_ENGINE_INFO("Sound {} added to SoundLibrary from path {}", name, path.string());
 }
 
 void MAAudioManager::Play(const std::string &name)
@@ -87,7 +88,7 @@ void MAAudioManager::Play(const std::string &name)
                                                  sound.get())};
         if (soundResult != MA_SUCCESS)
         {
-            TERR_ENGINE_ERROR("Failed to load sound: {}", soundResult);
+            TERR_ENGINE_ERROR("Failed to load sound: {}", name);
             return;
         }
 
