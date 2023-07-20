@@ -8,7 +8,7 @@
 
 namespace Terroir
 {
-std::shared_ptr<IndexBuffer> IndexBuffer::Create(u32 *indices, u32 size)
+std::shared_ptr<IndexBuffer> IndexBuffer::Create(u32 *indices, u32 count)
 {
     using enum RendererAPI::API;
     switch (Renderer::GetAPI())
@@ -19,7 +19,7 @@ std::shared_ptr<IndexBuffer> IndexBuffer::Create(u32 *indices, u32 size)
     }
 
     case OpenGL: {
-        return std::make_shared<OpenGLIndexBuffer>(indices, size);
+        return std::make_shared<OpenGLIndexBuffer>(indices, count);
     }
 
     default: {

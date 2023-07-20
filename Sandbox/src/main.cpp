@@ -15,6 +15,7 @@
 // SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ////////////////////////////////////////////////////////////////////////////////
 
+#include "FighterLike/FighterLike.h"
 #include "Sandbox2D.h"
 #include "pong/Pong.h"
 #include <Terroir/src/core/AppEntry.h>
@@ -27,7 +28,8 @@ class SandboxGame : public Application
     SandboxGame(const std::string_view &name, u32 width, u32 height) : Application(name, width, height)
     {
         // PushLayer(std::make_unique<Sandbox2D>("2D")); // Your app
-        PushLayer(std::make_unique<Pong>("Pong")); // Pong example
+        // PushLayer(std::make_unique<Pong>("Pong")); // Pong example
+        PushLayer(std::make_unique<FighterLike>("FighterLike")); // FighterLike example
     }
 };
 

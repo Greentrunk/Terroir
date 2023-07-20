@@ -46,6 +46,11 @@ class OpenGLTexture2D : public Texture2D
 
     virtual void Bind(u32 slot = 0) override;
 
+    [[nodiscard]] virtual bool operator==(const Texture2D &rhs) const override {
+      return m_RendererID == ((OpenGLTexture2D &)rhs).m_RendererID;
+
+    }
+
   private:
     std::filesystem::path m_Path;
     u32 m_Width, m_Height;

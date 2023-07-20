@@ -7,6 +7,7 @@
 namespace Terroir
 {
 
+// Only supporting 32 bit indices for now
 class IndexBuffer
 {
   public:

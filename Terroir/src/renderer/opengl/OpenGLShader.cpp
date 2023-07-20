@@ -128,6 +128,12 @@ void OpenGLShader::UploadUniform(const char *name, const Mat4 &matrix) const
     glUniformMatrix4fv(location, 1, GL_FALSE, Math::Conversion::GetValuePtr(matrix));
 }
 
+void OpenGLShader::UploadUniform(const char *name, const std::span<i32> &values) const
+{
+    GLint location{glGetUniformLocation(m_RendererID, name)};
+    glUniform1iv(location, static_cast<GLsizei>(values.size()), values.data());
+}
+
 OpenGLShader::ShaderMap OpenGLShader::PreProcess(const std::list<std::string> &srcList)
 {
     TERR_PROFILE_FUNC;
@@ -264,5 +270,9 @@ void OpenGLShader::SetUniform(const std::string_view &name, const Mat3 &mat) con
 void OpenGLShader::SetUniform(const std::string_view &name, const Mat4 &mat) const
 {
     UploadUniform(name.data(), mat);
+}
+void OpenGLShader::SetUniform(const std::string_view &name, const std::span<i32> &i) const
+{
+    UploadUniform(name.data(), i);
 }
 } // namespace Terroir

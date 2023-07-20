@@ -1,21 +1,21 @@
-#include "Sandbox2D.h"
+#include "FighterLike.h"
 #include <imgui.h>
 
-Sandbox2D::Sandbox2D(const std::string_view &name)
-    : Layer(name), m_Texture(Texture2D::Create("Sandbox/assets/textures/gigachad.jpg"))
+FighterLike::FighterLike(const std::string_view &name) : Layer(name)
 {
     CreateCamera(Application::Get().GetWindowWidth(), Application::Get().GetWindowHeight());
 }
 
-void Sandbox2D::OnAttach()
+void FighterLike::OnAttach()
+{
+    m_SpriteSheet = Texture2D::Create("Sandbox/assets/textures/colored-transparent_packed.png");
+}
+
+void FighterLike::OnDetach()
 {
 }
 
-void Sandbox2D::OnDetach()
-{
-}
-
-void Sandbox2D::OnUpdate(Timestep dt)
+void FighterLike::OnUpdate(Timestep dt)
 {
     TERR_PROFILE_FUNC;
 
@@ -28,25 +28,14 @@ void Sandbox2D::OnUpdate(Timestep dt)
     // Start draw calls
     Renderer2D::BeginScene(*m_Camera);
 
-    // static auto rotation{0.0f};
-    // rotation += dt * 100.0f;
+    Sprite allSprites(m_SpriteSheet, {0.0f, 0.0f}, {0.0f, 0.0f});
+    Sprite sprite(m_SpriteSheet, {0, 20}, {16, 16});
+    Renderer2D::DrawSprite(sprite);
+    // Renderer2D::DrawSprite(allSprites);
 
-    // const auto gigaChad = Sprite(m_Texture, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f}, Color::WHITE, rotation);
-    // // Renderer2D::DrawSprite(gigaChad);
-
-    // for (auto y = -5.0f; y < 5.0f; y += .5f)
-    // {
-    //     for (auto x = -5.0f; x < 5.0f; x += .5f)
-    //     {
-    //         const auto pos{Vec3{x, y, 0.0f}};
-    //         const auto size{Vec2{.45f, .45f}};
-    //         const auto color{Vec4{(x + 5.0f) / 10.0f, 0.4f, (y + 5.0f) / 10.0f, .7f}};
-    //         Renderer2D::DrawRect(pos, size, color);
-    //     }
-    // }
-    Renderer2D::EndScene();         // Finish draw calls before this
+    Renderer2D::EndScene();           // Finish draw calls before this
 }
-void Sandbox2D::OnDearImGuiRender() // Optional gui rendering
+void FighterLike::OnDearImGuiRender() // Optional gui rendering
 {
     TERR_PROFILE_FUNC;
 
@@ -60,12 +49,12 @@ void Sandbox2D::OnDearImGuiRender() // Optional gui rendering
     ImGui::End();
 }
 
-void Sandbox2D::OnEvent(Event &e)
+void FighterLike::OnEvent(Event &e)
 {
 }
 
 // This is a barebones camera for v.01 of the engine, it will be replaced
-void Sandbox2D::CreateCamera(u32 width, u32 height)
+void FighterLike::CreateCamera(u32 width, u32 height)
 {
     // auto aspectRatio{static_cast<f32>(width) / static_cast<f32>(height)};
     // auto camHeight{Application::Get().GetWindowHeight() / 2};
@@ -74,6 +63,5 @@ void Sandbox2D::CreateCamera(u32 width, u32 height)
     // auto left{static_cast<f32>(bottom) * aspectRatio};
     // auto right{static_cast<f32>(top) * aspectRatio};
     // m_Camera = std::make_unique<OrthographicCamera>(left, right, bottom, top);
-
-    m_Camera = std::make_unique<OrthographicCamera>(-1.f, 1, -1.0f, 1.0f);
+    m_Camera = std::make_unique<OrthographicCamera>(-1.f, 1.f, -1.f, 1.f);
 }

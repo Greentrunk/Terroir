@@ -41,7 +41,7 @@ class RenderCommand
         s_RendererAPI->Clear(color);
     }
 
-    static void DrawIndexed(const std::shared_ptr<VertexArray> &vertexArray)
+    static void DrawIndexed(const std::shared_ptr<VertexArray> &vertexArray, u32 indexCount = 0)
     {
         s_RendererAPI->DrawIndexed(vertexArray);
     }

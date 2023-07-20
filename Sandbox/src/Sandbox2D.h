@@ -36,6 +36,7 @@ class Sandbox2D : public Layer
 
   private:
     std::unique_ptr<OrthographicCamera> m_Camera;
+    std::shared_ptr<Texture2D> m_Texture;
 };
 
 #endif // TERROIR_SANDBOX2D_H

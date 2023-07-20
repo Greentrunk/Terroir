@@ -59,25 +59,69 @@ class Renderer2D
     // const Vec4 &);
 
     static void DrawText(const std::string &, Vec3 &, const Vec2 &, const Vec4 &, f32 rotation = 0.0f);
+
+    struct Stats
+    {
+        u32 m_DrawCalls{0};
+        u32 m_RectCount{0};
+
+        [[nodiscard]] constexpr u32 GetTotalVertexCount() const
+        {
+            return m_RectCount * 4;
+        }
+        [[nodiscard]] constexpr u32 GetTotalIndexCount() const
+        {
+            return m_RectCount * 6;
+        }
+    };
+
+    // Resets the renderer statistics
+    static void ResetStats();
+
+    [[nodiscard]] static Stats GetStats();
+
+  private:
+    static void FlushAndReset();
+    static void SetRectVertexBufferData(const Mat4&, const Vec4&, std::array<Vec2, 4>, f32, f32, u32);
 };
-struct Character
+
+struct RectVertex
 {
-    unsigned int TextureID; // ID handle of the glyph texture
-    glm::ivec2 Size;        // Size of glyph
-    glm::ivec2 Bearing;     // Offset from baseline to left/top of glyph
-    unsigned int Advance;   // Horizontal offset to advance to next glyph
+    Vec3 m_Position;
+    Vec4 m_Color;
+    Vec2 m_TexCoord;
+    f32 m_TexIndex;
+    f32 m_TilingFactor;
 };
+
 struct Renderer2DData
 {
-    std::shared_ptr<VertexArray> m_QUAD_VAO;
-    std::shared_ptr<VertexBuffer> m_QUAD_VBO;
-    std::shared_ptr<IndexBuffer> m_QUAD_IBO;
-    std::shared_ptr<Shader> m_TextureShader;
+    std::shared_ptr<VertexArray> m_RECT_VAO;
+    std::shared_ptr<VertexBuffer> m_RECT_VBO;
+    std::shared_ptr<IndexBuffer> m_RECT_IBO;
     ShaderLibrary m_ShaderLibrary;
     std::shared_ptr<Texture2D> m_WhiteTexture;
     std::shared_ptr<Font> m_Font;
     std::shared_ptr<VertexArray> m_fVAO;
     std::shared_ptr<VertexBuffer> m_fVBO;
+
+    static const u32 MAX_RECTS = 20000;
+    static const u32 MAX_VERTICES = MAX_RECTS * 4;
+    static const u32 MAX_INDICES = MAX_RECTS * 6;
+    static const u32 MAX_TEXTURE_SLOTS = 32;
+
+    // Keep track of the current index in the buffer
+    u32 m_RectIndexCount = 0;
+
+    std::shared_ptr<RectVertex[]> m_RectVertexBufferBase;
+    RectVertex *m_RectVertexBufferPtr{nullptr}; // Pointer to the current position in the buffer
+
+    std::array<std::shared_ptr<Texture2D>, MAX_TEXTURE_SLOTS> m_TextureSlots;
+    u32 m_TextureSlotIndex = 1; // 0 is reserved for white texture
+
+    std::array<Vec4, 4> m_RectVertexPositions;
+
+    Renderer2D::Stats m_Stats;
 };
 
 } // namespace Terroir

@@ -46,10 +46,11 @@ void OpenGLRendererAPI::Clear(const Vec4 &color)
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
-void OpenGLRendererAPI::DrawIndexed(const std::shared_ptr<VertexArray> &vertexArray)
+void OpenGLRendererAPI::DrawIndexed(const std::shared_ptr<VertexArray> &vertexArray, u32 indexCount)
 {
-    glDrawElements(GL_TRIANGLES, static_cast<i32>(vertexArray->GetIndexBuffer()->GetIndexCount()), GL_UNSIGNED_INT,
-                   nullptr);
+    auto count{ indexCount ? indexCount : vertexArray->GetIndexBuffer()->GetIndexCount() };
+    glDrawElements(GL_TRIANGLES, static_cast<i32>(count), GL_UNSIGNED_INT,
+       nullptr);
     glBindTexture(GL_TEXTURE_2D, 0);
 }
 

@@ -18,7 +18,9 @@
 #ifndef __TEXTURE2D_H__
 #define __TEXTURE2D_H__
 
+#include "Terroir/src/math/Math.h"
 #include "Texture.h"
+#include <array>
 #include <filesystem>
 #include <memory>
 
@@ -34,6 +36,18 @@ class Texture2D : public Texture
 
     // Get ID
     [[nodiscard]] virtual constexpr u32 GetID() const = 0;
+
+    // Compare
+    [[nodiscard]] virtual bool operator==(const Texture2D &) const = 0;
+
+    // Get texture coordinates default for non-subtextures // THIS NEEDS TO BE CHANGED
+    [[nodiscard]] virtual const std::array<Vec2, 4> &GetTexCoords() const
+    {
+        return m_TexCoords; 
+    }
+
+  protected:
+    std::array<Vec2, 4> m_TexCoords{Vec2(0.0f, 0.0f), Vec2(1.0f, 0.0f), Vec2(1.0f, 1.0f), Vec2(0.0f, 1.0f)};
 };
 
 } // namespace Terroir

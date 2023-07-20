@@ -18,7 +18,7 @@
 #ifndef PONG 
 #define PONG 
 
-#include "Terroir.h"
+#include <Terroir.h>
 
 using namespace Terroir;
 

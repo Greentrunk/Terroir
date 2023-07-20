@@ -26,6 +26,7 @@ class OpenGLVertexBuffer : public VertexBuffer
 {
   public:
     OpenGLVertexBuffer(f32 *, u32, bool dyn = false);
+    OpenGLVertexBuffer(u32);
     ~OpenGLVertexBuffer() override;
 
     void Bind() const override;
@@ -43,7 +44,7 @@ class OpenGLVertexBuffer : public VertexBuffer
         return m_RendererId;
     }
 
-    void SetBufferSubData(u32,f32 *) override;
+    void SetSubData(void*, u32) override;
 
   private:
     u32 m_RendererId{};

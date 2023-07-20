@@ -22,7 +22,6 @@
 #include "Terroir/src/core/Types.h"
 #include "Terroir/src/math/Math.h"
 #include <glad/glad.h>
-#include <list>
 
 namespace Terroir
 {
@@ -48,6 +47,7 @@ class OpenGLShader : public Shader
     void SetUniform(const std::string_view &, const Vec4 &) const override;
     void SetUniform(const std::string_view &, const Mat3 &) const override;
     void SetUniform(const std::string_view &, const Mat4 &) const override;
+    void SetUniform(const std::string_view &, const std::span<i32> &) const override;
 
     // OpenGL specific uniforms
     void UploadUniform(const char *, i32) const;
@@ -57,6 +57,7 @@ class OpenGLShader : public Shader
     void UploadUniform(const char *, const Vec4 &) const;
     void UploadUniform(const char *, const Mat3 &) const;
     void UploadUniform(const char *, const Mat4 &) const;
+    void UploadUniform(const char *, const std::span<i32> &) const;
 
     [[nodiscard]] constexpr const std::string &GetName() const override
     {

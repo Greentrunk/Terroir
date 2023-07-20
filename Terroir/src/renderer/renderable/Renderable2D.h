@@ -39,13 +39,34 @@ class Renderable2D
         Mat4 rotate{1.0f};
         if (m_Rotation != 0.0f)
         {
-            rotate = Math::Transform::Rotate(Mat4(1.0f), m_Rotation, {0.0f, 0.0f, 1.0f});
+            rotate = Math::Transform::Rotate(Mat4(1.0f), Math::Conversion::ToRadians(m_Rotation), {0.0f, 0.0f, 1.0f});
         }
         return Math::Transform::Translate(Mat4(1.0f), m_Position) * rotate *
                Math::Transform::Scale(Mat4(1.0f), {m_Size.x, m_Size.y, 1.0f});
     }
 
-   private:
+    // Getters for position, size, color, and rotation
+    [[nodiscard]] constexpr const Vec3 &GetPosition() const noexcept
+    {
+        return m_Position;
+    }
+
+    [[nodiscard]] constexpr const Vec2 &GetSize() const noexcept
+    {
+        return m_Size;
+    }
+
+    [[nodiscard]] constexpr const Vec4 &GetColor() const noexcept
+    {
+        return m_Color;
+    }
+
+    [[nodiscard]] constexpr f32 GetRotation() const noexcept
+    {
+        return m_Rotation;
+    }
+
+  private:
     Vec3 m_Position;
     Vec2 m_Size;
     Vec4 m_Color;

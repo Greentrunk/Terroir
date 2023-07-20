@@ -214,6 +214,9 @@ void Pong::OnUpdate(Timestep dt)
         Renderer2D::DrawText("Pong", titlePos, {1.5f, 1.5f}, Color::WHITE);
         Renderer2D::DrawText("Press 'space' to play!", subPos, {0.5f, 0.5f}, Color::WHITE);
 
+        Renderer2D::DrawRect({-SCREEN_WIDTH, 400}, {SCREEN_WIDTH, SCREEN_HEIGHT}, Color::BLUE);
+
+    
         Renderer2D::EndScene();
 
         if (Input::IsKeyPressed(TERR_KEY_SPACE))

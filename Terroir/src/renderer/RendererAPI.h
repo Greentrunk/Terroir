@@ -42,7 +42,7 @@ class RendererAPI
     virtual void Init() = 0;
     virtual void SetViewport(u32, u32, u32, u32) = 0;
     virtual void Clear(const Vec4 &) = 0;
-    virtual void DrawIndexed(const std::shared_ptr<VertexArray> &) = 0;
+    virtual void DrawIndexed(const std::shared_ptr<VertexArray> &, u32 indexCount = 0) = 0;
     virtual void DrawArrays(u32) = 0;
 
     static API GetAPI()

@@ -27,7 +27,7 @@ static constexpr GLenum ShaderDataTypeToOpenGLBaseType(ShaderDataType type)
     using enum ShaderDataType;
     switch (type)
     {
-    case Vec:
+    case Float:
         return GL_FLOAT;
     case Vec2:
         return GL_FLOAT;

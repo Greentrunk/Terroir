@@ -19,7 +19,7 @@
 #define TERROIR_OPENGLRENDERERAPI_H
 
 #include "Terroir/src/renderer/RendererAPI.h"
-#
+
 
 namespace Terroir
 {
@@ -38,7 +38,7 @@ class OpenGLRendererAPI : public RendererAPI
     // Clear screen
     void Clear(const Vec4 &) override;
 
-    void DrawIndexed(const std::shared_ptr<VertexArray> &) override;
+    void DrawIndexed(const std::shared_ptr<VertexArray> &, u32 indexCount = 0) override;
     void DrawArrays(u32) override;
 };
 

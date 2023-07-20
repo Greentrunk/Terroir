@@ -40,6 +40,7 @@ class Shader
     virtual void SetUniform(const std::string_view &, const Vec4 &) const = 0;
     virtual void SetUniform(const std::string_view &, const Mat3 &) const = 0;
     virtual void SetUniform(const std::string_view &, const Mat4 &) const = 0;
+    virtual void SetUniform(const std::string_view &, const std::span<i32> &) const = 0;
 
     [[nodiscard]] virtual constexpr const std::string &GetName() const = 0;
 

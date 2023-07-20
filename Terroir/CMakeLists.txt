@@ -102,11 +102,15 @@ set(sources
     src/renderer/VertexArray.cpp
     src/renderer/VertexArray.h
     src/renderer/stb_image.cpp
-    src/renderer/Renderer2D.cpp src/renderer/Renderer2D.h src/renderer/renderable/Sprite.cpp src/renderer/renderable/Sprite.h src/renderer/renderable/Renderable2D.cpp src/renderer/renderable/Renderable2D.h src/core/Color.h
+    src/renderer/Renderer2D.cpp src/renderer/Renderer2D.h src/renderer/renderable/Sprite.cpp
+    src/renderer/renderable/Sprite.h src/renderer/renderable/Renderable2D.cpp src/renderer/renderable/Renderable2D.h src/core/Color.h
     src/core/Profile.h
-    src/platform/audio/AudioManager.cpp src/platform/audio/AudioManager.h src/platform/audio/MiniAudio.h src/platform/audio/MiniAudio.cpp src/platform/audio/MAAudioManager.h src/platform/audio/MAAudioManager.cpp
-    src/renderer/renderable/font/Font.h src/renderer/renderable/font/Font.cpp src/renderer/renderable/font/CharacterData.h src/renderer/texture/FontTexture2D.h src/renderer/texture/FontTexture2D.cpp src/renderer/opengl/OpenGLFontTexture.h src/renderer/opengl/OpenGLFontTexture.cpp)
-
+    src/platform/audio/AudioManager.cpp src/platform/audio/AudioManager.h
+    src/platform/audio/MiniAudio.h src/platform/audio/MiniAudio.cpp src/platform/audio/MAAudioManager.h src/platform/audio/MAAudioManager.cpp
+    src/renderer/renderable/font/Font.h src/renderer/renderable/font/Font.cpp
+    src/renderer/renderable/font/CharacterData.h src/renderer/texture/FontTexture2D.h 
+    src/renderer/texture/FontTexture2D.cpp src/renderer/opengl/OpenGLFontTexture.h src/renderer/opengl/OpenGLFontTexture.cpp
+    )
 add_library(Terroir STATIC ${sources})
 
 # Terroir platform defines
@@ -125,7 +129,7 @@ endif(UNIX AND NOT APPLE)
 target_compile_definitions(Terroir PRIVATE TERR_ENABLE_ASSERTS)
 
 # target_compile_definitions(Terroir PRIVATE TERR_ENABLE_PROFILING)
-target_compile_definitions(Terroir PRIVATE TILING_WM)
+# target_compile_definitions(Terroir PRIVATE TILING_WM)
 target_compile_definitions(Terroir PRIVATE GLFW_INCLUDE_NONE)
 target_compile_definitions(Terroir PRIVATE IMGUI_IMPL_OPENGL_LOADER_CUSTOM)
 

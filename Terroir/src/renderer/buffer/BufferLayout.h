@@ -10,7 +10,7 @@ namespace Terroir
 enum class ShaderDataType
 {
     None = 0,
-    Vec,
+    Float,
     Vec2,
     Vec3,
     Vec4,
@@ -28,7 +28,7 @@ static constexpr u32 ShaderDataTypeSize(ShaderDataType type)
     using enum ShaderDataType;
     switch (type)
     {
-    case Vec:
+    case Float:
         return 4;
     case Vec2:
         return 4 * 2;
@@ -87,7 +87,7 @@ class BufferElement
         using enum ShaderDataType;
         switch (m_Type)
         {
-        case Vec:
+        case Float:
             return 1;
         case Vec2:
             return 2;

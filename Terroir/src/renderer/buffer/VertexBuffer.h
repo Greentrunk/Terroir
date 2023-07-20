@@ -22,9 +22,12 @@ class VertexBuffer
     // Get ID
     [[nodiscard]] virtual constexpr u32 GetID() const = 0;
 
-    virtual void SetBufferSubData(u32,f32*) = 0;
+    virtual void SetSubData(void *, u32) = 0;
 
+    // With static array
     static std::shared_ptr<VertexBuffer> Create(f32 *, u32, bool dyn = false);
+    // With dynamic
+    static std::shared_ptr<VertexBuffer> Create(u32);
 };
 } // namespace Terroir
 
